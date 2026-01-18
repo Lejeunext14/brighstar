@@ -1,0 +1,403 @@
+<x-layouts::app :title="__('Subject Topics')">
+    <div class="w-full">
+        <!-- Header Section -->
+        <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-purple-50 p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-purple-900/20 mb-6 flex items-center justify-between">
+            <div>
+                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2">
+                    @if($subject === 'filipino')
+                        Learn Filipino 
+                    @else
+                        {{ ucfirst($subject) }} Topics
+                    @endif
+                </h1>
+                <p class="text-lg text-gray-600 dark:text-gray-300">Master the fundamentals of {{ ucfirst($subject) }}</p>
+            </div>
+        </div>
+
+        <!-- Topics Grid -->
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 dark:border-neutral-700 dark:bg-neutral-900 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">1. Ang Aking Sarili</h2>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              
+                    <!-- Topic 1: Alphabet & Vowels -->
+                    <a data-lesson="pag-papakilala-sa-sarili" href="{{ route('lesson.view', ['lesson' => 'pag-papakilala-sa-sarili']) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                        <div class="h-40 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                            <img src="/image/pagpapakilala.png" alt="Pag Papakilala sa Sarili" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Pag Papakilala sa Sarili</h3>
+                            <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan kung pano Mag pakilala ng Sarili</p>
+                            <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
+                                <div class="topic-progress-fill bg-pink-500 h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                            <p class="topic-progress-text text-xs text-gray-500 dark:text-gray-400 mt-2">40% Complete • 5 Lessons</p>
+                        </div>
+                    </a>
+
+                    <!-- Topic 2: Bahagi ng Katawan -->
+                    <a data-lesson="bahagi-ng-katawan" href="{{ route('lesson.view', ['lesson' => 'bahagi-ng-katawan']) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                        <div class="h-40 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-5xl">
+                            <img src="/image/katawan.png" alt="Bahagi ng Katawan" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Bahagi ng Katawan</h3>
+                            <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Parte ng Katawan</p>
+                            <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
+                                <div class="topic-progress-fill bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p class="topic-progress-text text-xs text-gray-500 dark:text-gray-400 mt-2">0% Complete • 0 Lessons</p>
+                        </div>
+                    </a>
+
+                    <!-- Topic 3: Mga Kulay -->
+                    <a data-lesson="mga-kulay" href="{{ route('lesson.view', ['lesson' => 'mga-kulay']) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                        <div class="h-40 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-5xl">
+                           <img src="/image/kulay.png" alt="Mga Kulay" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Mga Kulay</h3>
+                            <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Kulay</p>
+                            <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
+                                <div class="topic-progress-fill bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p class="topic-progress-text text-xs text-gray-500 dark:text-gray-400 mt-2">0% Complete • 0 Lessons</p>
+                        </div>
+                    </a>
+
+                    <!-- Topic 4: Pag Papakilala sa ibat ibang uri ng tunog -->
+                    <a data-lesson="pag-papakilala-sa-ibat-ibang-uri-ng-tunog" href="{{ route('lesson.view', ['lesson' => 'pag-papakilala-sa-ibat-ibang-uri-ng-tunog']) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                        <div class="h-40 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-5xl">
+                           <img src="/image/tunog.jpg" alt="Mga Tunog" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Pag Papakilala sa ibat ibang uri ng tunog</h3>
+                            <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Tunog</p>
+                            <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
+                                <div class="topic-progress-fill bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p class="topic-progress-text text-xs text-gray-500 dark:text-gray-400 mt-2">0% Complete • 0 Lessons</p>
+                        </div>
+                    </a>
+                     <!-- Topic 5: Mga Hugis -->
+                    <a data-lesson="mga-hugis" href="{{ route('lesson.view', ['lesson' => 'mga-hugis']) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                        <div class="h-40 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-5xl">
+                           <img src="/image/mgahugis.jpg" alt="Mga Hugis" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Mga Hugis</h3>
+                            <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Hugis</p>
+                            <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
+                                <div class="topic-progress-fill bg-green-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p class="topic-progress-text text-xs text-gray-500 dark:text-gray-400 mt-2">0% Complete • 0 Lessons</p>
+                        </div>
+                    </a>
+            
+            </div>
+
+        </div>
+
+        <!-- Unit 2: Tungkol sa Aking Pamilya -->
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 dark:border-neutral-700 dark:bg-neutral-900 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">2. Tungkol sa Aking Pamilya</h2>
+            
+            @php
+                $unit2Topics = [
+                    ['title' => 'Ang Aking Pamilya', 'description' => 'Pag Aralan ang Aking Pamilya', 'image' => '/image/ang_aking_pamilya.png', 'lesson' => 'ang-aking-pamilya'],
+                    ['title' => 'Paggamit ng Po at Opo', 'description' => 'Pag Aralan ang Paggamit ng Po at Opo sa Pag-uusap', 'image' => '/image/po_at_opo.jpg', 'lesson' => 'paggamit-ng-po-at-opo'],
+                    ['title' => 'Mga Pagbati ng Magalang', 'description' => 'Pag Aralan ang kung Ano ang Pagbati ng Magalang', 'image' => '/image/pagbati.jpg', 'lesson' => 'mga-pagbati-ng-magalang'],
+                    ['title' => 'Mga Kasapi ng Aking Pamilya', 'description' => 'Pag Aralan ang Mga Kasapi ng Aking Pamilya', 'image' => '/image/kasapi.jpg', 'lesson' => 'mga-kasapi-ng-aking-pamilya'],
+                    ['title' => 'Ang Alpabetong Filipino', 'description' => 'Pag Aralan ang Alpabetong Filipino', 'image' => '/image/alpabeto.jpg', 'lesson' => 'ang-alpabetong-filipino'],
+                    ['title' => 'Pagkilala sa Malaki at Maliit na Titik', 'description' => 'Pag Aralan ang Malaki at Maliit na Titik', 'image' => '/image/malaki_maliit.jpg', 'lesson' => 'pagkilala-sa-malaki-maliit-titik'],
+                    ['title' => 'Pag Kilala sa Patinig At Katinig', 'description' => 'Pag Aralan ang Patinig At Katinig', 'image' => '/image/katinig.jpg', 'lesson' => 'pag-kilala-sa-patinig-katinig'],
+                    ['title' => 'Ang Titik Aa', 'description' => 'Pag Aralan ang Titik Aa', 'image' => '/image/titika.jpg', 'lesson' => 'ang-titik-aa'],
+                    ['title' => 'Ang Titik Ee', 'description' => 'Pag Aralan ang Titik Ee', 'image' => '/image/titike.jpg', 'lesson' => 'ang-titik-ee'],
+                    ['title' => 'Ang Titik Ii', 'description' => 'Pag Aralan ang Titik Ii', 'image' => '/image/titiki.jpg', 'lesson' => 'ang-titik-ii'],
+                    ['title' => 'Ang Titik Oo', 'description' => 'Pag Aralan ang Titik Oo', 'image' => '/image/titiko.jpg', 'lesson' => 'ang-titik-oo'],
+                    ['title' => 'Ang Titik Uu', 'description' => 'Pag Aralan ang Titik Uu', 'image' => '/image/titiku.jpg', 'lesson' => 'ang-titik-uu'],
+                ];
+                $topicsPerPage = 6;
+                $currentPage = request()->get('unit2_page', 1);
+                $totalPages = ceil(count($unit2Topics) / $topicsPerPage);
+                $startIndex = ($currentPage - 1) * $topicsPerPage;
+                $paginatedTopics = array_slice($unit2Topics, $startIndex, $topicsPerPage);
+            @endphp
+            
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach($paginatedTopics as $topic)
+                    <!-- Topic: {{ $topic['title'] }} -->
+                    <a data-lesson="{{ $topic['lesson'] }}" href="{{ route('lesson.view', ['lesson' => $topic['lesson']]) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                        <div class="h-40 bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center text-5xl">
+                           <img src="{{ $topic['image'] }}" alt="{{ $topic['title'] }}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $topic['title'] }}</h3>
+                            <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ $topic['description'] }}</p>
+                            <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
+                                <div class="topic-progress-fill bg-yellow-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p class="topic-progress-text text-xs text-gray-500 dark:text-gray-400 mt-2">0% Complete • 0 Lessons</p>
+                        </div>
+                    </a>
+                    @endforeach
+             
+            </div>
+            
+            <!-- Pagination Controls -->
+            @if($totalPages > 1)
+            <div class="flex items-center justify-center gap-2 mt-8">
+                <!-- Previous Button -->
+                @if($currentPage > 1)
+                    <a href="?unit2_page=1" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
+                        «
+                    </a>
+                    <a href="?unit2_page={{ $currentPage - 1 }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
+                        ‹
+                    </a>
+                @else
+                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                        «
+                    </span>
+                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                        ‹
+                    </span>
+                @endif
+                
+                <!-- Page Numbers -->
+                @for($i = 1; $i <= $totalPages; $i++)
+                    @if($i === $currentPage)
+                        <span class="px-4 py-2 rounded-lg bg-yellow-500 text-white font-bold">{{ $i }}</span>
+                    @else
+                        <a href="?unit2_page={{ $i }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
+                            {{ $i }}
+                        </a>
+                    @endif
+                @endfor
+                
+                <!-- Next Button -->
+                @if($currentPage < $totalPages)
+                    <a href="?unit2_page={{ $currentPage + 1 }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
+                        ›
+                    </a>
+                    <a href="?unit2_page={{ $totalPages }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
+                        »
+                    </a>
+                @else
+                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                        ›
+                    </span>
+                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                        »
+                    </span>
+                @endif
+            </div>
+            <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">Page {{ $currentPage }} of {{ $totalPages }}</p>
+            @endif
+
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 dark:border-neutral-700 dark:bg-neutral-900 mb-20">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Your Progress</h2>
+                <div class="flex gap-3">
+                    <button id="resetProgressBtn" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Reset Progress</button>
+                    @if(auth()->check() && auth()->user()->role === 'admin')
+                    <button id="adminResetBtn" class="px-3 py-2 bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-800" title="Admin: Reset all users' progress">Admin Reset</button>
+                    @endif
+                </div>
+            </div>
+            <div class="grid gap-6 md:grid-cols-4">
+                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Topics</p>
+                    <p id="totalTopics" class="text-3xl font-bold text-blue-600 dark:text-blue-400">0</p>
+                </div>
+                <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Completed</p>
+                    <p id="completedCount" class="text-3xl font-bold text-green-600 dark:text-green-400">0</p>
+                </div>
+                <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">In Progress</p>
+                    <p id="inProgressCount" class="text-3xl font-bold text-purple-600 dark:text-purple-400">0</p>
+                </div>
+                <div class="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Overall Progress</p>
+                    <p id="overallProgress" class="text-3xl font-bold text-orange-600 dark:text-orange-400">0%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Footer Button -->
+        <div class="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-40">
+            <!-- Book Icon Button -->
+            <a href="{{ route('subject.topics', ['subject' => 'filipino']) }}" class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300" title="Learning Resources">
+                <span class="text-2xl">📚</span>
+            </a>
+            
+            <!-- Gaming Controller Icon Button -->
+            <a href="{{ route('subject.games', ['subject' => 'filipino']) }}" class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300" title="Play Games">
+                <span class="text-2xl">🎮</span>
+            </a>
+        </div>
+    </div>
+    <script>
+        function isCompletedKeyPresent(slugToCheck) {
+            try {
+                const variants = [
+                    `lesson:${slugToCheck}:completed`,
+                    `lesson:${slugToCheck.replace(/-/g, '')}:completed`,
+                    `lesson:${slugToCheck.replace(/-/g, '_')}:completed`,
+                    `lesson:${slugToCheck.toLowerCase()}:completed`
+                ];
+                for (const k of variants) {
+                    const v = localStorage.getItem(k);
+                    if (v === '1') return true;
+                }
+            } catch (e) {
+                console.warn('localStorage not available when checking', slugToCheck, e);
+            }
+            return false;
+        }
+
+        function computeTopicProgress() {
+            const topicEls = document.querySelectorAll('[data-lesson]');
+            const total = topicEls.length;
+            let completed = 0;
+
+            // Fetch progress from DB
+            fetch("{{ route('lesson.progress') }}")
+                .then(r => r.json())
+                .then(dbProgress => {
+                    topicEls.forEach(el => {
+                        const slug = el.getAttribute('data-lesson');
+                        const fill = el.querySelector('.topic-progress-fill');
+                        const text = el.querySelector('.topic-progress-text');
+                        const badge = el.querySelector('.topic-completed-badge');
+                        if (!fill || !text) return;
+
+                        // Check DB progress first, fallback to localStorage
+                        const dbRecord = dbProgress[slug];
+                        const isCompleted = dbRecord?.completed || isCompletedKeyPresent(slug);
+
+                        if (isCompleted) {
+                            fill.style.width = '100%';
+                            text.textContent = '100% Complete • 1 Lesson';
+                            el.classList.add('opacity-80');
+                            if (badge) badge.classList.remove('hidden');
+                            completed++;
+                        } else {
+                            fill.style.width = '0%';
+                            text.textContent = '0% Complete • 0 Lessons';
+                            if (badge) badge.classList.add('hidden');
+                            el.classList.remove('opacity-80');
+                        }
+                    });
+
+                    const inProgress = total - completed;
+                    const overall = total ? Math.round((completed / total) * 100) : 0;
+
+                    const totalEl = document.getElementById('totalTopics');
+                    const completedEl = document.getElementById('completedCount');
+                    const inProgressEl = document.getElementById('inProgressCount');
+                    const overallEl = document.getElementById('overallProgress');
+
+                    if (totalEl) totalEl.textContent = total;
+                    if (completedEl) completedEl.textContent = completed;
+                    if (inProgressEl) inProgressEl.textContent = inProgress;
+                    if (overallEl) overallEl.textContent = overall + '%';
+                })
+                .catch(err => {
+                    console.warn('Could not fetch DB progress, using localStorage:', err);
+                    // Fallback: recompute with localStorage only
+                    topicEls.forEach(el => {
+                        const slug = el.getAttribute('data-lesson');
+                        const fill = el.querySelector('.topic-progress-fill');
+                        const text = el.querySelector('.topic-progress-text');
+                        const badge = el.querySelector('.topic-completed-badge');
+                        if (!fill || !text) return;
+
+                        if (isCompletedKeyPresent(slug)) {
+                            fill.style.width = '100%';
+                            text.textContent = '100% Complete • 1 Lesson';
+                            el.classList.add('opacity-80');
+                            if (badge) badge.classList.remove('hidden');
+                            completed++;
+                        } else {
+                            fill.style.width = '0%';
+                            text.textContent = '0% Complete • 0 Lessons';
+                            if (badge) badge.classList.add('hidden');
+                            el.classList.remove('opacity-80');
+                        }
+                    });
+
+                    const inProgress = total - completed;
+                    const overall = total ? Math.round((completed / total) * 100) : 0;
+
+                    const totalEl = document.getElementById('totalTopics');
+                    const completedEl = document.getElementById('completedCount');
+                    const inProgressEl = document.getElementById('inProgressCount');
+                    const overallEl = document.getElementById('overallProgress');
+
+                    if (totalEl) totalEl.textContent = total;
+                    if (completedEl) completedEl.textContent = completed;
+                    if (inProgressEl) inProgressEl.textContent = inProgress;
+                    if (overallEl) overallEl.textContent = overall + '%';
+                });
+        }
+
+        function resetAllProgress() {
+            if (!confirm('Reset all local progress? This cannot be undone.')) return;
+            try {
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (!k) continue;
+                    if (/^lesson:.+:completed$/.test(k) || /^lesson[\w\-_:]*completed$/.test(k)) {
+                        keysToRemove.push(k);
+                    }
+                }
+                keysToRemove.forEach(k => localStorage.removeItem(k));
+            } catch (e) {
+                console.warn('Error clearing localStorage', e);
+            }
+            computeTopicProgress();
+            alert('Progress reset.');
+        }
+
+        function resetAllProgressAdmin() {
+            if (!confirm('Reset progress for ALL USERS? This affects the server and cannot be undone.')) return;
+            fetch("{{ route('admin.reset-all-progress') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Admin reset failed: ' + data.error);
+                } else {
+                    alert('Admin reset: ' + data.message);
+                    window.location.reload();
+                }
+            })
+            .catch(err => console.error('Admin reset error:', err));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            computeTopicProgress();
+            const btn = document.getElementById('resetProgressBtn');
+            if (btn) btn.addEventListener('click', resetAllProgress);
+            
+            const adminBtn = document.getElementById('adminResetBtn');
+            if (adminBtn) adminBtn.addEventListener('click', resetAllProgressAdmin);
+        });
+    </script>
+</x-layouts::app>
