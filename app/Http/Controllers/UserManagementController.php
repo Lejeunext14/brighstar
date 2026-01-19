@@ -22,11 +22,15 @@ class UserManagementController extends Controller
             'role' => 'required|in:admin,teacher,parent,student',
         ]);
 
+        // Set relationship_type based on role
+        $relationshipType = in_array($validated['role'], ['parent', 'student']) ? $validated['role'] : 'student';
+
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'role' => $validated['role'],
+            'relationship_type' => $relationshipType,
             'email_verified_at' => now(),
         ]);
 

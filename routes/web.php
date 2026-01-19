@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\LessonProgressController;
+use App\Http\Controllers\AdminParentChildController;
+use App\Http\Controllers\ParentDashboardController;
+use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\TeacherDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,17 +17,38 @@ Route::get('/admin-login', function () {
     return view('pages::auth.admin-login');
 })->name('admin.login');
 
+Route::get('/teachers-login', function () {
+    return view('pages::auth.teachers-login');
+})->name('teachers.login');
+
+Route::get('/parents-login', function () {
+    return view('pages::auth.parents-login');
+})->name('parents.login');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('pages::admin.dashboard');
-    })->name('admin.dashboard');
+    })->middleware('admin.role')->name('admin.dashboard');
 
-    Route::get('/admin/users', [UserManagementController::class, 'index'])->name('users.index');
-    Route::post('/admin/users', [UserManagementController::class, 'store'])->name('users.store');
-    Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+    Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'index'])->middleware('teacher.role')->name('teacher.dashboard');
+
+    Route::get('/parent/dashboard', [ParentDashboardController::class, 'index'])->middleware('parent.role')->name('parent.dashboard');
+
+    Route::get('/admin/users', [UserManagementController::class, 'index'])->middleware('admin.role')->name('users.index');
+    Route::post('/admin/users', [UserManagementController::class, 'store'])->middleware('admin.role')->name('users.store');
+    Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->middleware('admin.role')->name('users.destroy');
+
+    // Admin Parent-Child Management Routes
+    Route::get('/admin/parent-child', [AdminParentChildController::class, 'index'])->middleware('admin.role')->name('admin.parent-child.index');
+    Route::post('/admin/link-child', [AdminParentChildController::class, 'linkChild'])->middleware('admin.role')->name('admin.link-child');
+    Route::delete('/admin/unlink-child/{child}', [AdminParentChildController::class, 'unlinkChild'])->middleware('admin.role')->name('admin.unlink-child');
+
+    // Avatar Management Routes
+    Route::get('/avatar/edit', [AvatarController::class, 'edit'])->name('avatar.edit');
+    Route::post('/avatar/update', [AvatarController::class, 'update'])->name('avatar.update');
 });
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [StudentDashboardController::class, 'index'])
     ->middleware(['auth'])
     ->name('dashboard');
 

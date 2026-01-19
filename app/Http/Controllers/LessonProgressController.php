@@ -11,13 +11,29 @@ class LessonProgressController extends Controller
     {
         $validated = $request->validate([
             'lesson_slug' => 'required|string',
+            'subject' => 'nullable|string',
+            'lesson_name' => 'nullable|string',
         ]);
 
         if (!auth()->check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        LessonProgress::markLessonComplete(auth()->id(), $validated['lesson_slug']);
+        // Convert lesson slug to readable lesson name if not provided
+        $lessonName = $validated['lesson_name'] ?? ucwords(str_replace('-', ' ', $validated['lesson_slug']));
+        $subject = $validated['subject'] ?? 'Filipino'; // Default to Filipino
+
+        $lessonProgress = LessonProgress::updateOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'lesson_slug' => $validated['lesson_slug'],
+            ],
+            [
+                'completed' => true,
+                'subject' => $subject,
+                'lesson_name' => $lessonName,
+            ]
+        );
 
         return response()->json(['message' => 'Lesson marked complete'], 200);
     }

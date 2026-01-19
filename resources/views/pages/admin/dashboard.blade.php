@@ -65,6 +65,13 @@
                     <p class="text-sm text-gray-600 dark:text-gray-400">View and manage user accounts</p>
                 </a>
 
+                <!-- Parent-Child Management -->
+                <a href="{{ route('admin.parent-child.index') }}" class="p-6 rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all text-left hover:bg-gray-50 dark:hover:bg-neutral-800">
+                    <div class="text-3xl mb-2">👨‍👧‍👦</div>
+                    <h3 class="font-bold text-gray-900 dark:text-white">Parent-Child Links</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Link parents with their children</p>
+                </a>
+
                 <!-- System Settings -->
                 <button class="p-6 rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all text-left hover:bg-gray-50 dark:hover:bg-neutral-800">
                     <div class="text-3xl mb-2">⚙️</div>

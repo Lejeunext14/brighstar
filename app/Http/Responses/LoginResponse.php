@@ -20,6 +20,14 @@ class LoginResponse implements LoginResponseContract
         if ($user && $user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
+
+        if ($user && $user->role === 'teacher') {
+            return redirect()->route('teacher.dashboard');
+        }
+
+        if ($user && $user->role === 'parent') {
+            return redirect()->route('parent.dashboard');
+        }
         
         return redirect()->route('dashboard');
     }

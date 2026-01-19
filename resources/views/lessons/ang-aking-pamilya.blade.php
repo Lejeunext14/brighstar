@@ -139,11 +139,66 @@
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
         }
         
+        /* Slider Animation Styles */
+        @keyframes slide-in-left {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slide-out-left {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slide-out-right {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px 20px;
+        }
+        
         .family-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: flex;
+            flex-wrap: nowrap;
             gap: 20px;
             margin: 20px 0;
+            position: relative;
+            min-height: 320px;
         }
         
         .family-card {
@@ -155,10 +210,33 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            flex: 0 0 100%;
+            min-width: 300px;
+            animation: slide-in-left 0.5s ease-in-out;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .family-card:first-child {
+            display: flex;
+        }
+        
+        .family-card.slide-out {
+            animation: slide-out-left 0.5s ease-in-out;
+        }
+        
+        .family-card.slide-in-right {
+            animation: slide-in-right 0.5s ease-in-out;
+        }
+        
+        .family-card.slide-out-right {
+            animation: slide-out-right 0.5s ease-in-out;
         }
         
         .family-card:hover {
-            transform: scale(1.08);
+            transform: scale(1.02);
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
         }
         
@@ -197,7 +275,85 @@
             color: #667eea;
         }
         
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .slider-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .slider-btn:hover:not(:disabled) {
+            background: #764ba2;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .slider-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .slider-counter {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1rem;
+            min-width: 120px;
+            text-align: center;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #667eea;
+        }
+        
+        .slider-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .slider-dot:hover {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+        
+        .slider-dot.active {
+            background: #667eea;
+            width: 32px;
+            border-radius: 6px;
+            border: 2px solid #764ba2;
+        }
+        
         .activity-box {
+
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             padding: 25px;
             border-radius: 10px;
@@ -466,34 +622,46 @@
             <h2>Mga Miyembro ng Pamilya 👨‍👩‍👧‍👦</h2>
             <p>I-click ang bawat miyembro ng pamilya upang malaman ang kanilang papel at marinig sila na inilarawan sa Filipino!</p>
             
-            <div class="family-grid">
-                <div class="family-card" onclick="speakFamily('Nanay', 'Ina. Sa mga pamilyang Pilipino, ang ina ay ang emosyonal na sentro at tagapag-alaga ng tahanan.')">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop" alt="Nanay - Ina">
-                    <h3>👩 Nanay</h3>
-                    <p>Ina</p>
-                    <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Nanay', 'Ina')">🔊 Marinig</button>
-                </div>
+            <div class="slider-container">
+                <div class="family-grid" id="familySlider">
+                    <div class="family-card" onclick="speakFamily('Nanay', 'Ina. Sa mga pamilyang Pilipino, ang ina ay ang emosyonal na sentro at tagapag-alaga ng tahanan.')">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop" alt="Nanay - Ina">
+                        <h3>👩 Nanay</h3>
+                        <p>Ina</p>
+                        <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Nanay', 'Ina')">🔊 Marinig</button>
+                    </div>
 
-                <div class="family-card" onclick="speakFamily('Tatay', 'Ama. Ang ama ay tradisyonal na ang nagbibigay at proteksyon ng pamilya.')">
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=200&fit=crop" alt="Tatay - Ama">
-                    <h3>👨 Tatay</h3>
-                    <p>Ama</p>
-                    <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Tatay', 'Ama')">🔊 Marinig</button>
-                </div>
+                    <div class="family-card" onclick="speakFamily('Tatay', 'Ama. Ang ama ay tradisyonal na ang nagbibigay at proteksyon ng pamilya.')">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=200&fit=crop" alt="Tatay - Ama">
+                        <h3>👨 Tatay</h3>
+                        <p>Ama</p>
+                        <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Tatay', 'Ama')">🔊 Marinig</button>
+                    </div>
 
-                <div class="family-card" onclick="speakFamily('Ate', 'Mas Matandang Kapatid na Babae. Ang Ate ay tumutulong mag-alaga ng mas batang kapatid at nagbibigay ng gabay at suporta.')">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=200&fit=crop" alt="Ate - Mas Matandang Kapatid na Babae">
-                    <h3>👧 Ate</h3>
-                    <p>Mas Matandang Kapatid na Babae</p>
-                    <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Ate', 'Mas Matandang Kapatid na Babae')">🔊 Marinig</button>
-                </div>
+                    <div class="family-card" onclick="speakFamily('Ate', 'Mas Matandang Kapatid na Babae. Ang Ate ay tumutulong mag-alaga ng mas batang kapatid at nagbibigay ng gabay at suporta.')">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=200&fit=crop" alt="Ate - Mas Matandang Kapatid na Babae">
+                        <h3>👧 Ate</h3>
+                        <p>Mas Matandang Kapatid na Babae</p>
+                        <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Ate', 'Mas Matandang Kapatid na Babae')">🔊 Marinig</button>
+                    </div>
 
-                <div class="family-card" onclick="speakFamily('Kuya', 'Mas Matandang Kapatid na Lalaki. Ang Kuya ay isang proteksyon at modelo ng papel para sa mas batang kapatid.')">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop" alt="Kuya - Mas Matandang Kapatid na Lalaki">
-                    <h3>👦 Kuya</h3>
-                    <p>Mas Matandang Kapatid na Lalaki</p>
-                    <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Kuya', 'Mas Matandang Kapatid na Lalaki')">🔊 Marinig</button>
+                    <div class="family-card" onclick="speakFamily('Kuya', 'Mas Matandang Kapatid na Lalaki. Ang Kuya ay isang proteksyon at modelo ng papel para sa mas batang kapatid.')">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop" alt="Kuya - Mas Matandang Kapatid na Lalaki">
+                        <h3>👦 Kuya</h3>
+                        <p>Mas Matandang Kapatid na Lalaki</p>
+                        <button class="play-btn" onclick="event.stopPropagation(); speakFamily('Kuya', 'Mas Matandang Kapatid na Lalaki')">🔊 Marinig</button>
+                    </div>
                 </div>
+                
+                <!-- Slider Navigation -->
+                <div class="slider-nav">
+                    <button class="slider-btn" id="prevBtn" onclick="slideFamily(-1)">❮</button>
+                    <span class="slider-counter"><span id="currentSlide">1</span> / <span id="totalSlides">4</span></span>
+                    <button class="slider-btn" id="nextBtn" onclick="slideFamily(1)">❯</button>
+                </div>
+                
+                <!-- Slider Dots -->
+                <div class="slider-dots" id="sliderDots"></div>
             </div>
         </div>
 
@@ -806,7 +974,126 @@
             document.getElementById('familyInput').value = '';
         }
 
+        // Slider for Family Members
+        let currentSlide = 0;
+        let slideDirection = 1; // 1 for next, -1 for previous
+
+        function initializeSlider() {
+            const slider = document.getElementById('familySlider');
+            const cards = slider?.querySelectorAll('.family-card') || [];
+            const totalSlides = cards.length;
+            
+            // Update total slides
+            if (document.getElementById('totalSlides')) {
+                document.getElementById('totalSlides').textContent = totalSlides;
+            }
+            
+            // Create dots
+            const dotsContainer = document.getElementById('sliderDots');
+            if (dotsContainer) {
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+                    dot.onclick = () => goToSlide(i);
+                    dotsContainer.appendChild(dot);
+                }
+            }
+        }
+
+        function slideFamily(direction) {
+            const slider = document.getElementById('familySlider');
+            const cards = slider?.querySelectorAll('.family-card') || [];
+            const totalSlides = cards.length;
+            
+            if (totalSlides === 0) return;
+            
+            slideDirection = direction;
+            const nextSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            
+            // Add animation classes
+            cards[currentSlide].classList.add(direction === 1 ? 'slide-out' : 'slide-out-right');
+            
+            setTimeout(() => {
+                cards[currentSlide].classList.remove('slide-out', 'slide-out-right');
+                cards[currentSlide].style.display = 'none';
+                
+                currentSlide = nextSlide;
+                
+                cards[currentSlide].style.display = 'flex';
+                cards[currentSlide].classList.add(direction === 1 ? 'slide-in-left' : 'slide-in-right');
+                
+                setTimeout(() => {
+                    cards[currentSlide].classList.remove('slide-in-left', 'slide-in-right');
+                }, 500);
+                
+                updateSliderUI();
+            }, 500);
+        }
+
+        function goToSlide(slideIndex) {
+            const slider = document.getElementById('familySlider');
+            const cards = slider?.querySelectorAll('.family-card') || [];
+            const totalSlides = cards.length;
+            
+            if (slideIndex === currentSlide) return;
+            
+            const direction = slideIndex > currentSlide ? 1 : -1;
+            slideDirection = direction;
+            
+            // Add animation classes
+            cards[currentSlide].classList.add(direction === 1 ? 'slide-out' : 'slide-out-right');
+            
+            setTimeout(() => {
+                cards[currentSlide].classList.remove('slide-out', 'slide-out-right');
+                cards[currentSlide].style.display = 'none';
+                
+                currentSlide = slideIndex;
+                
+                cards[currentSlide].style.display = 'flex';
+                cards[currentSlide].classList.add(direction === 1 ? 'slide-in-left' : 'slide-in-right');
+                
+                setTimeout(() => {
+                    cards[currentSlide].classList.remove('slide-in-left', 'slide-in-right');
+                }, 500);
+                
+                updateSliderUI();
+            }, 500);
+        }
+
+        function updateSliderUI() {
+            const slider = document.getElementById('familySlider');
+            const cards = slider?.querySelectorAll('.family-card') || [];
+            const totalSlides = cards.length;
+            
+            // Hide all cards first
+            cards.forEach(card => card.style.display = 'none');
+            // Show current card
+            if (cards[currentSlide]) cards[currentSlide].style.display = 'flex';
+            
+            // Update counter
+            if (document.getElementById('currentSlide')) {
+                document.getElementById('currentSlide').textContent = currentSlide + 1;
+            }
+            
+            // Update dots
+            const dots = document.querySelectorAll('.slider-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+            
+            // Update button states
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (prevBtn) prevBtn.disabled = currentSlide === 0;
+            if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Initialize slider on page load
+        document.addEventListener('DOMContentLoaded', initializeSlider);
+
         // Quiz
+
         function checkAnswer(element, isCorrect) {
             const parent = element.parentElement;
             const options = parent.querySelectorAll('.quiz-option');
@@ -899,24 +1186,50 @@
         }
 
         function completeLesson() {
-            const timeSpent = Math.floor((Date.now() - gameState.startTime) / 1000);
-            const minutes = Math.floor(timeSpent / 60);
-            const seconds = timeSpent % 60;
-            const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            // Get CSRF token safely
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
             
-            document.getElementById('finalPoints').textContent = gameState.totalPoints;
-            document.getElementById('finalStreak').textContent = gameState.streak;
-            document.getElementById('timeTaken').textContent = formattedTime;
-            
-            if (gameState.badges.length > 0) {
-                const badgesEarned = document.getElementById('badgesEarned');
-                badgesEarned.style.display = 'block';
-                const badgesList = document.getElementById('earnedBadgesList');
-                const badgeMap = {'perfectScore': '💯 Perfect Score', 'onFire': '🔥 On Fire'};
-                badgesList.innerHTML = gameState.badges.map(badge => `<span style="background: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: #ec4899;">${badgeMap[badge] || badge}</span>`).join('');
-            }
-            
-            document.getElementById('completionModal').classList.remove('hidden');
+            // Mark lesson as complete via API
+            fetch('{{ route("lesson.mark-complete") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    lesson_slug: 'ang-aking-pamilya'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const timeSpent = Math.floor((Date.now() - gameState.startTime) / 1000);
+                const minutes = Math.floor(timeSpent / 60);
+                const seconds = timeSpent % 60;
+                const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                document.getElementById('finalPoints').textContent = gameState.totalPoints;
+                document.getElementById('finalStreak').textContent = gameState.streak;
+                document.getElementById('timeTaken').textContent = formattedTime;
+                
+                if (gameState.badges.length > 0) {
+                    const badgesEarned = document.getElementById('badgesEarned');
+                    badgesEarned.style.display = 'block';
+                    const badgesList = document.getElementById('earnedBadgesList');
+                    const badgeMap = {'perfectScore': '💯 Perfect Score', 'onFire': '🔥 On Fire'};
+                    badgesList.innerHTML = gameState.badges.map(badge => `<span style="background: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: #ec4899;">${badgeMap[badge] || badge}</span>`).join('');
+                }
+                
+                document.getElementById('completionModal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking lesson as complete');
+            });
         }
 
         function addPoints(points) {

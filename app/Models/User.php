@@ -24,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'parent_id',
+        'relationship_type',
     ];
 
     /**
@@ -61,5 +63,45 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Get this user's parent (if they are a student)
+     */
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    /**
+     * Get this user's children (if they are a parent)
+     */
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
+
+    /**
+     * Check if user is a parent
+     */
+    public function isParent(): bool
+    {
+        return $this->relationship_type === 'parent';
+    }
+
+    /**
+     * Check if user is a student
+     */
+    public function isStudent(): bool
+    {
+        return $this->relationship_type === 'student';
+    }
+
+    /**
+     * Get this user's lesson progress records
+     */
+    public function lessonProgress()
+    {
+        return $this->hasMany(LessonProgress::class);
     }
 }

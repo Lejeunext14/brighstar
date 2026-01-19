@@ -381,6 +381,7 @@
     </div>
 
     <script>
+        const CURRENT_USER_ID = {{ auth()->user()->id ?? 0 }};
         let currentPage = 0;
         const totalPages = 9;
         let gameState = {
@@ -525,14 +526,40 @@
         }
 
         function completeLesson() {
-            setTimeout(() => {
-                document.getElementById('completionModal').classList.add('active');
-                const endTime = Date.now();
-                const timeElapsed = Math.floor((endTime - gameState.startTime) / 1000);
-                document.getElementById('finalPoints').textContent = gameState.totalPoints;
-                document.getElementById('finalStreak').textContent = gameState.streak;
-                document.getElementById('finalTime').textContent = timeElapsed + ' segundo';
-            }, 500);
+            // Get CSRF token safely
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            
+            // Mark lesson as complete via API
+            fetch('{{ route("lesson.mark-complete") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    lesson_slug: 'ang-alpabetong-filipino'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setTimeout(() => {
+                    document.getElementById('completionModal').classList.add('active');
+                    const endTime = Date.now();
+                    const timeElapsed = Math.floor((endTime - gameState.startTime) / 1000);
+                    document.getElementById('finalPoints').textContent = gameState.totalPoints;
+                    document.getElementById('finalStreak').textContent = gameState.streak;
+                    document.getElementById('finalTime').textContent = timeElapsed + ' segundo';
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking lesson as complete');
+            });
         }
 
         function closeModal() {
@@ -543,7 +570,7 @@
 
         function markAsCompleted() {
             try {
-                localStorage.setItem('lesson:ang-alpabetong-filipino:completed', '1');
+                localStorage.setItem(`user:${CURRENT_USER_ID}:lesson:ang-alpabetong-filipino:completed`, '1');
             } catch (e) {
                 console.warn('localStorage not available', e);
             }

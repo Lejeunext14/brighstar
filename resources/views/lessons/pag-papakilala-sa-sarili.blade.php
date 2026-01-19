@@ -238,9 +238,35 @@
         }
 
         function completeLesson() {
-            // show modal instead of alert
-            const modal = document.getElementById('finishModal');
-            if (modal) modal.classList.remove('hidden');
+            // Get CSRF token safely
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            
+            // Mark lesson as complete via API
+            fetch('{{ route("lesson.mark-complete") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    lesson_slug: 'pag-papakilala-sa-sarili'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // show modal instead of alert
+                const modal = document.getElementById('finishModal');
+                if (modal) modal.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking lesson as complete: ' + error.message);
+            });
         }
 
         function closeFinishModal() {

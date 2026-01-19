@@ -901,34 +901,60 @@
         }
 
         function completeLesson() {
-            // Calculate time spent
-            const timeSpent = Math.floor((Date.now() - gameState.startTime) / 1000);
-            const minutes = Math.floor(timeSpent / 60);
-            const seconds = timeSpent % 60;
-            const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            // Get CSRF token safely
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
             
-            // Update modal with stats
-            document.getElementById('finalPoints').textContent = gameState.totalPoints;
-            document.getElementById('finalStreak').textContent = gameState.streak;
-            document.getElementById('timeTaken').textContent = formattedTime;
-            
-            // Show badges if earned
-            if (gameState.badges.length > 0) {
-                const badgesEarned = document.getElementById('badgesEarned');
-                badgesEarned.style.display = 'block';
-                const badgesList = document.getElementById('earnedBadgesList');
+            // Mark lesson as complete via API
+            fetch('{{ route("lesson.mark-complete") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    lesson_slug: 'ang-titik-aa'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Calculate time spent
+                const timeSpent = Math.floor((Date.now() - gameState.startTime) / 1000);
+                const minutes = Math.floor(timeSpent / 60);
+                const seconds = timeSpent % 60;
+                const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
                 
-                const badgeMap = {
-                    'perfectScore': '💯 Perfect Score',
-                    'onFire': '🔥 On Fire'
-                };
+                // Update modal with stats
+                document.getElementById('finalPoints').textContent = gameState.totalPoints;
+                document.getElementById('finalStreak').textContent = gameState.streak;
+                document.getElementById('timeTaken').textContent = formattedTime;
                 
-                badgesList.innerHTML = gameState.badges.map(badge => 
-                    `<span style="background: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: #ec4899;">${badgeMap[badge] || badge}</span>`
-                ).join('');
-            }
-            
-            document.getElementById('completionModal').classList.remove('hidden');
+                // Show badges if earned
+                if (gameState.badges.length > 0) {
+                    const badgesEarned = document.getElementById('badgesEarned');
+                    badgesEarned.style.display = 'block';
+                    const badgesList = document.getElementById('earnedBadgesList');
+                    
+                    const badgeMap = {
+                        'perfectScore': '💯 Perfect Score',
+                        'onFire': '🔥 On Fire'
+                    };
+                    
+                    badgesList.innerHTML = gameState.badges.map(badge => 
+                        `<span style="background: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: #ec4899;">${badgeMap[badge] || badge}</span>`
+                    ).join('');
+                }
+                
+                document.getElementById('completionModal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking lesson as complete');
+            });
         }
 
         function closeModal() {

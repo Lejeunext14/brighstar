@@ -1,4 +1,165 @@
 <x-layouts::app :title="__('Subject Topics')">
+    <style>
+        @keyframes slide-in-left {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-out-left {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-out-right {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .topic-card {
+            animation: slide-in-left 0.5s ease-in-out;
+            display: grid !important;
+        }
+
+        .topic-card.hidden {
+            display: none !important;
+        }
+
+        .topic-card.slide-out {
+            animation: slide-out-left 0.5s ease-in-out;
+        }
+
+        .topic-card.slide-in-right {
+            animation: slide-in-right 0.5s ease-in-out;
+        }
+
+        .topic-card.slide-out-right {
+            animation: slide-out-right 0.5s ease-in-out;
+        }
+
+        .pagination-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pagination-slider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            min-height: 350px;
+        }
+
+        .slider-pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .slider-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            background: white;
+            color: #f59e0b;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            dark:bg-neutral-900;
+            dark:border-neutral-700;
+        }
+
+        .slider-btn:hover:not(:disabled) {
+            background: #f59e0b;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .slider-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slider-counter {
+            font-weight: bold;
+            color: #f59e0b;
+            font-size: 1rem;
+            min-width: 120px;
+            text-align: center;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #f59e0b;
+            dark:bg-neutral-900;
+            dark:border-neutral-700;
+        }
+
+        .slider-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            dark:bg-neutral-700;
+        }
+
+        .slider-dot:hover {
+            background: #f59e0b;
+            transform: scale(1.2);
+        }
+
+        .slider-dot.active {
+            background: #f59e0b;
+            width: 32px;
+            border-radius: 6px;
+            border: 2px solid #d97706;
+        }
+    </style>
     <div class="w-full">
         <!-- Header Section -->
         <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-purple-50 p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-purple-900/20 mb-6 flex items-center justify-between">
@@ -121,17 +282,15 @@
                     ['title' => 'Ang Titik Oo', 'description' => 'Pag Aralan ang Titik Oo', 'image' => '/image/titiko.jpg', 'lesson' => 'ang-titik-oo'],
                     ['title' => 'Ang Titik Uu', 'description' => 'Pag Aralan ang Titik Uu', 'image' => '/image/titiku.jpg', 'lesson' => 'ang-titik-uu'],
                 ];
-                $topicsPerPage = 6;
-                $currentPage = request()->get('unit2_page', 1);
+                $topicsPerPage = 8;
                 $totalPages = ceil(count($unit2Topics) / $topicsPerPage);
-                $startIndex = ($currentPage - 1) * $topicsPerPage;
-                $paginatedTopics = array_slice($unit2Topics, $startIndex, $topicsPerPage);
             @endphp
             
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    @foreach($paginatedTopics as $topic)
+            <div class="pagination-slider">
+                <div class="pagination-slider-grid" id="topicsGrid">
+                    @foreach($unit2Topics as $index => $topic)
                     <!-- Topic: {{ $topic['title'] }} -->
-                    <a data-lesson="{{ $topic['lesson'] }}" href="{{ route('lesson.view', ['lesson' => $topic['lesson']]) }}" class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
+                    <a data-lesson="{{ $topic['lesson'] }}" href="{{ route('lesson.view', ['lesson' => $topic['lesson']]) }}" class="topic-card relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block" data-index="{{ $index }}">
                         <div class="h-40 bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center text-5xl">
                            <img src="{{ $topic['image'] }}" alt="{{ $topic['title'] }}" class="w-full h-full object-cover">
                         </div>
@@ -149,55 +308,16 @@
              
             </div>
             
-            <!-- Pagination Controls -->
+            <!-- Slider Pagination Controls -->
             @if($totalPages > 1)
-            <div class="flex items-center justify-center gap-2 mt-8">
-                <!-- Previous Button -->
-                @if($currentPage > 1)
-                    <a href="?unit2_page=1" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
-                        «
-                    </a>
-                    <a href="?unit2_page={{ $currentPage - 1 }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
-                        ‹
-                    </a>
-                @else
-                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
-                        «
-                    </span>
-                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
-                        ‹
-                    </span>
-                @endif
-                
-                <!-- Page Numbers -->
-                @for($i = 1; $i <= $totalPages; $i++)
-                    @if($i === $currentPage)
-                        <span class="px-4 py-2 rounded-lg bg-yellow-500 text-white font-bold">{{ $i }}</span>
-                    @else
-                        <a href="?unit2_page={{ $i }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
-                            {{ $i }}
-                        </a>
-                    @endif
-                @endfor
-                
-                <!-- Next Button -->
-                @if($currentPage < $totalPages)
-                    <a href="?unit2_page={{ $currentPage + 1 }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
-                        ›
-                    </a>
-                    <a href="?unit2_page={{ $totalPages }}" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
-                        »
-                    </a>
-                @else
-                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
-                        ›
-                    </span>
-                    <span class="px-4 py-2 rounded-lg border border-gray-200 dark:border-neutral-700 text-gray-400 dark:text-gray-600 cursor-not-allowed">
-                        »
-                    </span>
-                @endif
+            <div class="slider-pagination-controls">
+                <button class="slider-btn" id="prevSliderBtn" onclick="slideTopics(-1)">❮</button>
+                <span class="slider-counter"><span id="currentTopicsPage">1</span> / <span id="totalTopicsPages">{{ $totalPages }}</span></span>
+                <button class="slider-btn" id="nextSliderBtn" onclick="slideTopics(1)">❯</button>
             </div>
-            <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">Page {{ $currentPage }} of {{ $totalPages }}</p>
+            
+            <!-- Slider Dots -->
+            <div class="slider-dots" id="topicsSliderDots"></div>
             @endif
 
         </div>
@@ -247,15 +367,19 @@
         </div>
     </div>
     <script>
+        // Get current user ID from Laravel
+        const CURRENT_USER_ID = {{ auth()->user()->id ?? 0 }};
+
         function isCompletedKeyPresent(slugToCheck) {
             try {
-                const variants = [
-                    `lesson:${slugToCheck}:completed`,
-                    `lesson:${slugToCheck.replace(/-/g, '')}:completed`,
-                    `lesson:${slugToCheck.replace(/-/g, '_')}:completed`,
-                    `lesson:${slugToCheck.toLowerCase()}:completed`
+                // First check user-specific keys (new format)
+                const userVariants = [
+                    `user:${CURRENT_USER_ID}:lesson:${slugToCheck}:completed`,
+                    `user:${CURRENT_USER_ID}:lesson:${slugToCheck.replace(/-/g, '')}:completed`,
+                    `user:${CURRENT_USER_ID}:lesson:${slugToCheck.replace(/-/g, '_')}:completed`,
+                    `user:${CURRENT_USER_ID}:lesson:${slugToCheck.toLowerCase()}:completed`
                 ];
-                for (const k of variants) {
+                for (const k of userVariants) {
                     const v = localStorage.getItem(k);
                     if (v === '1') return true;
                 }
@@ -263,6 +387,27 @@
                 console.warn('localStorage not available when checking', slugToCheck, e);
             }
             return false;
+        }
+
+        // Clear old non-user-prefixed localStorage keys on first page load
+        function clearOldLocalStorageKeys() {
+            try {
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (!k) continue;
+                    // Find old-format keys (lesson:...:completed) that are not user-prefixed
+                    if (/^lesson:.+:completed$/.test(k) && !k.startsWith('user:')) {
+                        keysToRemove.push(k);
+                    }
+                }
+                keysToRemove.forEach(k => localStorage.removeItem(k));
+                if (keysToRemove.length > 0) {
+                    console.log(`Cleared ${keysToRemove.length} old localStorage keys for user isolation`);
+                }
+            } catch (e) {
+                console.warn('Error clearing old localStorage keys', e);
+            }
         }
 
         function computeTopicProgress() {
@@ -398,6 +543,118 @@
             
             const adminBtn = document.getElementById('adminResetBtn');
             if (adminBtn) adminBtn.addEventListener('click', resetAllProgressAdmin);
+            
+            // Initialize topic slider
+            initializeTopicSlider();
+        });
+
+        // Topic Slider Functions
+        let currentTopicPage = 1;
+        let totalTopicPages = {{ $totalPages }};
+        let topicsPerPage = 6;
+        let slideDirection = 1;
+
+        function initializeTopicSlider() {
+            const totalPages = parseInt(document.getElementById('totalTopicsPages')?.textContent || '1');
+            totalTopicPages = totalPages;
+            
+            // Create dots
+            const dotsContainer = document.getElementById('topicsSliderDots');
+            if (dotsContainer) {
+                dotsContainer.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'slider-dot' + (i === 1 ? ' active' : '');
+                    dot.onclick = () => goToTopicPage(i);
+                    dotsContainer.appendChild(dot);
+                }
+            }
+            
+            // Show only first page items initially
+            displayTopicPage(1);
+        }
+
+        function slideTopics(direction) {
+            const nextPage = currentTopicPage + direction;
+            
+            if (nextPage < 1 || nextPage > totalTopicPages) {
+                return;
+            }
+            
+            slideDirection = direction;
+            const cards = document.querySelectorAll('.topic-card');
+            
+            // Add slide out animation
+            cards.forEach(card => {
+                card.classList.add(direction === 1 ? 'slide-out' : 'slide-out-right');
+            });
+            
+            setTimeout(() => {
+                currentTopicPage = nextPage;
+                displayTopicPage(nextPage);
+                updateTopicSliderUI();
+            }, 500);
+        }
+
+        function goToTopicPage(pageNum) {
+            if (pageNum === currentTopicPage) return;
+            
+            slideDirection = pageNum > currentTopicPage ? 1 : -1;
+            const cards = document.querySelectorAll('.topic-card');
+            
+            // Add slide out animation
+            cards.forEach(card => {
+                card.classList.add(slideDirection === 1 ? 'slide-out' : 'slide-out-right');
+            });
+            
+            setTimeout(() => {
+                currentTopicPage = pageNum;
+                displayTopicPage(pageNum);
+                updateTopicSliderUI();
+            }, 500);
+        }
+
+        function displayTopicPage(pageNum) {
+            const cards = document.querySelectorAll('.topic-card');
+            const startIndex = (pageNum - 1) * topicsPerPage;
+            const endIndex = startIndex + topicsPerPage;
+            
+            cards.forEach((card, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    card.classList.remove('hidden', 'slide-out', 'slide-out-right');
+                    card.classList.add(slideDirection === 1 ? 'slide-in-left' : 'slide-in-right');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function updateTopicSliderUI() {
+            // Update counter
+            const counterEl = document.getElementById('currentTopicsPage');
+            if (counterEl) {
+                counterEl.textContent = currentTopicPage;
+            }
+            
+            // Update dots
+            const dots = document.querySelectorAll('.slider-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentTopicPage - 1);
+            });
+            
+            // Update button states
+            const prevBtn = document.getElementById('prevSliderBtn');
+            const nextBtn = document.getElementById('nextSliderBtn');
+            if (prevBtn) prevBtn.disabled = currentTopicPage === 1;
+            if (nextBtn) nextBtn.disabled = currentTopicPage === totalTopicPages;
+        }
+
+        // Initialize slider UI on load
+        document.addEventListener('DOMContentLoaded', function() {
+            clearOldLocalStorageKeys(); // Clear old non-user-prefixed keys
+            currentTopicPage = 1;
+            updateTopicSliderUI();
+            initializeTopicSlider();
         });
     </script>
 </x-layouts::app>

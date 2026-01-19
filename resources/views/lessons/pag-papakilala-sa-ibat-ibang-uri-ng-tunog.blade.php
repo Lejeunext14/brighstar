@@ -761,9 +761,35 @@
         }
 
         function completeLesson() {
-            document.getElementById('finalPoints').textContent = gameState.totalPoints;
-            document.getElementById('finalStreak').textContent = gameState.streak;
-            document.getElementById('completionModal').classList.remove('hidden');
+            // Get CSRF token safely
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            
+            // Mark lesson as complete via API
+            fetch('{{ route("lesson.mark-complete") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    lesson_slug: 'pag-papakilala-sa-ibat-ibang-uri-ng-tunog'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('finalPoints').textContent = gameState.totalPoints;
+                document.getElementById('finalStreak').textContent = gameState.streak;
+                document.getElementById('completionModal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error marking lesson as complete');
+            });
         }
 
         function returnToTopics() {
