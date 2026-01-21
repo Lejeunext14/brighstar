@@ -1,7 +1,7 @@
 {
   "framework": "laravel",
   "buildCommand": "composer install && npm install && npm run build && php artisan config:cache && php artisan route:cache",
-  "public": "public",
+  "public": true,
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
