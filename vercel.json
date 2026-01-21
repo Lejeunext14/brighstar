@@ -1,0 +1,22 @@
+{
+  "framework": "laravel",
+  "php": "8.2",
+  "buildCommand": "composer install && npm install && npm run build && php artisan config:cache && php artisan route:cache",
+  "public": "public",
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": false,
+    "LOG_CHANNEL": "single"
+  },
+  "functions": {
+    "api/index.php": {
+      "runtime": "php:8.2"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ]
+}
