@@ -4,7 +4,7 @@
   "public": "public",
   "env": {
     "APP_ENV": "production",
-    "APP_DEBUG": false,
+    "APP_DEBUG": "false",
     "LOG_CHANNEL": "single"
   },
   "functions": {
