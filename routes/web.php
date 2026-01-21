@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\AdminReportsController;
+use App\Http\Controllers\AdminLogsController;
 use App\Http\Controllers\LessonProgressController;
 use App\Http\Controllers\AdminParentChildController;
 use App\Http\Controllers\ParentDashboardController;
@@ -26,9 +30,7 @@ Route::get('/parents-login', function () {
 })->name('parents.login');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('pages::admin.dashboard');
-    })->middleware('admin.role')->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware('admin.role')->name('admin.dashboard');
 
     Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'index'])->middleware('teacher.role')->name('teacher.dashboard');
 
@@ -36,12 +38,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/users', [UserManagementController::class, 'index'])->middleware('admin.role')->name('users.index');
     Route::post('/admin/users', [UserManagementController::class, 'store'])->middleware('admin.role')->name('users.store');
+    Route::get('/admin/users/{user}/edit', [UserManagementController::class, 'edit'])->middleware('admin.role')->name('users.edit');
+    Route::put('/admin/users/{user}', [UserManagementController::class, 'update'])->middleware('admin.role')->name('users.update');
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->middleware('admin.role')->name('users.destroy');
 
     // Admin Parent-Child Management Routes
     Route::get('/admin/parent-child', [AdminParentChildController::class, 'index'])->middleware('admin.role')->name('admin.parent-child.index');
     Route::post('/admin/link-child', [AdminParentChildController::class, 'linkChild'])->middleware('admin.role')->name('admin.link-child');
     Route::delete('/admin/unlink-child/{child}', [AdminParentChildController::class, 'unlinkChild'])->middleware('admin.role')->name('admin.unlink-child');
+
+    // Admin Settings, Reports, and Logs Routes
+    Route::get('/admin/settings', [AdminSettingsController::class, 'index'])->middleware('admin.role')->name('admin.settings');
+    Route::get('/admin/reports', [AdminReportsController::class, 'index'])->middleware('admin.role')->name('admin.reports');
+    Route::get('/admin/logs', [AdminLogsController::class, 'index'])->middleware('admin.role')->name('admin.logs');
 
     // Avatar Management Routes
     Route::get('/avatar/edit', [AvatarController::class, 'edit'])->name('avatar.edit');

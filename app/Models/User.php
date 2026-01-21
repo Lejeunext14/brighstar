@@ -26,6 +26,8 @@ class User extends Authenticatable
         'role',
         'parent_id',
         'relationship_type',
+        'student_id',
+        'parent_name',
     ];
 
     /**

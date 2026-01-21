@@ -8,16 +8,16 @@
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
             @csrf
 
-            <!-- Email Address -->
+            <!-- Teacher ID -->
             <flux:input
                 name="email"
-                :label="__('Email address')"
+                :label="__('Teacher ID')"
                 :value="old('email')"
-                type="email"
+                type="text"
                 required
                 autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
+                autocomplete="off"
+                placeholder="Enter your Teacher ID"
             />
 
             <!-- Password -->
