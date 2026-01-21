@@ -1,6 +1,5 @@
 {
   "framework": "laravel",
-  "php": "8.2",
   "buildCommand": "composer install && npm install && npm run build && php artisan config:cache && php artisan route:cache",
   "public": "public",
   "env": {
