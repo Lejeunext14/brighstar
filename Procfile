@@ -1,2 +1,2 @@
-web: composer install --no-dev --prefer-dist && npm ci && npm run build && php artisan config:cache && php artisan route:cache && php -S 0.0.0.0:$PORT public/index.php
-release: php artisan migrate --force
+web: php -S 0.0.0.0:$PORT public/index.php
+release: composer install --no-dev --prefer-dist && php artisan config:cache && php artisan route:cache && php artisan migrate --force
