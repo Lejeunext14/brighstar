@@ -105,7 +105,7 @@
                             An interactive e-learning platform designed specifically for kindergarten children to learn, play, and grow at their own pace.
                         </p>
                         <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                            <a href="{{ route('register') }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border-radius: 9999px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: all 0.3s; border: none; cursor: pointer;">
+                            <a  style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border-radius: 9999px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: all 0.3s; border: none; cursor: pointer;">
                                 🚀 Get Started
                             </a>
                             <a href="#features" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; border: 2px solid #3b82f6; color: #3b82f6; border-radius: 9999px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: all 0.3s; background: transparent; cursor: pointer;">
