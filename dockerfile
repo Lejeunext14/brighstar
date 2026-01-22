@@ -30,4 +30,5 @@ RUN chmod -R 775 storage bootstrap/cache && chown -R www-data:www-data /var/www
 EXPOSE 10000
 
 # Start the PHP server
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# This command clears cache, runs migrations, and then starts the server
+CMD php artisan config:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=10000
