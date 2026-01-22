@@ -81,6 +81,10 @@ Route::middleware(['auth'])->group(function () {
         return view('subject.games', ['subject' => $subject]);
     })->name('subject.games');
 
+    Route::get('/subject/{subject}/coloring', function ($subject) {
+        return view('subject.coloring', ['subject' => $subject]);
+    })->name('subject.coloring');
+
     Route::get('/lesson/{lesson}', function ($lesson) {
         return view('lessons.' . $lesson, ['lesson' => $lesson]);
     })->name('lesson.view');

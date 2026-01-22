@@ -107,23 +107,74 @@
                         <source src="{{ asset('animation/calendar.mov') }}" type="video/mp4">
                     </video>
                     <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">This Week</h3>
-                            <span class="text-2xl">📅</span>
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ \Carbon\Carbon::now()->format('F Y') }}</h3>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">{{ \Carbon\Carbon::now()->format('l') }}</p>
+                            </div>
+                            <span class="text-3xl">📅</span>
                         </div>
-                        <div class="grid grid-cols-7 gap-2">
-                            @php
-                                $days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-                                $colors = ['bg-yellow-400', 'bg-blue-400', 'bg-purple-400', 'bg-pink-400', 'bg-green-400', 'bg-red-400', 'bg-orange-400'];
-                            @endphp
-                            @foreach ($days as $i => $day)
+                        
+                        <!-- Day Headers -->
+                        <div class="grid grid-cols-7 gap-2 mb-2">
+                            @foreach (['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as $dayName)
                                 <div class="text-center">
-                                    <p class="text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">{{ $day }}</p>
-                                    <div class="w-full aspect-square rounded-lg {{ $colors[$i] }} flex items-center justify-center text-white font-bold text-sm">
-                                        {{ $i + 14 }}
-                                    </div>
+                                    <p class="text-xs font-bold text-gray-600 dark:text-gray-400">{{ $dayName }}</p>
                                 </div>
                             @endforeach
+                        </div>
+                        
+                        <!-- Calendar Days -->
+                        <div class="grid grid-cols-7 gap-2">
+                            @php
+                                $now = \Carbon\Carbon::now();
+                                $firstDay = $now->copy()->startOfMonth();
+                                $lastDay = $now->copy()->endOfMonth();
+                                $startDate = $firstDay->copy()->startOfWeek();
+                                $endDate = $lastDay->copy()->endOfWeek();
+                                
+                                $userCreatedAt = Auth::user()->created_at;
+                            @endphp
+                            
+                            @for ($date = $startDate->copy(); $date <= $endDate; $date->addDay())
+                                @php
+                                    $isCurrentMonth = $date->month == $now->month;
+                                    $isLearningDay = $isCurrentMonth && $date <= $now && $date >= $userCreatedAt->copy()->startOfDay();
+                                @endphp
+                                
+                                @if ($isCurrentMonth)
+                                    <div class="text-center">
+                                        <div class="w-full aspect-square rounded-lg flex items-center justify-center text-sm font-bold relative group
+                                            {{ $date->isToday() ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' }}
+                                            {{ $isLearningDay && !$date->isToday() ? 'bg-green-400 text-white' : '' }}
+                                        ">
+                                            {{ $date->day }}
+                                            @if ($date->isToday())
+                                                <span class="absolute -top-1 -right-1 text-xs">⭐</span>
+                                            @endif
+                                            @if ($isLearningDay && !$date->isToday())
+                                                <span class="absolute -top-1 -right-1 text-xs">✓</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <div class="w-full aspect-square rounded-lg flex items-center justify-center text-sm font-bold text-gray-300 dark:text-gray-600">
+                                            {{ $date->day }}
+                                        </div>
+                                    </div>
+                                @endif
+                            @endfor
+                        </div>
+                        
+                        <div class="mt-4 text-center">
+                            <p class="text-xs text-gray-600 dark:text-gray-400">
+                                <span class="inline-block w-3 h-3 rounded bg-gradient-to-br from-purple-500 to-pink-500 mr-1 align-middle"></span>
+                                Today
+                                <span class="mx-2">•</span>
+                                <span class="inline-block w-3 h-3 rounded bg-green-400 mr-1 align-middle"></span>
+                                Learning Days
+                            </p>
                         </div>
                     </div>
                 </div>

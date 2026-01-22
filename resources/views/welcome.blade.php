@@ -93,15 +93,15 @@
         </nav>
 
         <!-- Hero Section -->
-        <section style="padding: 3rem 1.5rem; background: linear-gradient(135deg, #dbeafe 0%, #f3e8ff 100%);">
+        <div style="padding: 3rem 1.5rem; background: url('/image/school_background.jpg') center/cover no-repeat; background-attachment: fixed;">
             <div style="max-width: 80rem; margin: 0 auto;">
                 <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
                     <!-- Left Content -->
                     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <h2 class="hero-title" style="font-size: 3.5rem; font-weight: 900; line-height: 1.2; margin: 0;">
-                            <span style="color: #3b82f6;">Learning</span> is <span style="color: #8b5cf6;">Fun</span> in <span style="color: #ec4899;">NLLC</span>!
+                        <h2 class="hero-title" style="font-size: 3.5rem; font-weight: 900; line-height: 1.2; margin: 0; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                            <span style="color: #fff;">Learning</span> is <span style="color: #fef3c7;">Fun</span> in <span style="color: #fce7f3;">NLLC</span>!
                         </h2>
-                        <p class="hero-subtitle" style="font-size: 1.25rem; color: #4b5563; line-height: 1.6; margin: 0;">
+                        <p class="hero-subtitle" style="font-size: 1.25rem; color: white; line-height: 1.6; margin: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
                             An interactive e-learning platform designed specifically for kindergarten children to learn, play, and grow at their own pace.
                         </p>
                         <div style="display: flex; flex-wrap: wrap; gap: 1rem;">

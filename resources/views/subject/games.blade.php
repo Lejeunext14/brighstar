@@ -19,45 +19,17 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Available Games</h2>
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @if($subject === 'filipino')
-                    <!-- Game 1: Word Match -->
+                    <!-- Game 1: Coloring Game -->
                     <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
-                        <div class="h-40 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
-                          <img src="/image/tamangkulay.png" alt="Pag Papakilala sa Sarili" class="w-full h-full object-cover">
+                        <div class="h-40 bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
+                            🎨
                         </div>
                         <div class="p-4">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Tamang Kulay</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Hulaan ang Tamang Kulay</p>
-                            <button class="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white py-2 rounded-lg hover:shadow-lg transition-all">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Coloring Game</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Create your own colorful artwork</p>
+                            <a href="{{ route('subject.coloring', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
                                 Play Now →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Game 2: Word Builder -->
-                    <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
-                        <div class="h-40 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
-                           <img src="/image/tamangtitik.png" alt="Pag Papakilala sa Sarili" class="w-full h-full object-cover">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Tamang Titik</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Hulaan ang Tamang Titik</p>
-                            <button class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg hover:shadow-lg transition-all">
-                                Play Now →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Game 3: Spelling Quiz -->
-                    <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
-                        <div class="h-40 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
-                             <img src="/image/tamanghayop.png" alt="Pag Papakilala sa Sarili" class="w-full h-full object-cover">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Tamang Hayop</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Hulaan ang Tamang Hayop</p>
-                            <button class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-lg hover:shadow-lg transition-all">
-                                Play Now →
-                            </button>
+                            </a>
                         </div>
                     </div>
                 @else
