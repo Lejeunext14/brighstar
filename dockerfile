@@ -1,5 +1,5 @@
 # Use PHP 8.2 or 8.3 (Laravel 12 requirement)
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 # Install system dependencies and PostgreSQL drivers
 RUN apt-get update && apt-get install -y \
