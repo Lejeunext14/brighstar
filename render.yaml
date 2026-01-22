@@ -3,6 +3,7 @@ services:
   - type: web
     name: brightstar-laravel
     runtime: docker
+    buildCommand: "composer install --no-dev --optimize-autoloader && php artisan migrate --force"
     plan: free # Change to 'starter' if you need more power
     envVars:
       - key: APP_ENV
