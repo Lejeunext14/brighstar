@@ -23,7 +23,7 @@ COPY . .
 
 
 # Add --no-scripts to skip the 'package:discover' step during build
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --php artisan migrate --force
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction 
 
 # 5. Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
