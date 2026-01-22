@@ -75,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/lesson/mark-complete', [LessonProgressController::class, 'markComplete'])->name('lesson.mark-complete');
     Route::get('/lesson/progress', [LessonProgressController::class, 'getUserProgress'])->name('lesson.progress');
+    Route::get('/lesson/daily-progress', [LessonProgressController::class, 'getDailyProgress'])->name('lesson.daily-progress');
     Route::post('/admin/reset-all-progress', [LessonProgressController::class, 'resetAllUserProgress'])->name('admin.reset-all-progress');
 
     Route::get('/subject/{subject}/games', function ($subject) {

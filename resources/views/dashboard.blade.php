@@ -202,17 +202,7 @@
                         <div class="p-6 bg-white dark:bg-gray-800">
                             <h3 class="font-black text-gray-900 dark:text-white text-2xl mb-2">Filipino</h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Learn the beautiful Filipino language</p>
-                            <div class="mb-3">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-xs font-bold text-gray-600 dark:text-gray-400">Topics</span>
-                                    <span class="text-sm font-black text-green-600">{{ $filipinoProgress['totalTopics'] }}</span>
-                                </div>
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-green-500 h-full" style="width: {{ $filipinoProgress['percentage'] }}%"></div>
-                                </div>
-                            </div>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">{{ $filipinoProgress['percentage'] }}% Complete</p>
-                            <p class="text-xs text-purple-600 dark:text-purple-400 font-bold mt-2">Overall Progress: {{ $filipinoProgress['overallProgress'] }}%</p>
+                            <!-- Topic progress removed per request -->
                         </div>
                     </a>
 
