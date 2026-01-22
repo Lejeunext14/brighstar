@@ -1,24 +1,32 @@
 FROM php:8.4-fpm
 
-# Install system dependencies
+# 1. Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libpng-dev libonig-dev libxml2-dev zip unzip git curl nginx
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    libzip-dev \
+    libicu-dev
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# 2. Install PHP extensions (Added zip and intl for Composer)
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
 
-# Get Composer
+# 3. Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www
 COPY . .
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader
 
-# Setup Nginx and Permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/cache
-# (You'll also need to copy a basic nginx config here)
+# Add --no-scripts to skip the 'package:discover' step during build
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+# 5. Set permissions
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+# Render uses the PORT env var, but artisan serve defaults to 8000
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
