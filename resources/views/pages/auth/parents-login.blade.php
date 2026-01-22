@@ -1,4 +1,4 @@
-<x-layouts::auth>
+<x-layouts::auth :title="__('Login')">
     <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Parents Login')" :description="__('Enter your parent credentials below to log in')" />
 
@@ -48,9 +48,5 @@
                 </flux:button>
             </div>
         </form>
-
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <flux:link :href="route('login')" wire:navigate>{{ __('Back to User Login') }}</flux:link>
-        </div>
     </div>
 </x-layouts::auth>

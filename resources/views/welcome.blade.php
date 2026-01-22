@@ -6,9 +6,8 @@
 
         <title>NLLC</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" href="/image/logo.png" sizes="any">
+        <link rel="apple-touch-icon" href="/image/logo.png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -93,8 +92,9 @@
         </nav>
 
         <!-- Hero Section -->
-        <div style="padding: 3rem 1.5rem; background: url('/image/school_background.jpg') center/cover no-repeat; background-attachment: fixed;">
-            <div style="max-width: 80rem; margin: 0 auto;">
+        <div style="padding: 3rem 1.5rem; background: url('/image/school_background.jpg') center/cover no-repeat; background-attachment: fixed; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('/image/school_background.jpg') center/cover no-repeat; background-attachment: fixed; filter: blur(8px); z-index: 0;"></div>
+            <div style="max-width: 80rem; margin: 0 auto; position: relative; z-index: 1;">
                 <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
                     <!-- Left Content -->
                     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -111,20 +111,6 @@
                             <a href="#features" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; border: 2px solid #3b82f6; color: #3b82f6; border-radius: 9999px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: all 0.3s; background: transparent; cursor: pointer;">
                                 Learn More ↓
                             </a>
-                        </div>
-                        <div class="stats-container" style="display: flex; gap: 2rem; padding-top: 1rem;">
-                            <div>
-                                <p style="font-size: 1.875rem; font-weight: bold; color: #3b82f6; margin: 0;">10K+</p>
-                                <p style="color: #6b7280; margin: 0; font-size: 0.875rem;">Happy Students</p>
-                            </div>
-                            <div>
-                                <p style="font-size: 1.875rem; font-weight: bold; color: #8b5cf6; margin: 0;">500+</p>
-                                <p style="color: #6b7280; margin: 0; font-size: 0.875rem;">Activities</p>
-                            </div>
-                            <div>
-                                <p style="font-size: 1.875rem; font-weight: bold; color: #ec4899; margin: 0;">4.9⭐</p>
-                                <p style="color: #6b7280; margin: 0; font-size: 0.875rem;">Parent Rating</p>
-                            </div>
                         </div>
                     </div>
                     
@@ -145,6 +131,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
 
