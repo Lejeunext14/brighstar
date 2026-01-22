@@ -1,0 +1,30 @@
+services:
+  # The Laravel Web Service
+  - type: web
+    name: brightstar-laravel
+    runtime: docker
+    plan: free # Change to 'starter' if you need more power
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        sync: false # Set this to your actual Render URL
+      - key: APP_KEY
+        generateValue: true # Render can generate a random string, but manual is safer
+      - key: DB_CONNECTION
+        value: pgsql
+      - fromDatabase:
+          name: brightstar-db
+          property: connectionString
+        key: DATABASE_URL
+      - key: LOG_CHANNEL
+        value: stderr
+
+databases:
+  # The PostgreSQL Database
+  - name: brightstar-db
+    plan: free
+    databaseName: nllc_x4oa
+    user: nllc_user
