@@ -7,26 +7,24 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\URL; // This is definitely here now!
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-      if (app()->environment('production')) {
-        URL::forceScheme('https');
-    }
+        // 1. Force HTTPS
+        if (app()->isProduction()) {
+            URL::forceScheme('https');
+        }
+
+        // 2. YOU MUST CALL THE METHOD BELOW
+        $this->configureDefaults();
     }
 
     protected function configureDefaults(): void
@@ -37,14 +35,14 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
+        Password::defaults(fn (): Password => app()->isProduction()
             ? Password::min(12)
                 ->mixedCase()
                 ->letters()
                 ->numbers()
                 ->symbols()
                 ->uncompromised()
-            : null
+            : Password::min(8) // Changed from null to a default for safety
         );
     }
 }
