@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Install Node.js (needed for Vite)
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 # Set working directory
 WORKDIR /var/www
 
