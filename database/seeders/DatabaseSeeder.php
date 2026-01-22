@@ -9,18 +9,15 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-   public function run(): void
-{
-    \App\Models\User::factory()->create([
-        'name' => 'Admin User',
-        'email' => 'admin@example.com',
-        'password' => Hash::make('Admin123456'),
-        'role' => 'admin',
-        'email_verified_at' => now(),
-
-    ]);
-}
-}
+    public function run(): void
+    {
+        // Create Admin
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'System Admin',
+                'password' => Hash::make('@admin123456'), // Change this later!
+                'role' => 'admin',
+            ]
+        );
+}}
