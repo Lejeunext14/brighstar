@@ -32,6 +32,18 @@
             .logo h1 { font-size: 1.875rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
             .nav-links { display: flex; gap: 1rem; align-items: center; }
             
+            /* Scroll Animation Styles */
+            .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+            .fade-in.visible { opacity: 1; transform: translateY(0); }
+            .fade-in-up { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+            .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+            .slide-in-left { opacity: 0; transform: translateX(-50px); transition: all 0.8s ease-out; }
+            .slide-in-left.visible { opacity: 1; transform: translateX(0); }
+            .slide-in-right { opacity: 0; transform: translateX(50px); transition: all 0.8s ease-out; }
+            .slide-in-right.visible { opacity: 1; transform: translateX(0); }
+            .scale-in { opacity: 0; transform: scale(0.95); transition: all 0.8s ease-out; }
+            .scale-in.visible { opacity: 1; transform: scale(1); }
+            
             /* Mobile Responsive */
             @media (max-width: 1024px) {
                 .hero-grid { grid-template-columns: 1fr !important; }
@@ -105,9 +117,6 @@
                             An interactive e-learning platform designed specifically for kindergarten children to learn, play, and grow at their own pace.
                         </p>
                         <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                            <a  style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border-radius: 9999px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: all 0.3s; border: none; cursor: pointer;">
-                                🚀 Get Started
-                            </a>
                             <a href="#features" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; border: 2px solid #3b82f6; color: #3b82f6; border-radius: 9999px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: all 0.3s; background: transparent; cursor: pointer;">
                                 Learn More ↓
                             </a>
@@ -143,7 +152,7 @@
         </script>
 
         <!-- Features Section -->
-        <section id="features" style="padding: 5rem 1.5rem; background: white;">
+        <section id="features" class="fade-in" style="padding: 5rem 1.5rem; background: white;">
             <div style="max-width: 80rem; margin: 0 auto;">
                     <h3 style="font-size: 2.25rem; font-weight: 900; margin: 0 0 1rem 0;">
                         Why Choose <span style="color: #3b82f6;">NLLC</span>?
@@ -153,28 +162,28 @@
                 
                 <div class="features-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
                     <!-- Feature 1 -->
-                    <div style="background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
+                    <div class="fade-in scale-in" style="background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
                         <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎮</div>
                         <h4 style="font-size: 1.25rem; font-weight: bold; color: #111827; margin: 0 0 0.75rem 0;">Interactive Games</h4>
                         <p style="color: #6b7280;">Engaging games and activities that make learning fun and effective for young minds.</p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div style="background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
+                    <div class="fade-in scale-in" style="background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
                         <div style="font-size: 3.5rem; margin-bottom: 1rem;">👨‍👩‍👧</div>
                         <h4 style="font-size: 1.25rem; font-weight: bold; color: #111827; margin: 0 0 0.75rem 0;">Parent Dashboard</h4>
                         <p style="color: #6b7280;">Track progress, see achievements, and stay connected with your child's learning journey.</p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div style="background: linear-gradient(135deg, #fbcfe8 0%, #fce7f3 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
+                    <div class="fade-in scale-in" style="background: linear-gradient(135deg, #fbcfe8 0%, #fce7f3 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
                         <div style="font-size: 3.5rem; margin-bottom: 1rem;">⭐</div>
                         <h4 style="font-size: 1.25rem; font-weight: bold; color: #111827; margin: 0 0 0.75rem 0;">Age-Appropriate</h4>
                         <p style="color: #6b7280;">Curriculum designed by educators for kindergarten learners with adjustable difficulty levels.</p>
                     </div>
 
                     <!-- Feature 4 -->
-                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
+                    <div class="fade-in scale-in" style="background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%); border-radius: 1.5rem; padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer;">
                         <div style="font-size: 3.5rem; margin-bottom: 1rem;">🛡️</div>
                         <h4 style="font-size: 1.25rem; font-weight: bold; color: #111827; margin: 0 0 0.75rem 0;">Safe & Secure</h4>
                         <p style="color: #6b7280;">A distraction-free, moderated environment where kids can learn safely and confidently.</p>
@@ -184,7 +193,7 @@
         </section>
 
         <!-- What Kids Learn Section -->
-        <section style="padding: 5rem 1.5rem; background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%);">
+        <section class="fade-in-up" style="padding: 5rem 1.5rem; background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%);">
             <div style="max-width: 80rem; margin: 0 auto;">
                 <h3 style="font-size: 2.25rem; font-weight: 900; text-align: center; margin-bottom: 4rem;">What Your Child Will Learn</h3>
                 <div class="learning-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
@@ -205,7 +214,7 @@
         </section>
 
         <!-- CTA Section -->
-        <section style="padding: 5rem 1.5rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);">
+        <section class="scale-in" style="padding: 5rem 1.5rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);">
             <div style="max-width: 80rem; margin: 0 auto; text-align: center;">
                 <h3 class="cta-title" style="font-size: 3rem; font-weight: 900; color: white; margin: 0 0 1.5rem 0;">
                     Start Your Child's Learning Adventure Today! 🎉
@@ -224,6 +233,38 @@
                 </div>
             </div>
         </footer>
+
+        <script>
+            // Intersection Observer for Scroll Animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all elements with animation classes
+            document.querySelectorAll('.fade-in, .fade-in-up, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Apply staggered animations to feature cards
+            document.querySelectorAll('.features-grid > div').forEach((el, index) => {
+                el.style.transitionDelay = `${index * 0.15}s`;
+            });
+
+            // Apply staggered animations to learning items
+            document.querySelectorAll('.learning-grid > div').forEach((el, index) => {
+                el.style.transitionDelay = `${index * 0.15}s`;
+            });
+        </script>
     </body>
 </html>
     </body>
