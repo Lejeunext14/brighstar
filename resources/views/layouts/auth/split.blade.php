@@ -4,11 +4,11 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
-        <div class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <div class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:px-0" style="grid-template-columns: 0.8fr 1fr;">
             <div class="bg-white relative hidden h-full flex-col p-10 text-neutral-900 lg:flex dark:border-e dark:border-neutral-800 overflow-hidden">
                 <div class="absolute inset-0 bg-white">
                     <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                        <source src="{{ asset('animation/loginanim.mp4') }}" type="video/mp4">
+                        <source src="{{ asset('animation/logi1.mp4') }}" type="video/mp4">
                     </video>
                 </div>
 

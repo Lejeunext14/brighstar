@@ -95,11 +95,11 @@
         <div style="padding: 3rem 1.5rem; background: url('/image/school_background.jpg') center/cover no-repeat; background-attachment: fixed; position: relative;">
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('/image/school_background.jpg') center/cover no-repeat; background-attachment: fixed; filter: blur(8px); z-index: 0;"></div>
             <div style="max-width: 80rem; margin: 0 auto; position: relative; z-index: 1;">
-                <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; align-items: center;">
                     <!-- Left Content -->
                     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                         <h2 class="hero-title" style="font-size: 3.5rem; font-weight: 900; line-height: 1.2; margin: 0; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                            <span style="color: #fff;">Learning</span> is <span style="color: #fef3c7;">Fun</span> in <span style="color: #fce7f3;">NLLC</span>!
+                            <span style="color: #fff;">Learning</span> is <span style="color: #fef3c7;">Fun</span> in <span style="color: rgb(168, 36, 111);">NLLC</span>!
                         </h2>
                         <p class="hero-subtitle" style="font-size: 1.25rem; color: white; line-height: 1.6; margin: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
                             An interactive e-learning platform designed specifically for kindergarten children to learn, play, and grow at their own pace.
@@ -114,26 +114,33 @@
                         </div>
                     </div>
                     
-                    <!-- Right Illustration -->
-                    <div style="position: relative;">
-                        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fbcfe8 50%, #bfdbfe 100%); border-radius: 1.5rem; padding: 2rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); text-align: center;">
-                            <div class="emoji-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                                <div style="font-size: 2.5rem;">🎨</div>
-                                <div style="font-size: 2.5rem;">📚</div>
-                                <div style="font-size: 2.5rem;">🎵</div>
-                            </div>
-                            <div class="emoji-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
-                                <div style="font-size: 2.5rem;">🔢</div>
-                                <div style="font-size: 2.5rem;">🌍</div>
-                                <div style="font-size: 2.5rem;">🧩</div>
-                            </div>
-                            <p style="font-size: 0.875rem; font-weight: bold; color: #4b5563; margin-top: 1.5rem;">Learn through play!</p>
+                    <!-- Right Banner Carousel -->
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 400px; overflow: hidden;">
+                        <div id="bannerCarousel" style="position: relative; width: 100%; height: 100%; min-height: 400px;">
+                            <img src="/image/banner1.jpg" alt="Learning Banner 1" class="banner-slide" style="width: 100%; height: 100%; border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); object-fit: cover; position: absolute; top: 0; left: 0; opacity: 1; transition: opacity 0.8s ease-in-out;">
+                            <img src="/image/banner2.jpg" alt="Learning Banner 2" class="banner-slide" style="width: 100%; height: 100%; border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.8s ease-in-out;">
                         </div>
                     </div>
                 </div>
             </div>
             </div>
         </section>
+
+        <script>
+            let currentBannerIndex = 0;
+            const bannerSlides = document.querySelectorAll('.banner-slide');
+            const totalBanners = bannerSlides.length;
+
+            function rotateBanner() {
+                bannerSlides.forEach((slide, index) => {
+                    slide.style.opacity = index === currentBannerIndex ? '1' : '0';
+                });
+                currentBannerIndex = (currentBannerIndex + 1) % totalBanners;
+            }
+
+            // Rotate banner every 5 seconds
+            setInterval(rotateBanner, 5000);
+        </script>
 
         <!-- Features Section -->
         <section id="features" style="padding: 5rem 1.5rem; background: white;">
@@ -180,30 +187,18 @@
         <section style="padding: 5rem 1.5rem; background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%);">
             <div style="max-width: 80rem; margin: 0 auto;">
                 <h3 style="font-size: 2.25rem; font-weight: 900; text-align: center; margin-bottom: 4rem;">What Your Child Will Learn</h3>
-                <div class="learning-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5rem;">
-                    <div style="background: white; border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🔢</div>
-                        <p style="font-weight: bold; color: #111827; margin: 0;">Math</p>
-                    </div>
+                <div class="learning-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
                     <div style="background: white; border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                         <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">📖</div>
                         <p style="font-weight: bold; color: #111827; margin: 0;">Reading</p>
                     </div>
                     <div style="background: white; border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🎨</div>
-                        <p style="font-weight: bold; color: #111827; margin: 0;">Art</p>
+                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🔤</div>
+                        <p style="font-weight: bold; color: #111827; margin: 0;">Alphabetic</p>
                     </div>
                     <div style="background: white; border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🎵</div>
-                        <p style="font-weight: bold; color: #111827; margin: 0;">Music</p>
-                    </div>
-                    <div style="background: white; border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🌍</div>
-                        <p style="font-weight: bold; color: #111827; margin: 0;">Science</p>
-                    </div>
-                    <div style="background: white; border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🧩</div>
-                        <p style="font-weight: bold; color: #111827; margin: 0;">Logic</p>
+                        <div style="font-size: 3.5rem; margin-bottom: 0.75rem;">🤝</div>
+                        <p style="font-weight: bold; color: #111827; margin: 0;">Good Manner</p>
                     </div>
                 </div>
             </div>
