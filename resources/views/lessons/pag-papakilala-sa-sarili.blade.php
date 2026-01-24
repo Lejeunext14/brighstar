@@ -276,10 +276,10 @@
 
         function finishConfirm() {
             closeFinishModal();
-            // redirect after brief pause to let user see the modal closing
+            // redirect after brief pause to let user see the modal closing and ensure DB is updated
             setTimeout(() => {
                 window.location.href = '{{ route("subject.topics", ["subject" => "filipino"]) }}';
-            }, 300);
+            }, 800);
         }
 
         // initialize

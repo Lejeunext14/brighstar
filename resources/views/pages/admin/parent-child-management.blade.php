@@ -1,10 +1,20 @@
 <x-layouts::app.admin :title="__('Parent-Child Management')">
     <flux:main>
         <div class="w-full">
-            <!-- Page Header -->
-            <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-cyan-50 p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-cyan-900/20 mb-6">
-                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2">Parent-Child Management 👨‍👧‍👦</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-300">Link parents with their children for account management</p>
+            <!-- Page Header with Back Button -->
+            <div class="flex items-start justify-between mb-6">
+                <div class="flex-1">
+                    <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-cyan-50 p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-cyan-900/20">
+                        <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2">Parent-Child Management 👨‍👧‍👦</h1>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">Link parents with their children for account management</p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.dashboard') }}" class="ml-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition border border-gray-300 dark:border-gray-600 h-fit whitespace-nowrap">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Back
+                </a>
             </div>
 
             <!-- Statistics Cards -->

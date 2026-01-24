@@ -943,7 +943,10 @@
         }
 
         function returnToTopics() {
-            window.location.href = '{{ route("subject.topics", ["subject" => "filipino"]) }}';
+            // Add a small delay to ensure the database is updated
+            setTimeout(() => {
+                window.location.href = '{{ route("subject.topics", ["subject" => "filipino"]) }}';
+            }, 500);
         }
 
         document.addEventListener('DOMContentLoaded', init);

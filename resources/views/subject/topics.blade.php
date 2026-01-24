@@ -188,6 +188,7 @@
                         <div class="p-4">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">Pag Papakilala sa Sarili</h3>
                             <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <div class="topic-lock-badge absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">🔒 Locked</div>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan kung pano Mag pakilala ng Sarili</p>
                             <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
                                 <div class="topic-progress-fill bg-pink-500 h-2 rounded-full" style="width: 40%"></div>
@@ -204,6 +205,7 @@
                         <div class="p-4">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">Bahagi ng Katawan</h3>
                             <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <div class="topic-lock-badge absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">🔒 Locked</div>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Parte ng Katawan</p>
                             <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
                                 <div class="topic-progress-fill bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
@@ -220,6 +222,7 @@
                         <div class="p-4">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">Mga Kulay</h3>
                             <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <div class="topic-lock-badge absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">🔒 Locked</div>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Kulay</p>
                             <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
                                 <div class="topic-progress-fill bg-green-500 h-2 rounded-full" style="width: 0%"></div>
@@ -236,6 +239,7 @@
                         <div class="p-4">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">Pag Papakilala sa ibat ibang uri ng tunog</h3>
                             <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <div class="topic-lock-badge absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">🔒 Locked</div>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Tunog</p>
                             <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
                                 <div class="topic-progress-fill bg-green-500 h-2 rounded-full" style="width: 0%"></div>
@@ -251,6 +255,7 @@
                         <div class="p-4">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">Mga Hugis</h3>
                             <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <div class="topic-lock-badge absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">🔒 Locked</div>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pag Aralan ang Ibat ibang Hugis</p>
                             <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
                                 <div class="topic-progress-fill bg-green-500 h-2 rounded-full" style="width: 0%"></div>
@@ -297,6 +302,7 @@
                         <div class="p-4">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $topic['title'] }}</h3>
                             <div class="topic-completed-badge hidden absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">Completed</div>
+                            <div class="topic-lock-badge absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">🔒 Locked</div>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ $topic['description'] }}</p>
                             <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
                                 <div class="topic-progress-fill bg-yellow-500 h-2 rounded-full" style="width: 0%"></div>
@@ -327,7 +333,6 @@
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Your Progress</h2>
                 <div class="flex gap-3">
-                    <button id="resetProgressBtn" class="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">Reset Progress</button>
                     @if(auth()->check() && auth()->user()->role === 'admin')
                     <button id="adminResetBtn" class="px-3 py-2 bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-800" title="Admin: Reset all users' progress">Admin Reset</button>
                     @endif
@@ -414,33 +419,92 @@
             const topicEls = document.querySelectorAll('[data-lesson]');
             const total = topicEls.length;
             let completed = 0;
+            const firstLesson = 'pag-papakilala-sa-sarili';
 
-            // Fetch progress from DB
-            fetch("{{ route('lesson.progress') }}")
+            // Define lesson sequence for unlocking
+            const lessonSequence = [
+                'pag-papakilala-sa-sarili',           // Lesson 1
+                'bahagi-ng-katawan',                   // Lesson 2
+                'mga-kulay',                           // Lesson 3
+                'pag-papakilala-sa-ibat-ibang-uri-ng-tunog', // Lesson 4
+                'mga-hugis',                           // Lesson 5
+                'mga-kasapi-ng-aking-pamilya',        // Lesson 6
+            ];
+
+            // Fetch progress from DB with cache busting
+            fetch("{{ route('lesson.progress') }}?t=" + Date.now())
                 .then(r => r.json())
                 .then(dbProgress => {
+                    console.log('Progress fetched:', dbProgress);
                     topicEls.forEach(el => {
                         const slug = el.getAttribute('data-lesson');
                         const fill = el.querySelector('.topic-progress-fill');
                         const text = el.querySelector('.topic-progress-text');
                         const badge = el.querySelector('.topic-completed-badge');
+                        const lockBadge = el.querySelector('.topic-lock-badge');
                         if (!fill || !text) return;
 
-                        // Check DB progress first, fallback to localStorage
+                        // Check DB progress
                         const dbRecord = dbProgress[slug];
-                        const isCompleted = dbRecord?.completed || isCompletedKeyPresent(slug);
+                        const isCompleted = dbRecord?.completed;
 
+                        // First lesson starts unlocked
+                        if (slug === firstLesson) {
+                            if (isCompleted) {
+                                fill.style.width = '100%';
+                                text.textContent = '100% Complete • 1 Lesson';
+                                if (badge) badge.classList.remove('hidden');
+                                if (lockBadge) lockBadge.classList.add('hidden');
+                                completed++;
+                            } else {
+                                fill.style.width = '0%';
+                                text.textContent = '0% Complete • 0 Lessons';
+                                if (badge) badge.classList.add('hidden');
+                                if (lockBadge) lockBadge.classList.add('hidden');
+                            }
+                            el.style.pointerEvents = 'auto';
+                            el.style.opacity = '1';
+                            return;
+                        }
+
+                        // Check if this lesson's prerequisite is completed
+                        const lessonIndex = lessonSequence.indexOf(slug);
+                        let isUnlocked = false;
+
+                        if (lessonIndex > 0) {
+                            const previousLesson = lessonSequence[lessonIndex - 1];
+                            const previousRecord = dbProgress[previousLesson];
+                            isUnlocked = previousRecord?.completed;
+                        }
+
+                        // Apply lock state or completion state
                         if (isCompleted) {
                             fill.style.width = '100%';
                             text.textContent = '100% Complete • 1 Lesson';
                             el.classList.add('opacity-80');
                             if (badge) badge.classList.remove('hidden');
+                            if (lockBadge) lockBadge.classList.add('hidden');
+                            el.style.pointerEvents = 'auto';
+                            el.style.opacity = '1';
                             completed++;
-                        } else {
+                        } else if (isUnlocked) {
+                            // Prerequisite is completed, so this lesson is unlocked
                             fill.style.width = '0%';
                             text.textContent = '0% Complete • 0 Lessons';
                             if (badge) badge.classList.add('hidden');
+                            if (lockBadge) lockBadge.classList.add('hidden');
                             el.classList.remove('opacity-80');
+                            el.style.pointerEvents = 'auto';
+                            el.style.opacity = '1';
+                        } else {
+                            // Lesson is locked
+                            fill.style.width = '0%';
+                            text.textContent = '0% Complete • 0 Lessons';
+                            if (badge) badge.classList.add('hidden');
+                            if (lockBadge) lockBadge.classList.remove('hidden');
+                            el.classList.remove('opacity-80');
+                            el.style.pointerEvents = 'none';
+                            el.style.opacity = '0.6';
                         }
                     });
 
@@ -465,19 +529,37 @@
                         const fill = el.querySelector('.topic-progress-fill');
                         const text = el.querySelector('.topic-progress-text');
                         const badge = el.querySelector('.topic-completed-badge');
+                        const lockBadge = el.querySelector('.topic-lock-badge');
                         if (!fill || !text) return;
+
+                        // First lesson is always unlocked
+                        if (slug === firstLesson) {
+                            fill.style.width = '0%';
+                            text.textContent = '0% Complete • 0 Lessons';
+                            if (badge) badge.classList.add('hidden');
+                            if (lockBadge) lockBadge.classList.add('hidden');
+                            el.style.pointerEvents = 'auto';
+                            el.style.opacity = '1';
+                            return;
+                        }
 
                         if (isCompletedKeyPresent(slug)) {
                             fill.style.width = '100%';
                             text.textContent = '100% Complete • 1 Lesson';
                             el.classList.add('opacity-80');
                             if (badge) badge.classList.remove('hidden');
+                            if (lockBadge) lockBadge.classList.add('hidden');
+                            el.style.pointerEvents = 'auto';
+                            el.style.opacity = '1';
                             completed++;
                         } else {
                             fill.style.width = '0%';
                             text.textContent = '0% Complete • 0 Lessons';
                             if (badge) badge.classList.add('hidden');
+                            if (lockBadge) lockBadge.classList.remove('hidden');
                             el.classList.remove('opacity-80');
+                            el.style.pointerEvents = 'none';
+                            el.style.opacity = '0.6';
                         }
                     });
 
@@ -655,6 +737,14 @@
             currentTopicPage = 1;
             updateTopicSliderUI();
             initializeTopicSlider();
+        });
+
+        // Refresh progress when user returns to this page from a lesson
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                console.log('Page became visible, refreshing progress...');
+                computeTopicProgress();
+            }
         });
     </script>
 </x-layouts::app>

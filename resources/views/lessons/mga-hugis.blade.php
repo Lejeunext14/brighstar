@@ -800,7 +800,10 @@
         }
 
         function returnToTopics() {
-            window.location.href = '{{ route("subject.topics", ["subject" => "filipino"]) }}';
+            // Add delay to ensure database is updated
+            setTimeout(() => {
+                window.location.href = '{{ route("subject.topics", ["subject" => "finnish"]) }}';
+            }, 500);
         }
 
         document.addEventListener('DOMContentLoaded', init);

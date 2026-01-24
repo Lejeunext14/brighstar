@@ -87,6 +87,41 @@ Route::middleware(['auth'])->group(function () {
     })->name('subject.coloring');
 
     Route::get('/lesson/{lesson}', function ($lesson) {
+        // Define lesson sequence for unlocking
+        $lessonSequence = [
+            'pag-papakilala-sa-sarili',           // Lesson 1
+            'bahagi-ng-katawan',                   // Lesson 2
+            'mga-kulay',                           // Lesson 3
+            'pag-papakilala-sa-ibat-ibang-uri-ng-tunog', // Lesson 4
+            'mga-hugis',                           // Lesson 5
+            'mga-kasapi-ng-aking-pamilya',        // Lesson 6
+        ];
+
+        $firstLesson = $lessonSequence[0];
+        $lessonIndex = array_search($lesson, $lessonSequence);
+
+        // First lesson is always unlocked for starting
+        if ($lesson === $firstLesson) {
+            return view('lessons.' . $lesson, ['lesson' => $lesson]);
+        }
+
+        // If lesson is not in sequence, deny access
+        if ($lessonIndex === false) {
+            return redirect()->back()->with('error', '🔒 This lesson is locked.');
+        }
+
+        // Get the previous lesson
+        $previousLesson = $lessonSequence[$lessonIndex - 1];
+
+        // Check if the previous lesson is completed
+        $previousLessonProgress = \App\Models\LessonProgress::where('user_id', auth()->id())
+            ->where('lesson_slug', $previousLesson)
+            ->first();
+
+        if (!$previousLessonProgress || !$previousLessonProgress->completed) {
+            return redirect()->back()->with('error', '🔒 This lesson is locked. Complete the previous lesson first.');
+        }
+
         return view('lessons.' . $lesson, ['lesson' => $lesson]);
     })->name('lesson.view');
 });
