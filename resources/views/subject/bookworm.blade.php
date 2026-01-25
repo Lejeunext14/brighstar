@@ -1,19 +1,30 @@
-<x-layouts::app :title="__('Book Worm Game')">
+<x-layouts::app :title="__('Human Book Game')">
     <div class="w-full">
         <!-- Header -->
-        <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-green-50 p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-green-900/20 mb-6 flex items-center justify-between">
+        <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-green-50 p-4 md:p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-green-900/20 mb-6 flex items-center justify-between">
             <div>
-                <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2">
-                    📚 Book Worm Game
+                <h1 class="text-2xl md:text-4xl font-black text-gray-900 dark:text-white mb-2">
+                    Human Book Game
                 </h1>
-                <p class="text-lg text-gray-600 dark:text-gray-300">Help the worm defeat enemies by completing words!</p>
+                <p class="text-sm md:text-lg text-gray-600 dark:text-gray-300">Help the Human defeat enemies by completing words!</p>
             </div>
         </div>
 
         <!-- Game Arena -->
         <div class="rounded-xl border border-neutral-200 bg-white p-0 dark:border-neutral-700 dark:bg-neutral-900 mb-6 overflow-hidden">
             <!-- Game Background -->
-            <div id="gameArena" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); background-image: url('/image/classroom.jpg'); background-size: cover; background-position: center 85%; min-height: 700px; position: relative; overflow: hidden;">
+            <div id="gameArena" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('/image/pixel.jpg'); background-size: cover; background-position: center 85%; background-attachment: fixed; min-height: 500px; height: 100vh; max-height: 900px; position: relative; overflow: hidden;" class="responsive-game-arena">
+
+                <!-- Start Screen -->
+                <div id="startScreen" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.8); z-index: 100;">
+                    <div style="text-align: center; padding: 20px;">
+                        <h2 style="font-size: clamp(32px, 8vw, 60px); font-weight: bold; color: #22c55e; margin-bottom: 20px;">Human Book Game</h2>
+                        <p style="font-size: clamp(16px, 4vw, 24px); color: white; margin-bottom: 40px;">Complete words to defeat enemies and save the library!</p>
+                        <button id="startBtn" style="padding: clamp(12px, 3vw, 20px) clamp(30px, 8vw, 60px); background: #22c55e; color: black; border: none; border-radius: 12px; font-size: clamp(16px, 4vw, 24px); font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                             Start Game
+                        </button>
+                    </div>
+                </div>
 
                 <!-- Audio Effects -->
                 <audio id="fireballThrowSound" preload="auto">
@@ -26,44 +37,49 @@
                     <source src="/sounds/background-music.mp3" type="audio/mpeg">
                 </audio>
 
+                <!-- Mute Button -->
+                <button id="muteButton" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11; background: rgba(0, 0, 0, 0.3); color: white; border: none; border-radius: 8px; font-size: 28px; padding: 10px 12px; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px);">
+                    🔊
+                </button>
+
                 <!-- Fireball Effect -->
                 <div id="fireball">🔥</div>
                 <div id="enemyFireball">🔥</div>
 
                 <!-- Character Name and Health (Upper Left) -->
-                <div style="position: absolute; left: 20px; top: 20px; z-index: 10;">
+                <div style="position: absolute; left: 20px; top: 20px; z-index: 10;" class="character-health">
                     <div style="padding: 8px 16px; background: rgba(16, 185, 129, 0.9); border-radius: 20px; border: 2px solid white; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); text-align: center; margin-bottom: 10px;">{{ auth()->user()->name }}</div>
-                    <div style="width: 150px; height: 28px; background: #1f2937; border-radius: 14px; overflow: hidden; border: 3px solid white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+                    <div style="width: 150px; height: 28px; background: #1f2937; border-radius: 14px; overflow: hidden; border: 3px solid white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);" class="character-health-bar">
                         <div id="playerHealth" style="width: 100%; height: 100%; background: linear-gradient(90deg, #10b981 0%, #34d399 100%); transition: width 0.4s ease; box-shadow: inset 0 0 8px rgba(255,255,255,0.4);"></div>
                     </div>
-                    <div style="text-align: center; color: white; font-weight: bold; margin-top: 8px; font-size: 12px;">HP: <span id="playerHealthText">100</span>/100</div>
+                    <div style="text-align: center; color: white; font-weight: bold; margin-top: 8px; font-size: 12px;" class="character-health-text">HP: <span id="playerHealthText">100</span>/100</div>
                 </div>
 
                 <!-- Character Container (Image) -->
-                <div style="position: absolute; left: 250px; top: 25%; z-index: 10; width: 250px;">
+                <div style="position: absolute; left: 250px; top: 25%; z-index: 10; width: 250px;" class="character-container">
                     <div style="text-align: center; position: relative;">
-                        <img id="characterImage" src="/character/bookcharacter.png" alt="BookWorm Hero" style="width: 250px; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); transition: all 0.3s ease;" />
+                        <img id="characterImage" src="/character/bookcharacter.png" alt="Human Hero" style="width: 250px; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); transition: all 0.3s ease;" />
                     </div>
                 </div>
 
                 <!-- Enemy Name and Health (Upper Right) -->
-                <div style="position: absolute; right: 20px; top: 20px; z-index: 10; text-align: right;">
+                <div style="position: absolute; right: 20px; top: 20px; z-index: 10; text-align: right;" class="enemy-health">
                     <div style="padding: 8px 16px; background: rgba(239, 68, 68, 0.9); border-radius: 20px; border: 2px solid white; color: white; font-weight: bold; font-size: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); text-align: center; margin-bottom: 10px;" id="enemyName">Word Bug</div>
-                    <div style="width: 150px; height: 28px; background: #1f2937; border-radius: 14px; overflow: hidden; border: 3px solid white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+                    <div style="width: 150px; height: 28px; background: #1f2937; border-radius: 14px; overflow: hidden; border: 3px solid white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);" class="enemy-health-bar">
                         <div id="enemyHealth" style="width: 100%; height: 100%; background: linear-gradient(90deg, #ef4444 0%, #f87171 100%); transition: width 0.4s ease; box-shadow: inset 0 0 8px rgba(255,255,255,0.4);"></div>
                     </div>
-                    <div style="text-align: center; color: white; font-weight: bold; margin-top: 8px; font-size: 12px;">HP: <span id="enemyHealthText">100</span>/100</div>
+                    <div style="text-align: center; color: white; font-weight: bold; margin-top: 8px; font-size: 12px;" class="enemy-health-text">HP: <span id="enemyHealthText">100</span>/100</div>
                 </div>
 
                 <!-- Enemy Container -->
-                <div style="position: absolute; right: 250px; top: 25%; z-index: 10; width: 250px;">
+                <div style="position: absolute; right: 250px; top: 25%; z-index: 10; width: 250px;" class="enemy-container">
                     <div style="text-align: center; position: relative;">
                         <img id="enemyDisplay" src="/character/enemybook.png" alt="Enemy" style="width: 250px; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); transition: all 0.3s ease;" />
                     </div>
                 </div>
 
                 <!-- Game Info Display -->
-                <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; gap: 15px; z-index: 5;">
+                <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; gap: 15px; z-index: 5;" class="game-info">
                     <div style="background: rgba(0, 0, 0, 0.6); color: white; padding: 15px 25px; border-radius: 10px; font-weight: bold;">
                         Round: <span id="roundDisplay">1</span>/5
                     </div>
@@ -120,12 +136,122 @@
     </div>
 
     <style>
+        /* Responsive Game Arena */
+        .responsive-game-arena {
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .responsive-game-arena {
+                height: auto !important;
+                min-height: 600px !important;
+                max-height: none !important;
+            }
+        }
+
+        /* Responsive Character Health Bar */
+        @media (max-width: 768px) {
+            .character-health {
+                left: 10px !important;
+                top: 10px !important;
+                width: 100px !important;
+            }
+            
+            .character-health-bar {
+                width: 100px !important;
+                height: 20px !important;
+            }
+            
+            .character-health-text {
+                font-size: 10px !important;
+            }
+        }
+
+        /* Responsive Character Image */
+        @media (max-width: 768px) {
+            .character-container {
+                left: 10% !important;
+                width: 150px !important;
+            }
+            
+            .character-container img {
+                width: 150px !important;
+            }
+        }
+
+        /* Responsive Enemy Health Bar */
+        @media (max-width: 768px) {
+            .enemy-health {
+                right: 10px !important;
+                top: 10px !important;
+                width: 100px !important;
+            }
+            
+            .enemy-health-bar {
+                width: 100px !important;
+                height: 20px !important;
+            }
+            
+            .enemy-health-text {
+                font-size: 10px !important;
+            }
+        }
+
+        /* Responsive Enemy Image */
+        @media (max-width: 768px) {
+            .enemy-container {
+                right: 10% !important;
+                width: 150px !important;
+            }
+            
+            .enemy-container img {
+                width: 150px !important;
+            }
+        }
+
+        /* Responsive Game Info */
+        @media (max-width: 768px) {
+            .game-info {
+                flex-direction: column;
+                gap: 8px !important;
+            }
+            
+            .game-info div {
+                padding: 8px 12px !important;
+                font-size: 12px !important;
+            }
+        }
+
+        /* Responsive Game Controller */
+        @media (max-width: 768px) {
+            #gameController {
+                top: auto !important;
+                bottom: 20px !important;
+                transform: translate(-50%, 0) !important;
+            }
+        }
+
+        /* Responsive Mute Button */
+        @media (max-width: 768px) {
+            #muteButton {
+                font-size: 20px !important;
+                padding: 8px 10px !important;
+            }
+        }
+
         .word-display {
             display: flex;
             justify-content: center;
             gap: 8px;
             margin-bottom: 30px;
             flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .word-display {
+                gap: 4px !important;
+                margin-bottom: 20px !important;
+            }
         }
 
         .letter-box {
@@ -142,6 +268,15 @@
             dark-mode: background-color: #1f2937;
         }
 
+        @media (max-width: 768px) {
+            .letter-box {
+                width: 35px !important;
+                height: 35px !important;
+                font-size: 16px !important;
+                border: 1.5px solid #ccc;
+            }
+        }
+
         .letter-box.filled {
             background-color: #3b82f6;
             color: white;
@@ -156,6 +291,13 @@
             margin-bottom: 20px;
         }
 
+        @media (max-width: 768px) {
+            .letter-options {
+                gap: 4px !important;
+                margin-bottom: 15px !important;
+            }
+        }
+
         .letter-btn {
             width: 45px;
             height: 45px;
@@ -167,6 +309,15 @@
             font-weight: bold;
             font-size: 16px;
             transition: all 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .letter-btn {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 12px !important;
+                border: 1.5px solid #cbd5e1;
+            }
         }
 
         .letter-btn:hover {
@@ -240,9 +391,18 @@
 
         @keyframes bounce-attack {
             0% { transform: translateX(0) scale(1); }
-            25% { transform: translateX(20px) scale(1.05); }
-            50% { transform: translateX(0) scale(1); }
+            20% { transform: translateX(30px) scale(1.1); }
+            40% { transform: translateX(30px) scale(1.1); }
+            60% { transform: translateX(0) scale(1); }
             100% { transform: translateX(0) scale(1); }
+        }
+
+        @keyframes enemy-bounce-attack {
+            0% { transform: translateX(0) scaleX(-1) scale(1); }
+            20% { transform: translateX(-30px) scaleX(-1) scale(1.1); }
+            40% { transform: translateX(-30px) scaleX(-1) scale(1.1); }
+            60% { transform: translateX(0) scaleX(-1) scale(1); }
+            100% { transform: translateX(0) scaleX(-1) scale(1); }
         }
 
         @keyframes character-shake {
@@ -266,7 +426,11 @@
         }
 
         #characterImage.attacking {
-            animation: bounce-attack 0.6s ease-in-out;
+            animation: bounce-attack 0.6s ease-in-out !important;
+        }
+
+        #characterImage.attacking.float {
+            animation: bounce-attack 0.6s ease-in-out, float 3s ease-in-out infinite !important;
         }
 
         #characterImage.damaged {
@@ -282,11 +446,54 @@
         }
 
         #enemyDisplay.attacking {
-            animation: bounce-attack 0.6s ease-in-out;
+            animation: enemy-bounce-attack 0.6s ease-in-out !important;
         }
 
         #enemyDisplay.damaged {
             animation: character-shake 0.4s ease-in-out;
+        }
+
+        /* Dying Animation */
+        @keyframes character-dying {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotateZ(0deg);
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(20px) rotateZ(5deg);
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)) grayscale(50%);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(80px) rotateZ(15deg);
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)) grayscale(100%);
+            }
+        }
+
+        #characterImage.dying {
+            animation: character-dying 1.2s ease-in-out forwards;
+        }
+
+        #enemyDisplay.dying {
+            animation: character-dying 1.2s ease-in-out forwards;
+        }
+
+        /* Enemy Entrance Animation */
+        @keyframes enemy-entrance {
+            0% {
+                opacity: 0;
+                transform: translateX(100px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        #enemyDisplay.entering {
+            animation: enemy-entrance 0.8s ease-out forwards;
         }
 
         /* Fireball Animation */
@@ -479,9 +686,15 @@
                 
                 // Create a looping background music generator
                 const tempo = 1.5; // beats per second
+                let musicScheduleId = null;
+                
+                // Store the schedule ID globally for muting
+                window.musicScheduleId = null;
                 
                 // Bass line
                 function playBass(startTime) {
+                    if (!window.isMusicPlaying) return;
+                    
                     const bass = audioContext.createOscillator();
                     const bassGain = audioContext.createGain();
                     
@@ -503,6 +716,8 @@
                 
                 // Melody line
                 function playMelody(startTime) {
+                    if (!window.isMusicPlaying) return;
+                    
                     const melody = audioContext.createOscillator();
                     const melodyGain = audioContext.createGain();
                     const filter = audioContext.createBiquadFilter();
@@ -533,14 +748,19 @@
                 // Start background music loop
                 let currentTime = audioContext.currentTime;
                 const loopDuration = 4 / tempo; // 4 beats
+                window.isMusicPlaying = true;
                 
                 function scheduleMusic() {
+                    if (!window.isMusicPlaying) {
+                        return;
+                    }
+                    
                     playBass(currentTime);
                     playMelody(currentTime);
                     currentTime += loopDuration;
                     
                     // Schedule next loop
-                    setTimeout(scheduleMusic, (loopDuration * 1000) - 50);
+                    window.musicScheduleId = setTimeout(scheduleMusic, (loopDuration * 1000) - 50);
                 }
                 
                 scheduleMusic();
@@ -681,27 +901,56 @@
             }
         }
 
+        function playDyingAnimation(isPlayer) {
+            const target = isPlayer ? document.getElementById('characterImage') : document.getElementById('enemyDisplay');
+            if (target) {
+                target.classList.remove('dying');
+                void target.offsetWidth; // Trigger reflow
+                target.classList.add('dying');
+            }
+        }
+
+        // Enemy image mapping
+        const enemyImages = {
+            'HammerMan': '/character/enemybook.png',
+            'Grammar Goblin': '/character/goblin.png',
+            'Spelling Sprite': '/character/tree.png',
+            'Story Demon': '/character/demon.png',
+            'Library Lord': '/character/boos2.png'
+        };
+
+        function updateEnemyImage() {
+            const enemy = getCurrentEnemy();
+            const enemyDisplay = document.getElementById('enemyDisplay');
+            const imageSrc = enemyImages[enemy.name] || '/character/enemybook.png';
+            
+            enemyDisplay.src = imageSrc;
+            enemyDisplay.classList.remove('entering');
+            void enemyDisplay.offsetWidth; // Trigger reflow
+            enemyDisplay.classList.add('entering');
+        }
+
         // Game data with enemies
         const enemies = [
             { name: 'HammerMan', health: 100, words: [
-                { word: 'BOOK', hint: 'Something you read', emoji: '📕' },
-                { word: 'LETTER', hint: 'Part of an alphabet', emoji: '📄' }
+                { word: 'LIBRO', hint: 'Isang bagay na binabasa mo', emoji: '📕' },
+                { word: 'SULAT', hint: 'Bahagi ng alpabeto', emoji: '📄' }
             ]},
             { name: 'Grammar Goblin', health: 100, words: [
-                { word: 'SENTENCE', hint: 'Group of words with meaning', emoji: '📝' },
-                { word: 'PARAGRAPH', hint: 'Several sentences together', emoji: '📖' }
+                { word: 'PANGUNGUSAP', hint: 'Pangkat ng mga salita na may kahulugan', emoji: '📝' },
+                { word: 'TALATA', hint: 'Ilang pangungusap na magkasama', emoji: '📖' }
             ]},
             { name: 'Spelling Sprite', health: 100, words: [
-                { word: 'READING', hint: 'The act of looking at words', emoji: '👀' },
-                { word: 'WRITING', hint: 'Putting words on paper', emoji: '✏️' }
+                { word: 'PAGBABASA', hint: 'Ang kilos ng pagbabasa ng mga salita', emoji: '👀' },
+                { word: 'PAGSUSULAT', hint: 'Pagsusulat ng mga salita sa papel', emoji: '✏️' }
             ]},
             { name: 'Story Demon', health: 100, words: [
-                { word: 'CHARACTER', hint: 'Person in a story', emoji: '👤' },
-                { word: 'PLOT', hint: 'Main story events', emoji: '🎬' }
+                { word: 'KARAKTER', hint: 'Taong nasa kuwento', emoji: '👤' },
+                { word: 'KUWENTO', hint: 'Pangunahing kaganapan ng kuwento', emoji: '🎬' }
             ]},
             { name: 'Library Lord', health: 100, words: [
-                { word: 'FICTION', hint: 'Made-up stories', emoji: '📚' },
-                { word: 'KNOWLEDGE', hint: 'Information and learning', emoji: '🧠' }
+                { word: 'FIKSIYON', hint: 'Mga kuwentong gawa-gawa', emoji: '📚' },
+                { word: 'KAALAMAN', hint: 'Impormasyon at pag-aaral', emoji: '🧠' }
             ]}
         ];
 
@@ -753,6 +1002,7 @@
             hintCountDisplay.textContent = hints;
 
             if (playerHealth <= 0) {
+                playDyingAnimation(true);
                 messageDisplay.textContent = '💀 Game Over! You were defeated!';
                 messageDisplay.style.color = '#ef4444';
                 gameOver = true;
@@ -765,6 +1015,9 @@
             const currentWord = getCurrentWord();
             selectedLetters = [];
             messageDisplay.textContent = '';
+
+            // Update enemy image and entrance animation
+            updateEnemyImage();
 
             // Word display boxes
             const wordHTML = currentWord.word.split('').map((letter, index) => 
@@ -899,17 +1152,21 @@
 
                 setTimeout(() => {
                     if (enemy.health <= 0) {
-                        // Enemy defeated
-                        if (currentEnemyIndex < enemies.length - 1) {
-                            currentEnemyIndex++;
-                            currentWordInEnemyIndex = 0;
-                            messageDisplay.textContent = `🎉 Enemy Defeated! Next: ${enemies[currentEnemyIndex].name}`;
-                            messageDisplay.style.color = '#eab308';
-                            setTimeout(() => renderWord(), 2000);
-                        } else {
-                            // Game won
-                            showGameWon();
-                        }
+                        // Enemy defeated - play dying animation
+                        playDyingAnimation(false);
+                        
+                        setTimeout(() => {
+                            if (currentEnemyIndex < enemies.length - 1) {
+                                currentEnemyIndex++;
+                                currentWordInEnemyIndex = 0;
+                                messageDisplay.textContent = `🎉 Enemy Defeated! Next: ${enemies[currentEnemyIndex].name}`;
+                                messageDisplay.style.color = '#eab308';
+                                setTimeout(() => renderWord(), 2000);
+                            } else {
+                                // Game won
+                                showGameWon();
+                            }
+                        }, 1200);
                     } else {
                         currentWordInEnemyIndex++;
                         if (currentWordInEnemyIndex >= getCurrentEnemy().words.length) {
@@ -946,22 +1203,43 @@
 
         function showGameWon() {
             gameOver = true;
+            
+            // Hide characters and game arena content
+            const characterContainer = document.querySelector('[style*="left: 250px"]');
+            const enemyContainer = document.querySelector('[style*="right: 250px"]');
+            const healthBars = document.querySelectorAll('[style*="top: 20px"]');
+            const gameInfo = document.querySelector('[style*="top: 20px"][style*="left: 50%"]');
+            
+            if (characterContainer) characterContainer.style.display = 'none';
+            if (enemyContainer) enemyContainer.style.display = 'none';
+            healthBars.forEach(bar => bar.style.display = 'none');
+            if (gameInfo) gameInfo.style.display = 'none';
+            
             wordDisplay.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <p style="font-size: 80px; margin-bottom: 20px;">🏆</p>
+                <div style="text-align: center; padding: 40px; width: 100%;">
                     <h2 style="font-size: 40px; font-weight: bold; color: #22c55e; margin-bottom: 20px;">YOU WON!</h2>
-                    <p style="font-size: 24px; color: #666; margin-bottom: 30px;">Defeated all enemies and saved the library!</p>
-                    <div style="background: #f0f0f0; padding: 20px; border-radius: 10px; margin-bottom: 30px; font-size: 20px;">
-                        <p><strong>Final Score:</strong> ${score}</p>
-                        <p><strong>Combo Streak:</strong> ${combo}</p>
-                        <p><strong>Player Health:</strong> ${playerHealth}%</p>
-                    </div>
-                    <button onclick="location.reload()" style="padding: 15px 40px; background: #22c55e; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">
-                        🔄 Play Again
-                    </button>
+                    <p style="font-size: 24px; color: #fff; margin-bottom: 30px;">Defeated all enemies and saved the library!</p>
                 </div>
             `;
-            letterOptions.innerHTML = '';
+            
+            letterOptions.innerHTML = `
+                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 20; display: flex; flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
+                    <div style="background: rgba(0, 0, 0, 0.5); padding: 30px; border-radius: 10px; font-size: 20px; color: white; text-align: center;">
+                        <p style="margin: 10px 0;"><strong>Final Score:</strong> ${score}</p>
+                        <p style="margin: 10px 0;"><strong>Combo Streak:</strong> ${combo}</p>
+                        <p style="margin: 10px 0;"><strong>Player Health:</strong> ${playerHealth}%</p>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <button onclick="location.reload()" style="padding: 15px 40px; background: #22c55e; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.2s;">
+                            🔄 Play Again
+                        </button>
+                        <button onclick="window.location.href='/games'" style="padding: 15px 40px; background: #ef4444; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.2s;">
+                            ❌ Quit
+                        </button>
+                    </div>
+                </div>
+            `;
+            messageDisplay.innerHTML = '';
         }
 
         function resetWord() {
@@ -1014,8 +1292,32 @@
         resetBtn.addEventListener('click', resetWord);
         hintBtn.addEventListener('click', showHint);
 
+        // Mute button functionality
+        let isMuted = false;
+        const muteButton = document.getElementById('muteButton');
+        
+        muteButton.addEventListener('click', function() {
+            isMuted = !isMuted;
+            
+            if (isMuted) {
+                window.isMusicPlaying = false;
+                muteButton.textContent = '🔇';
+                muteButton.style.background = 'rgba(0, 0, 0, 0.5)';
+            } else {
+                window.isMusicPlaying = true;
+                muteButton.textContent = '🔊';
+                muteButton.style.background = 'rgba(0, 0, 0, 0.3)';
+            }
+        });
+
         // Initialize game
-        renderWord();
-        playBackgroundMusic();
+        const startBtn = document.getElementById('startBtn');
+        const startScreen = document.getElementById('startScreen');
+        
+        startBtn.addEventListener('click', function() {
+            startScreen.style.display = 'none';
+            renderWord();
+            playBackgroundMusic();
+        });
     </script>
 </x-layouts::app>
