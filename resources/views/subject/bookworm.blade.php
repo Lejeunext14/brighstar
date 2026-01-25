@@ -351,6 +351,22 @@
             }
         }
 
+        /* Dark Mode Game Controller Text */
+        @media (prefers-color-scheme: dark) {
+            #gameController {
+                color: #000000 !important;
+            }
+            
+            #gameController * {
+                color: #000000 !important;
+            }
+            
+            #gameController p,
+            #gameController div {
+                color: #000000 !important;
+            }
+        }
+
         /* Responsive Mute Button */
         @media (max-width: 768px) {
             #muteButton {
