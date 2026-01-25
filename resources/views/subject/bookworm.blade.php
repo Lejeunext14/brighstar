@@ -1,7 +1,7 @@
 <x-layouts::app :title="__('Human Book Game')">
     <div class="w-full">
         <!-- Header -->
-        <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-green-50 p-4 md:p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-green-900/20 mb-6 flex items-center justify-between">
+        <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-blue-50 to-green-50 p-4 md:p-8 dark:border-neutral-700 dark:from-blue-900/20 dark:to-green-900/20 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl md:text-4xl font-black text-gray-900 dark:text-white mb-2">
                     Human Book Game
@@ -13,14 +13,14 @@
         <!-- Game Arena -->
         <div class="rounded-xl border border-neutral-200 bg-white p-0 dark:border-neutral-700 dark:bg-neutral-900 mb-6 overflow-hidden">
             <!-- Game Background -->
-            <div id="gameArena" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('/image/pixel.jpg'); background-size: cover; background-position: center 85%; background-attachment: fixed; min-height: 500px; height: 100vh; max-height: 900px; position: relative; overflow: hidden;" class="responsive-game-arena">
+            <div id="gameArena" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('/image/pixel.jpg'); background-size: cover; background-position: center 85%; background-attachment: scroll; min-height: 500px; height: 100vh; max-height: 900px; position: relative; overflow: hidden;" class="responsive-game-arena">
 
                 <!-- Start Screen -->
                 <div id="startScreen" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.8); z-index: 100;">
-                    <div style="text-align: center; padding: 20px;">
-                        <h2 style="font-size: clamp(32px, 8vw, 60px); font-weight: bold; color: #22c55e; margin-bottom: 20px;">Human Book Game</h2>
-                        <p style="font-size: clamp(16px, 4vw, 24px); color: white; margin-bottom: 40px;">Complete words to defeat enemies and save the library!</p>
-                        <button id="startBtn" style="padding: clamp(12px, 3vw, 20px) clamp(30px, 8vw, 60px); background: #22c55e; color: black; border: none; border-radius: 12px; font-size: clamp(16px, 4vw, 24px); font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                    <div style="text-align: center; padding: clamp(15px, 5vw, 20px); max-width: 90vw;">
+                        <h2 style="font-size: clamp(28px, 8vw, 60px); font-weight: bold; color: #22c55e; margin-bottom: 20px;">Human Book Game</h2>
+                        <p style="font-size: clamp(14px, 4vw, 24px); color: white; margin-bottom: 40px;">Complete words to defeat enemies and save the library!</p>
+                        <button id="startBtn" style="padding: clamp(12px, 3vw, 20px) clamp(30px, 8vw, 60px); background: #22c55e; color: black; border: none; border-radius: 12px; font-size: clamp(14px, 4vw, 24px); font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
                              Start Game
                         </button>
                     </div>
@@ -79,14 +79,14 @@
                 </div>
 
                 <!-- Game Info Display -->
-                <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; gap: 15px; z-index: 5;" class="game-info">
-                    <div style="background: rgba(0, 0, 0, 0.6); color: white; padding: 15px 25px; border-radius: 10px; font-weight: bold;">
+                <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; gap: 10px; z-index: 5; flex-direction: row;" class="game-info">
+                    <div style="background: rgba(0, 0, 0, 0.7); color: white; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 14px;">
                         Round: <span id="roundDisplay">1</span>/5
                     </div>
-                    <div style="background: rgba(0, 0, 0, 0.6); color: white; padding: 15px 25px; border-radius: 10px; font-weight: bold;">
+                    <div style="background: rgba(0, 0, 0, 0.7); color: white; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 14px;">
                         Score: <span id="scoreDisplay">0</span>
                     </div>
-                    <div style="background: rgba(0, 0, 0, 0.6); color: white; padding: 15px 25px; border-radius: 10px; font-weight: bold;">
+                    <div style="background: rgba(0, 0, 0, 0.7); color: white; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 14px;">
                         Combo: <span id="comboDisplay">0</span>
                     </div>
                 </div>
@@ -94,8 +94,8 @@
                 <!-- Game Controls Section (Centered in Arena) -->
                 <div id="gameController" style="position: absolute; top: 85%; left: 50%; transform: translate(-50%, -50%); z-index: 8; max-width: 600px; width: 90%;">
                     <!-- Word Display -->
-                    <div style="text-align: center; margin-bottom: 25px;">
-                        <p style="color: white; margin-bottom: 15px; font-size: 18px; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);" id="hintText">Complete the word</p>
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <p style="color: white; margin-bottom: 8px; font-size: clamp(12px, 2.5vw, 16px); font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);" id="hintText">Complete the word</p>
                         <div class="word-display" id="wordDisplay" style="justify-content: center;">
                             <!-- Word boxes will be generated here -->
                         </div>
@@ -107,25 +107,25 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
-                        <button id="resetBtn" style="padding: 10px 20px; background: rgba(59, 130, 246, 0.9); color: white; border: 2px solid white; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
-                            🔄 Reset Word
+                    <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; flex-wrap: wrap;">
+                        <button id="resetBtn" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.9); color: white; border: 2px solid white; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3); font-size: clamp(11px, 2vw, 14px);">
+                            🔄 Reset
                         </button>
-                        <button id="hintBtn" style="padding: 10px 20px; background: rgba(234, 179, 8, 0.9); color: #000; border: 2px solid white; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                        <button id="hintBtn" style="padding: 8px 16px; background: rgba(234, 179, 8, 0.9); color: #000; border: 2px solid white; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3); font-size: clamp(11px, 2vw, 14px);">
                             💡 Hint (<span id="hintCount">3</span>)
                         </button>
                     </div>
 
                     <!-- Message Display -->
-                    <div id="message" style="text-align: center; font-size: 18px; font-weight: bold; min-height: 30px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+                    <div id="message" style="text-align: center; font-size: clamp(14px, 3vw, 18px); font-weight: bold; min-height: 30px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
                 </div>
             </div>
         </div>
 
         <!-- Game Stats -->
-        <div class="rounded-xl border border-neutral-200 bg-blue-50 dark:bg-blue-900/20 p-6 dark:border-neutral-700">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Game Info:</h3>
-            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+        <div class="rounded-xl border border-neutral-200 bg-blue-50 dark:bg-blue-900/20 p-4 md:p-6 dark:border-neutral-700">
+            <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-3">Game Info:</h3>
+            <ul class="list-disc list-inside text-sm md:text-base text-gray-700 dark:text-gray-300 space-y-2">
                 <li>Complete each word to damage the enemy and reduce their health</li>
                 <li>Defeat all 5 enemies to win the game!</li>
                 <li>Get hints to help you find the right letters</li>
@@ -144,8 +144,15 @@
         @media (max-width: 768px) {
             .responsive-game-arena {
                 height: auto !important;
-                min-height: 600px !important;
+                min-height: 1200px !important;
                 max-height: none !important;
+                background-attachment: scroll !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .responsive-game-arena {
+                min-height: 1400px !important;
             }
         }
 
@@ -167,15 +174,52 @@
             }
         }
 
+        @media (max-width: 480px) {
+            .character-health {
+                left: 5px !important;
+                top: 8px !important;
+                z-index: 15 !important;
+            }
+            
+            .character-health > div:first-child {
+                padding: 4px 10px !important;
+                font-size: 11px !important;
+            }
+            
+            .character-health-bar {
+                width: 75px !important;
+                height: 14px !important;
+            }
+            
+            .character-health-text {
+                font-size: 8px !important;
+                margin-top: 2px !important;
+            }
+        }
+
         /* Responsive Character Image */
         @media (max-width: 768px) {
             .character-container {
-                left: 10% !important;
-                width: 150px !important;
+                left: 5% !important;
+                top: 30% !important;
+                width: 120px !important;
             }
             
             .character-container img {
-                width: 150px !important;
+                width: 120px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character-container {
+                left: 50% !important;
+                transform: translateX(-65%) !important;
+                top: 35% !important;
+                width: 80px !important;
+            }
+            
+            .character-container img {
+                width: 80px !important;
             }
         }
 
@@ -197,28 +241,92 @@
             }
         }
 
+        @media (max-width: 480px) {
+            .enemy-health {
+                right: 5px !important;
+                top: 8px !important;
+                z-index: 15 !important;
+            }
+            
+            .enemy-health > div:first-child {
+                padding: 4px 10px !important;
+                font-size: 11px !important;
+            }
+            
+            .enemy-health-bar {
+                width: 75px !important;
+                height: 14px !important;
+            }
+            
+            .enemy-health-text {
+                font-size: 8px !important;
+                margin-top: 2px !important;
+            }
+        }
+
         /* Responsive Enemy Image */
         @media (max-width: 768px) {
             .enemy-container {
-                right: 10% !important;
-                width: 150px !important;
+                right: 5% !important;
+                top: 30% !important;
+                width: 120px !important;
             }
             
             .enemy-container img {
-                width: 150px !important;
+                width: 120px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .enemy-container {
+                right: 50% !important;
+                transform: translateX(65%) !important;
+                top: 35% !important;
+                width: 80px !important;
+            }
+            
+            .enemy-container img {
+                width: 80px !important;
             }
         }
 
         /* Responsive Game Info */
         @media (max-width: 768px) {
             .game-info {
-                flex-direction: column;
-                gap: 8px !important;
+                flex-direction: row !important;
+                gap: 4px !important;
+                top: 70px !important;
+                flex-wrap: wrap;
+                padding: 0 5px;
+                width: 95%;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
             }
             
             .game-info div {
-                padding: 8px 12px !important;
-                font-size: 12px !important;
+                padding: 5px 8px !important;
+                font-size: 10px !important;
+                border-radius: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-info {
+                flex-direction: row !important;
+                gap: 3px !important;
+                top: 65px !important;
+                width: 100%;
+                left: 0 !important;
+                right: 0 !important;
+                transform: none !important;
+                padding: 0 5px;
+                justify-content: center !important;
+            }
+            
+            .game-info div {
+                padding: 4px 6px !important;
+                font-size: 9px !important;
+                border-radius: 4px;
             }
         }
 
@@ -226,8 +334,20 @@
         @media (max-width: 768px) {
             #gameController {
                 top: auto !important;
-                bottom: 20px !important;
+                bottom: 10px !important;
                 transform: translate(-50%, 0) !important;
+                width: 95% !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #gameController {
+                top: 65% !important;
+                bottom: auto !important;
+                transform: translate(-50%, 0) !important;
+                width: 95% !important;
+                max-width: 95vw !important;
+                padding: 8px !important;
             }
         }
 
@@ -236,6 +356,16 @@
             #muteButton {
                 font-size: 20px !important;
                 padding: 8px 10px !important;
+                left: 10px !important;
+                top: 50% !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #muteButton {
+                font-size: 18px !important;
+                padding: 6px 8px !important;
+                left: 8px !important;
             }
         }
 
@@ -250,7 +380,14 @@
         @media (max-width: 768px) {
             .word-display {
                 gap: 4px !important;
-                margin-bottom: 20px !important;
+                margin-bottom: 12px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .word-display {
+                gap: 2px !important;
+                margin-bottom: 8px !important;
             }
         }
 
@@ -270,10 +407,19 @@
 
         @media (max-width: 768px) {
             .letter-box {
-                width: 35px !important;
-                height: 35px !important;
-                font-size: 16px !important;
+                width: 40px !important;
+                height: 40px !important;
+                font-size: 18px !important;
                 border: 1.5px solid #ccc;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-box {
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 14px !important;
+                border: 1px solid #ccc;
             }
         }
 
@@ -294,7 +440,14 @@
         @media (max-width: 768px) {
             .letter-options {
                 gap: 4px !important;
-                margin-bottom: 15px !important;
+                margin-bottom: 10px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-options {
+                gap: 2px !important;
+                margin-bottom: 8px !important;
             }
         }
 
@@ -313,10 +466,19 @@
 
         @media (max-width: 768px) {
             .letter-btn {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 12px !important;
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 13px !important;
                 border: 1.5px solid #cbd5e1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-btn {
+                width: 28px !important;
+                height: 28px !important;
+                font-size: 10px !important;
+                border: 1px solid #cbd5e1;
             }
         }
 
@@ -397,12 +559,32 @@
             100% { transform: translateX(0) scale(1); }
         }
 
+        @media (max-width: 768px) {
+            @keyframes bounce-attack {
+                0% { transform: translateX(0) scale(1); }
+                20% { transform: translateX(15px) scale(1.05); }
+                40% { transform: translateX(15px) scale(1.05); }
+                60% { transform: translateX(0) scale(1); }
+                100% { transform: translateX(0) scale(1); }
+            }
+        }
+
         @keyframes enemy-bounce-attack {
             0% { transform: translateX(0) scaleX(-1) scale(1); }
             20% { transform: translateX(-30px) scaleX(-1) scale(1.1); }
             40% { transform: translateX(-30px) scaleX(-1) scale(1.1); }
             60% { transform: translateX(0) scaleX(-1) scale(1); }
             100% { transform: translateX(0) scaleX(-1) scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            @keyframes enemy-bounce-attack {
+                0% { transform: translateX(0) scaleX(-1) scale(1); }
+                20% { transform: translateX(-15px) scaleX(-1) scale(1.05); }
+                40% { transform: translateX(-15px) scaleX(-1) scale(1.05); }
+                60% { transform: translateX(0) scaleX(-1) scale(1); }
+                100% { transform: translateX(0) scaleX(-1) scale(1); }
+            }
         }
 
         @keyframes character-shake {
@@ -514,6 +696,25 @@
             }
         }
 
+        @media (max-width: 768px) {
+            @keyframes fireball-throw {
+                0% {
+                    opacity: 1;
+                    transform: translateX(0) translateY(0) scale(1);
+                    filter: drop-shadow(0 0 10px #ff6b00);
+                }
+                50% {
+                    opacity: 1;
+                    filter: drop-shadow(0 0 20px #ff6b00) drop-shadow(0 0 30px #ff3300);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateX(200px) translateY(-20px) scale(1);
+                    filter: drop-shadow(0 0 20px #ff3300) drop-shadow(0 0 40px #ff0000);
+                }
+            }
+        }
+
         @keyframes fireball-impact {
             0% {
                 opacity: 1;
@@ -537,6 +738,24 @@
             z-index: 9;
             pointer-events: none;
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            #fireball {
+                left: 120px !important;
+                font-size: 30px !important;
+                width: 30px !important;
+                height: 30px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #fireball {
+                left: 50% !important;
+                font-size: 24px !important;
+                width: 24px !important;
+                height: 24px !important;
+            }
         }
 
         #fireball.throwing {
@@ -567,6 +786,25 @@
             }
         }
 
+        @media (max-width: 768px) {
+            @keyframes enemy-fireball-throw {
+                0% {
+                    opacity: 1;
+                    transform: translateX(0) translateY(0) scale(1);
+                    filter: drop-shadow(0 0 10px #ff6b00);
+                }
+                50% {
+                    opacity: 1;
+                    filter: drop-shadow(0 0 20px #ff6b00) drop-shadow(0 0 30px #ff3300);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateX(-200px) translateY(-20px) scale(1);
+                    filter: drop-shadow(0 0 20px #ff3300) drop-shadow(0 0 40px #ff0000);
+                }
+            }
+        }
+
         @keyframes enemy-fireball-impact {
             0% {
                 opacity: 1;
@@ -590,6 +828,24 @@
             z-index: 9;
             pointer-events: none;
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            #enemyFireball {
+                right: 120px !important;
+                font-size: 30px !important;
+                width: 30px !important;
+                height: 30px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #enemyFireball {
+                right: 50% !important;
+                font-size: 24px !important;
+                width: 24px !important;
+                height: 24px !important;
+            }
         }
 
         #enemyFireball.throwing {
