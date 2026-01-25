@@ -1,5 +1,113 @@
 <x-layouts::app :title="__('Subject Games')">
-    <div class="w-full">
+    <style>
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% {
+                opacity: 1;
+            }
+            50%, 100% {
+                opacity: 0;
+            }
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: currentColor;
+            margin-left: 2px;
+            animation: blink 0.7s infinite;
+        }
+
+        .typing-text {
+            min-height: 1.5em;
+        }
+    </style>
+    <script>
+        function typeWriter(element, text, speed = 50) {
+            if (!element) return;
+            element.textContent = '';
+            let index = 0;
+
+            function type() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, speed);
+                } else {
+                    // Remove cursor when done
+                    const cursor = element.querySelector('.typing-cursor');
+                    if (cursor) cursor.remove();
+                }
+            }
+
+            type();
+            
+            // Add cursor
+            const cursor = document.createElement('span');
+            cursor.className = 'typing-cursor';
+            element.appendChild(cursor);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatText = document.querySelector('.chat-bubble-text');
+            const originalText = "Welcome! Let's learn and have fun with these games! 🎮";
+            
+            console.log('Game page initialized. chatText element:', chatText);
+            
+            if (chatText) {
+                typeWriter(chatText, originalText, 50);
+            } else {
+                console.warn('Chat text element not found');
+            }
+
+            // Coloring game hover event
+            const coloringGameCard = document.querySelector('[data-game="coloring"]');
+            console.log('Coloring game card:', coloringGameCard);
+            
+            if (coloringGameCard) {
+                coloringGameCard.addEventListener('mouseenter', function() {
+                    console.log('Mouse enter coloring game');
+                    if (window.changeCharacterPose) {
+                        window.changeCharacterPose('/character/Thinking.fbx');
+                    }
+                    if (chatText) {
+                        typeWriter(chatText, "Do you want to play Coloring games? 🎨", 50);
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="w-full flex gap-6">
+        <!-- Left Sidebar: 3D Character Instructor -->
+        <div class="hidden lg:flex lg:w-full lg:max-w-sm flex-col items-center sticky top-6 h-fit">
+            <!-- Character Container -->
+            <div id="character-container" class="w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg mb-4" style="position: relative; height: 500px;">
+                <!-- Three.js will render here -->
+                
+                <!-- Chat Bubble -->
+                <div class="floating absolute top-20 left-4 right-4 max-w-xs bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-800 dark:text-gray-200 font-medium typing-text chat-bubble-text">
+                    </p>
+                    <div class="absolute -top-2 left-6 w-0 h-0 border-l-2 border-r-2 border-b-3 border-l-transparent border-r-transparent border-b-white dark:border-b-gray-700"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1">
         <!-- Header Section -->
         <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-purple-50 to-pink-50 p-8 dark:border-neutral-700 dark:from-purple-900/20 dark:to-pink-900/20 mb-6 flex items-center justify-between">
             <div>
@@ -20,7 +128,7 @@
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @if($subject === 'filipino')
                     <!-- Game 1: Coloring Game -->
-                    <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
+                    <div data-game="coloring" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
                         <div class="h-40 bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
                             🎨
                         </div>
@@ -28,6 +136,20 @@
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">Coloring Game</h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Create your own colorful artwork</p>
                             <a href="{{ route('subject.coloring', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
+                                Play Now →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Game 2: Book Worm Game -->
+                    <div data-game="bookworm" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
+                        <div class="h-40 bg-gradient-to-br from-blue-400 to-green-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
+                            📚
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Book Worm Game</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Find the missing letters to complete the words</p>
+                            <a href="{{ route('subject.bookworm', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-blue-500 to-green-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
                                 Play Now →
                             </a>
                         </div>
@@ -73,6 +195,7 @@
             <a href="{{ route('subject.games', ['subject' => 'filipino']) }}" class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300" title="Play Games">
                 <span class="text-2xl">🎮</span>
             </a>
+        </div>
         </div>
     </div>
 </x-layouts::app>

@@ -86,6 +86,10 @@ Route::middleware(['auth'])->group(function () {
         return view('subject.coloring', ['subject' => $subject]);
     })->name('subject.coloring');
 
+    Route::get('/subject/{subject}/bookworm', function ($subject) {
+        return view('subject.bookworm', ['subject' => $subject]);
+    })->name('subject.bookworm');
+
     Route::get('/lesson/{lesson}', function ($lesson) {
         // Define lesson sequence for unlocking
         $lessonSequence = [
