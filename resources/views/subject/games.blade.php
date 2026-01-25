@@ -118,7 +118,7 @@
                             📚
                         </div>
                         <div class="p-4">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Book Worm Game</h3>
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Human Book Game</h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Find the missing letters to complete the words</p>
                             <a href="{{ route('subject.bookworm', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-blue-500 to-green-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
                                 Play Now →
