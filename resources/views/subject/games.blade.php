@@ -91,21 +91,6 @@
         });
     </script>
     <div class="w-full flex gap-6">
-        <!-- Left Sidebar: 3D Character Instructor -->
-        <div class="hidden lg:flex lg:w-full lg:max-w-sm flex-col items-center sticky top-6 h-fit">
-            <!-- Character Container -->
-            <div id="character-container" class="w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg mb-4" style="position: relative; height: 500px;">
-                <!-- Three.js will render here -->
-                
-                <!-- Chat Bubble -->
-                <div class="floating absolute top-20 left-4 right-4 max-w-xs bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 border-l-4 border-purple-500">
-                    <p class="text-sm text-gray-800 dark:text-gray-200 font-medium typing-text chat-bubble-text">
-                    </p>
-                    <div class="absolute -top-2 left-6 w-0 h-0 border-l-2 border-r-2 border-b-3 border-l-transparent border-r-transparent border-b-white dark:border-b-gray-700"></div>
-                </div>
-            </div>
-        </div>
-
         <!-- Main Content -->
         <div class="flex-1">
         <!-- Header Section -->
@@ -127,21 +112,7 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Available Games</h2>
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @if($subject === 'filipino')
-                    <!-- Game 1: Coloring Game -->
-                    <div data-game="coloring" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
-                        <div class="h-40 bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
-                            🎨
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Coloring Game</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Create your own colorful artwork</p>
-                            <a href="{{ route('subject.coloring', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
-                                Play Now →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Game 2: Book Worm Game -->
+                    <!-- Game: Book Worm Game -->
                     <div data-game="bookworm" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
                         <div class="h-40 bg-gradient-to-br from-blue-400 to-green-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
                             📚
