@@ -56,6 +56,11 @@ class LoginUser
         // Reset rate limiter
         $this->limiter->clear($request);
 
+        // Update user role if provided in login form
+        if ($request->has('role') && $request->role) {
+            $user->update(['role' => $request->role]);
+        }
+
         // Return the authenticated user
         return $user;
     }

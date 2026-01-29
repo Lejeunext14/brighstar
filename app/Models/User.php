@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -12,7 +13,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -53,6 +54,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_seen_at' => 'datetime',
         ];
     }
 
@@ -114,5 +116,33 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(Notification::class)->latest();
+    }
+
+    /**
+     * Check if user is currently online (active within last 10 minutes)
+     */
+    public function isOnline(): bool
+    {
+        if (!$this->last_seen_at) {
+            return false;
+        }
+
+        return $this->last_seen_at->diffInMinutes(now()) <= 10;
+    }
+
+    /**
+     * Get online status label
+     */
+    public function onlineStatus(): string
+    {
+        if ($this->isOnline()) {
+            return 'Online';
+        }
+
+        if (!$this->last_seen_at) {
+            return 'Never';
+        }
+
+        return 'Last seen ' . $this->last_seen_at->diffForHumans();
     }
 }

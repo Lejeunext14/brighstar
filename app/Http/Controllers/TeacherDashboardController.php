@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\LessonProgress;
+use App\Models\ClassRoom;
+use App\Models\Assignment;
 use Auth;
 
 class TeacherDashboardController extends Controller
@@ -19,11 +21,19 @@ class TeacherDashboardController extends Controller
         // Get all students (users with role 'student')
         $students = User::where('role', 'student')->get();
         
+        // Get teacher's classes
+        $classes = ClassRoom::where('teacher_id', $teacher->id)->get();
+        
+        // Get teacher's assignments
+        $assignments = Assignment::where('teacher_id', $teacher->id)->where('is_archived', false)->get();
+        $pendingAssignments = $assignments->where('status', 'pending')->count();
+        $completedAssignments = $assignments->where('status', 'completed')->count();
+        $totalAssignments = $assignments->count();
+        
         // Calculate statistics
         $totalStudents = $students->count();
         $activeToday = $this->getStudentsActiveToday();
         $classAverage = $this->calculateClassAverage();
-        $pendingAssignments = 0; // Placeholder - no assignments system yet
         
         // Get recent student activity
         $recentActivities = $this->getRecentActivities();
@@ -37,8 +47,26 @@ class TeacherDashboardController extends Controller
             'activeToday' => $activeToday,
             'classAverage' => $classAverage,
             'pendingAssignments' => $pendingAssignments,
+            'completedAssignments' => $completedAssignments,
+            'totalAssignments' => $totalAssignments,
+            'assignments' => $assignments,
             'recentActivities' => $recentActivities,
             'studentProgress' => $studentProgress,
+            'students' => $students,
+            'classes' => $classes,
+        ]);
+    }
+
+    /**
+     * Show all students
+     */
+    public function showAllStudents()
+    {
+        $teacher = Auth::user();
+        $students = User::where('role', 'student')->get();
+
+        return view('pages.teacher.students', [
+            'teacher' => $teacher,
             'students' => $students,
         ]);
     }

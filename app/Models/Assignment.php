@@ -8,24 +8,39 @@ class Assignment extends Model
 {
     protected $fillable = [
         'user_id',
+        'teacher_id',
         'title',
         'description',
         'subject',
         'due_date',
         'status',
         'priority',
+        'submitted_at',
+        'submission_notes',
+        'is_archived',
+        'archived_at',
     ];
 
     protected $casts = [
         'due_date' => 'datetime',
+        'submitted_at' => 'datetime',
+        'archived_at' => 'datetime',
     ];
 
     /**
-     * Get the user that owns this assignment
+     * Get the student that owns this assignment
      */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the teacher who created this assignment
+     */
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 
     /**
@@ -34,6 +49,14 @@ class Assignment extends Model
     public function isOverdue(): bool
     {
         return $this->due_date && $this->due_date->isPast() && $this->status !== 'completed';
+    }
+
+    /**
+     * Check if assignment is submitted
+     */
+    public function isSubmitted(): bool
+    {
+        return $this->submitted_at !== null;
     }
 
     /**

@@ -114,7 +114,17 @@
 
                             <!-- Actions -->
                             @if ($assignment->status !== 'completed')
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 flex-wrap">
+                                    @if (!$assignment->isSubmitted())
+                                        <button type="button" onclick="showSubmitModal({{ $assignment->id }})" class="flex-1 px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold rounded-lg hover:shadow-lg transition-all">
+                                            📤 Submit Assignment
+                                        </button>
+                                    @else
+                                        <div class="flex-1 px-4 py-2 bg-green-100 dark:bg-green-900 border border-green-500 rounded-lg text-center">
+                                            <span class="text-green-700 dark:text-green-200 font-semibold">✅ Submitted</span>
+                                            <p class="text-xs text-green-600 dark:text-green-300">{{ $assignment->submitted_at->format('M d, Y h:i A') }}</p>
+                                        </div>
+                                    @endif
                                     <form action="{{ route('assignments.complete', $assignment) }}" method="POST" style="flex: 1;">
                                         @csrf
                                         <button type="submit" class="w-full px-4 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white font-bold rounded-lg hover:shadow-lg transition-all">
@@ -131,6 +141,12 @@
                                 </div>
                             @else
                                 <div class="flex gap-2">
+                                    @if ($assignment->isSubmitted())
+                                        <div class="flex-1 px-4 py-2 bg-green-100 dark:bg-green-900 border border-green-500 rounded-lg text-center">
+                                            <span class="text-green-700 dark:text-green-200 font-semibold">✅ Submitted</span>
+                                            <p class="text-xs text-green-600 dark:text-green-300">{{ $assignment->submitted_at->format('M d, Y h:i A') }}</p>
+                                        </div>
+                                    @endif
                                     <form action="{{ route('assignments.destroy', $assignment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this assignment?');" style="flex: 1;">
                                         @csrf
                                         @method('DELETE')
@@ -144,6 +160,47 @@
                     @endforeach
                 </div>
             @endif
-        </div>
+
+            <!-- Submit Modal -->
+            <div id="submitModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Submit Assignment</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">Add any notes or comments about your submission (optional).</p>
+                    
+                    <form id="submitForm" method="POST" action="" class="space-y-4">
+                        @csrf
+                        <textarea name="submission_notes" rows="4" placeholder="Your submission notes..."
+                                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                        
+                        <div class="flex gap-2">
+                            <button type="submit" class="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-colors">
+                                ✓ Submit
+                            </button>
+                            <button type="button" onclick="closeSubmitModal()" class="flex-1 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors">
+                                ✕ Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                function showSubmitModal(assignmentId) {
+                    const form = document.getElementById('submitForm');
+                    form.action = '/assignments/' + assignmentId + '/submit';
+                    document.getElementById('submitModal').classList.remove('hidden');
+                }
+
+                function closeSubmitModal() {
+                    document.getElementById('submitModal').classList.add('hidden');
+                }
+
+                // Close modal when clicking outside
+                document.getElementById('submitModal').addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeSubmitModal();
+                    }
+                });
+            </script>        </div>
     </div>
 </x-layouts::app>

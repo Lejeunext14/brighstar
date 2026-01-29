@@ -3,15 +3,17 @@
 ])
 
 @if($sidebar)
-    <flux:sidebar.brand name="NLLC" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md">
+    <div class="flex items-center justify-center gap-2 px-3 py-2">
+        <div class="flex aspect-square size-8 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-purple-600">
             <x-app-logo-icon class="size-5 fill-current" />
-        </x-slot>
-    </flux:sidebar.brand>
+        </div>
+        <span class="font-semibold text-sm">NLLC</span>
+    </div>
 @else
-    <flux:brand name="NLLC" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md">
+    <div class="flex items-center justify-center gap-2 px-3 py-2">
+        <div class="flex aspect-square size-8 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-purple-600">
             <x-app-logo-icon class="size-5 fill-current" />
-        </x-slot>
-    </flux:brand>
+        </div>
+        <span class="font-semibold text-sm">NLLC</span>
+    </div>
 @endif

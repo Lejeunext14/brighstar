@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\AdminArchivedController;
 use App\Http\Controllers\AdminReportsController;
 use App\Http\Controllers\AdminLogsController;
 use App\Http\Controllers\LessonProgressController;
@@ -35,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware('admin.role')->name('admin.dashboard');
 
     Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'index'])->middleware('teacher.role')->name('teacher.dashboard');
+    Route::get('/teacher/students', [TeacherDashboardController::class, 'showAllStudents'])->middleware('teacher.role')->name('teacher.students');
 
     Route::get('/parent/dashboard', [ParentDashboardController::class, 'index'])->middleware('parent.role')->name('parent.dashboard');
 
@@ -43,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/users/{user}/edit', [UserManagementController::class, 'edit'])->middleware('admin.role')->name('users.edit');
     Route::put('/admin/users/{user}', [UserManagementController::class, 'update'])->middleware('admin.role')->name('users.update');
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->middleware('admin.role')->name('users.destroy');
+    Route::post('/admin/users/{id}/restore', [UserManagementController::class, 'restore'])->middleware('admin.role')->name('users.restore');
+    Route::delete('/admin/users/{id}/force-delete', [UserManagementController::class, 'forceDelete'])->middleware('admin.role')->name('users.force-delete');
 
     // Admin Parent-Child Management Routes
     Route::get('/admin/parent-child', [AdminParentChildController::class, 'index'])->middleware('admin.role')->name('admin.parent-child.index');
@@ -51,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin Settings, Reports, and Logs Routes
     Route::get('/admin/settings', [AdminSettingsController::class, 'index'])->middleware('admin.role')->name('admin.settings');
+    Route::get('/admin/archived', [AdminArchivedController::class, 'index'])->middleware('admin.role')->name('admin.archived');
     Route::get('/admin/reports', [AdminReportsController::class, 'index'])->middleware('admin.role')->name('admin.reports');
     Route::get('/admin/logs', [AdminLogsController::class, 'index'])->middleware('admin.role')->name('admin.logs');
 
@@ -61,7 +66,18 @@ Route::middleware(['auth'])->group(function () {
     // Assignment Management Routes
     Route::get('/assignments', [AssignmentController::class, 'index'])->name('assignments.index');
     Route::post('/assignments/{assignment}/complete', [AssignmentController::class, 'complete'])->name('assignments.complete');
+    Route::post('/assignments/{assignment}/submit', [AssignmentController::class, 'submit'])->name('assignments.submit');
     Route::delete('/assignments/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
+
+    // Teacher Assignment Routes
+    Route::middleware('teacher.role')->group(function () {
+        Route::get('/assignments/create', [AssignmentController::class, 'create'])->name('assignments.create');
+        Route::post('/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+        Route::get('/teacher/assignments', [AssignmentController::class, 'teacherIndex'])->name('teacher.assignments.index');
+        Route::post('/assignments/{assignment}/archive', [AssignmentController::class, 'archive'])->name('assignments.archive');
+        Route::get('/teacher/assignments/archived', [AssignmentController::class, 'archivedIndex'])->name('teacher.assignments.archived');
+        Route::post('/assignments/{assignment}/restore', [AssignmentController::class, 'restore'])->name('assignments.restore');
+    });
 
     // Notification Routes
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');

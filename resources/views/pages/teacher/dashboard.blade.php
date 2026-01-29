@@ -37,68 +37,37 @@
                 <p class="text-4xl font-bold text-gray-900 dark:text-white">{{ $pendingAssignments }}</p>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Pending reviews</p>
             </div>
-
-            <!-- Class Average -->
-            <div class="rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-700 dark:bg-neutral-900">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-semibold text-gray-600 dark:text-gray-400">Class Average</h3>
-                    <span class="text-3xl">📊</span>
-                </div>
-                <p class="text-4xl font-bold text-gray-900 dark:text-white">{{ $classAverage }}%</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Overall progress</p>
-            </div>
         </div>
 
         <!-- Classes Section -->
-        <div class="rounded-xl border border-neutral-200 bg-white p-8 dark:border-neutral-700 dark:bg-neutral-900 mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">My Classes</h2>
-            <div class="grid gap-6 md:grid-cols-3">
-                <!-- Class Card 1 -->
-                <a href="#" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
-                    <div class="h-40 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-5xl">
-                        📚
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-gray-900 dark:text-white mb-2">Class 1</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Grade Level - Subject</p>
-                        <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-                            <span>0 Students</span>
-                            <span>0% Complete</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Class Card 2 -->
-                <a href="#" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
-                    <div class="h-40 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-5xl">
-                        🎓
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-gray-900 dark:text-white mb-2">Class 2</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Grade Level - Subject</p>
-                        <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-                            <span>0 Students</span>
-                            <span>0% Complete</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Class Card 3 -->
-                <a href="#" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer block">
-                    <div class="h-40 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-5xl">
-                        ✏️
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-gray-900 dark:text-white mb-2">Class 3</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Grade Level - Subject</p>
-                        <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-                            <span>0 Students</span>
-                            <span>0% Complete</span>
-                        </div>
-                    </div>
-                </a>
+        <a href="{{ route('teacher.students') }}" class="block rounded-xl border border-neutral-200 bg-white hover:shadow-lg transition-all dark:border-neutral-700 dark:bg-neutral-900 mb-6 overflow-hidden">
+            <div class="h-40 bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-6xl">
+                📚
             </div>
-        </div>
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">My Classes</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Manage and organize your student classes</p>
+                
+                @if ($classes->isEmpty())
+                    <p class="text-gray-600 dark:text-gray-400">No classes created yet</p>
+                @else
+                    <div class="grid grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $classes->count() }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Classes</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-blue-600">{{ $classes->sum(fn($c) => $c->students()->count()) }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Students</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-green-600">{{ round($classes->avg(fn($c) => $c->progress_percentage)) }}%</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Avg Progress</p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </a>
 
         <!-- Recent Student Activity -->
         <div class="rounded-xl border border-neutral-200 bg-white p-8 dark:border-neutral-700 dark:bg-neutral-900">
