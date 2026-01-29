@@ -9,9 +9,19 @@
 
             <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
 
+            <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors" title="Home">
+                <flux:icon icon="home" class="w-5 h-5" />
+                <span class="hidden sm:inline text-sm font-medium">Home</span>
+            </a>
+
+            <a href="{{ route('assignments.index') }}" wire:navigate class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors" title="Assignments">
+                <flux:icon icon="document" class="w-5 h-5" />
+                <span class="hidden sm:inline text-sm font-medium">Assignments</span>
+            </a>
+
             <flux:spacer />
 
-            
+            <x-notification-dropdown />
 
             <x-desktop-user-menu />
         </flux:header>

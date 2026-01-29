@@ -28,6 +28,7 @@ class User extends Authenticatable
         'relationship_type',
         'student_id',
         'parent_name',
+        'avatar',
     ];
 
     /**
@@ -105,5 +106,13 @@ class User extends Authenticatable
     public function lessonProgress()
     {
         return $this->hasMany(LessonProgress::class);
+    }
+
+    /**
+     * Get this user's notifications
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class)->latest();
     }
 }

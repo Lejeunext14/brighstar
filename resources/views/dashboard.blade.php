@@ -80,26 +80,6 @@
                     </div>
                 </div>
 
-                <!-- Character Card -->
-                <a href="{{ route('avatar.edit') }}" class="lg:col-span-1 bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-8 shadow-2xl flex flex-col items-center justify-center text-white hover:shadow-2xl transition-all transform hover:scale-105 cursor-pointer overflow-hidden relative"
-                    style="background-image: url('{{ asset($avatar) }}'); background-size: cover; background-position: center;">
-                    <div class="absolute inset-0 bg-black/40 rounded-3xl"></div>
-                    <div class="relative z-10 flex flex-col items-center justify-center h-full">
-                        <div class="w-32 h-32 mb-4 rounded-2xl overflow-hidden border-4 border-white shadow-lg" style="background-image: url('{{ asset($avatar) }}'); background-size: cover; background-position: center;">
-                        </div>
-                        <h3 class="text-2xl font-black text-center mb-2">{{ Auth::user()->name }}</h3>
-                        <p class="text-sm text-white/80 text-center">Level {{ ceil($progressPercentage / 20) }} • {{ $completedLessons > 0 ? 'Learning Expert' : 'Ready to Learn' }}</p>
-                        <div class="mt-4 flex gap-2">
-                            <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold">
-                                @for ($i = 0; $i < min(5, ceil($progressPercentage / 20)); $i++)
-                                    ⭐
-                                @endfor
-                            </span>
-                        </div>
-                        <p class="text-xs text-white/60 mt-4 text-center">Click to edit avatar</p>
-                    </div>
-                </a>
-
                 <!-- Calendar Card -->
                 <div class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
                     <video class="absolute inset-0 w-full h-full object-cover opacity-30" autoplay muted loop playsinline>
