@@ -112,15 +112,29 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Available Games</h2>
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @if($subject === 'filipino')
-                    <!-- Game: Book Worm Game -->
-                    <div data-game="bookworm" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
-                        <div class="h-40 bg-gradient-to-br from-blue-400 to-green-600 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
-                            📚
+                    <!-- Game: Abakada Game -->
+                    <div data-game="abakada" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
+                        <div class="h-40 bg-gradient-to-br from-red-400 to-yellow-500 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
+                            🔤
                         </div>
                         <div class="p-4">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Human Book Game</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Find the missing letters to complete the words</p>
-                            <a href="{{ route('subject.bookworm', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-blue-500 to-green-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Abakada Game</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Learn the Filipino alphabet and practice letter recognition</p>
+                            <a href="{{ route('subject.abakada', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-red-500 to-yellow-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
+                                Play Now →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Game: Coloring Game -->
+                    <div data-game="coloring" class="overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition-all cursor-pointer group">
+                        <div class="h-40 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform duration-300">
+                            🎨
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Coloring Game</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Express your creativity with our fun coloring activities</p>
+                            <a href="{{ route('subject.coloring', ['subject' => $subject ?? 'filipino']) }}" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-2 rounded-lg hover:shadow-lg transition-all block text-center">
                                 Play Now →
                             </a>
                         </div>

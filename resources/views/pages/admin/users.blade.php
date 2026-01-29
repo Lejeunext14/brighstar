@@ -106,7 +106,7 @@
                                 </div>
 
                                 <!-- ID Field -->
-                                <div>
+                                <div id="idField">
                                     <label id="idLabel" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">ID</label>
                                     <input type="text" name="student_id" value="{{ old('student_id') }}" 
                                         class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white dark:placeholder-gray-400"
@@ -200,12 +200,20 @@
                     } else {
                         parentNameField.classList.add('hidden');
                     }
+
+                    // Hide ID field for parents (no Parent ID)
+                    const idField = document.getElementById('idField');
+                    if (role === 'parent') {
+                        idField.classList.add('hidden');
+                    } else {
+                        idField.classList.remove('hidden');
+                    }
                 
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             }
 
-            function openEditModal(userId, name, email, studentId, parentName) {
+            function openEditModal(userId, name, email, studentId, parentName, role) {
                 const modal = document.getElementById('addUserModal');
                 const roleInput = document.getElementById('roleInput');
                 const form = document.querySelector('form');
@@ -240,9 +248,19 @@
                 submitBtn.textContent = 'Update User';
                 submitBtn.className = 'rounded-lg px-6 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800';
                 
-                // Hide parent name field and role input
+                // Set and lock role input, hide parent name field as needed
+                roleInput.value = role;
                 document.getElementById('roleInput').disabled = true;
-                document.getElementById('parentNameField').classList.add('hidden');
+                const parentNameField = document.getElementById('parentNameField');
+                parentNameField.classList.add('hidden');
+
+                // Hide ID field when editing a parent
+                const idField = document.getElementById('idField');
+                if (role === 'parent') {
+                    idField.classList.add('hidden');
+                } else {
+                    idField.classList.remove('hidden');
+                }
                 
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
@@ -313,7 +331,7 @@
                                     <td class="px-6 py-4 text-sm">
                                         @if ($user->id !== auth()->id())
                                             <div class="flex gap-2">
-                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '{{ addslashes($user->parent_name ?? '') }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '{{ addslashes($user->parent_name ?? '') }}', '{{ $user->role }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     Edit
                                                 </button>
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?')">
@@ -366,7 +384,7 @@
                                     <td class="px-6 py-4 text-sm">
                                         @if ($user->id !== auth()->id())
                                             <div class="flex gap-2">
-                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '', '{{ $user->role }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     Edit
                                                 </button>
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?')">
@@ -419,7 +437,7 @@
                                     <td class="px-6 py-4 text-sm">
                                         @if ($user->id !== auth()->id())
                                             <div class="flex gap-2">
-                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '', '{{ $user->role }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     Edit
                                                 </button>
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?')">

@@ -115,9 +115,9 @@ Route::middleware(['auth'])->group(function () {
         return view('subject.coloring', ['subject' => $subject]);
     })->name('subject.coloring');
 
-    Route::get('/subject/{subject}/bookworm', function ($subject) {
-        return view('subject.bookworm', ['subject' => $subject]);
-    })->name('subject.bookworm');
+    Route::get('/subject/{subject}/abakada', function ($subject) {
+        return view('subject.abakada', ['subject' => $subject]);
+    })->name('subject.abakada');
 
     Route::get('/lesson/{lesson}', function ($lesson) {
         // Define lesson sequence for unlocking
