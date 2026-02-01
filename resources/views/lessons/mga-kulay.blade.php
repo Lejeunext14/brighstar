@@ -22,10 +22,16 @@
             pointer-events: none;
         }
 
-        /* Ensure main page content sits above the blurred background */
+        /* Ensure main page content sits above the blurred background and is centered */
         .page-content {
             position: relative;
             z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
         }
 
         /* Teacher chat bubble */
@@ -64,9 +70,10 @@
         }
     </style>
 
-    <div class="page-content flex flex-col lg:flex-row gap-4 lg:gap-8 p-4 lg:p-8">
+    <div class="page-content">
+        <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-4 lg:gap-8 p-4 lg:p-8 items-center">
         <!-- Left Side - Teacher Character -->
-        <div class="w-full lg:w-1/4 flex justify-center">
+        <div class="w-full lg:w-1/3 flex justify-center">
             <div class="teacher-wrap flex items-end justify-center">
                 <img src="/image/teacher3.png" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
                 <div class="teacher-bubble text-sm sm:text-base">
@@ -76,9 +83,9 @@
         </div>
 
         <!-- Right Side - Content -->
-        <div class="w-full lg:w-3/4">
+        <div class="w-full lg:w-2/3">
             <!-- Blackboard Container -->
-            <div id="blackboard" class="bg-gradient-to-b from-green-700 to-green-800 rounded-lg shadow-2xl p-4 sm:p-6 lg:p-8 border-4 sm:border-8 border-amber-900 min-h-96">
+            <div id="blackboard" class="bg-gradient-to-b from-green-700 to-green-800 rounded-lg shadow-2xl p-4 sm:p-6 lg:p-8 border-4 sm:border-8 border-amber-900 min-h-96 mx-auto w-full max-w-3xl">
                 <div class="text-white">
                     <h2 id="blackboardTitle" class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-center drop-shadow-lg">Mga Kulay</h2>
                     <div id="blackboardBody" class="text-base sm:text-lg space-y-3 sm:space-y-4">
