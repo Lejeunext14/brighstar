@@ -429,6 +429,17 @@
                 'pag-papakilala-sa-ibat-ibang-uri-ng-tunog', // Lesson 4
                 'mga-hugis',                           // Lesson 5
                 'mga-kasapi-ng-aking-pamilya',        // Lesson 6
+                'ang-aking-pamilya',                   // Unit 2, Lesson 1
+                'paggamit-ng-po-at-opo',               // Unit 2, Lesson 2
+                'mga-pagbati-ng-magalang',             // Unit 2, Lesson 3
+                'ang-alpabetong-filipino',             // Unit 2, Lesson 4
+                'pagkilala-sa-malaki-maliit-titik',    // Unit 2, Lesson 5
+                'pag-kilala-sa-patinig-katinig',       // Unit 2, Lesson 6
+                'ang-titik-aa',                        // Unit 2, Lesson 7
+                'ang-titik-ee',                        // Unit 2, Lesson 8
+                'ang-titik-ii',                        // Unit 2, Lesson 9
+                'ang-titik-oo',                        // Unit 2, Lesson 10
+                'ang-titik-uu',                        // Unit 2, Lesson 11
             ];
 
             // Fetch progress from DB with cache busting

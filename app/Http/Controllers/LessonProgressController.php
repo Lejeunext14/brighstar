@@ -23,7 +23,7 @@ class LessonProgressController extends Controller
 
             // Convert lesson slug to readable lesson name if not provided
             $lessonName = $validated['lesson_name'] ?? ucwords(str_replace('-', ' ', $validated['lesson_slug']));
-            $subject = $validated['subject'] ?? 'Filipino'; // Default to Filipino
+            $subject = $validated['subject'] ?? 'Pag Papakilala sa Sarili'; // Default to Pag Papakilala sa Sarili
             $points = $validated['points'] ?? 10; // Default 10 points per lesson
 
             $lessonProgress = LessonProgress::updateOrCreate(
