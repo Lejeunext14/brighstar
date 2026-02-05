@@ -12,7 +12,7 @@
             content: '';
             position: fixed;
             inset: 0;
-            background-image: url('/image/classroom.jpg');
+            background-image: url('{{ asset("image/classroom.jpg") }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -75,7 +75,7 @@
         <!-- Left Side - Teacher Character -->
         <div class="w-full lg:w-1/3 flex justify-center">
             <div class="teacher-wrap flex items-end justify-center">
-                <img src="/image/teacher3.png" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
+                <img src="{{ asset('image/teacher3.png') }}" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga kulay.
                 </div>
@@ -168,27 +168,27 @@
             },
             {
                 title: 'Pula',
-                body: '<p>Pula — Ito ay kulay ng puso at rosas.</p><p class="mt-4"><img src="/image/red2.jpg" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Pula — Ito ay kulay ng puso at rosas.</p><p class="mt-4"><img src="{{ asset('image/red2.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Asul',
-                body: '<p>Asul — Ito ay kulay ng langit at dagat.</p><p class="mt-4"><img src="/image/blue2.jpg" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Asul — Ito ay kulay ng langit at dagat.</p><p class="mt-4"><img src="{{ asset('image/blue2.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Dilaw',
-                body: '<p>Dilaw — Ito ay kulay ng araw.</p><p class="mt-4"><img src="/image/dilaw.png" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Dilaw — Ito ay kulay ng araw.</p><p class="mt-4"><img src="{{ asset('image/dilaw.png') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Luntian',
-                body: '<p>Luntian — Ito ay kulay ng mga puno at halaman.</p><p class="mt-4"><img src="/image/green.jpg" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Luntian — Ito ay kulay ng mga puno at halaman.</p><p class="mt-4"><img src="{{ asset('image/green.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Itim',
-                body: '<p>Itim — Ito ay ang pinakamadilim na kulay.</p><p class="mt-4"><img src="/image/black.jpg" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Itim — Ito ay ang pinakamadilim na kulay.</p><p class="mt-4"><img src="{{ asset('image/black.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Puti',
-                body: '<p>Puti — Ito ay ang pinakamaliwanag na kulay.</p><p class="mt-4"><img src="/image/white.jpg" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Puti — Ito ay ang pinakamaliwanag na kulay.</p><p class="mt-4"><img src="{{ asset('image/white.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             }
         ];
 

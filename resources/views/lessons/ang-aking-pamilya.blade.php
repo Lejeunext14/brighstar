@@ -12,7 +12,7 @@
             content: '';
             position: fixed;
             inset: 0;
-            background-image: url('/image/classroom.jpg');
+            background-image: url('{{ asset("image/classroom.jpg") }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -75,7 +75,7 @@
         <!-- Left Side - Teacher Character -->
         <div class="w-full lg:w-1/3 flex justify-center">
             <div class="teacher-wrap flex items-end justify-center">
-                <img src="/image/teacher3.png" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
+                <img src="{{ asset('image/teacher3.png') }}" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng aking pamilya.
                 </div>

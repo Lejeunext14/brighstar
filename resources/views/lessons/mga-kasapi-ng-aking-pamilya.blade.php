@@ -12,7 +12,7 @@
             content: '';
             position: fixed;
             inset: 0;
-            background-image: url('/image/classroom.jpg');
+            background-image: url('{{ asset("image/classroom.jpg") }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -74,7 +74,7 @@
         <!-- Left Side - Teacher Character -->
         <div class="w-full lg:w-1/3 flex justify-center">
             <div class="teacher-wrap flex items-end justify-center">
-                <img src="/image/teacher3.png" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
+                <img src="{{ asset('image/teacher3.png') }}" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga kasapi ng pamilya.
                 </div>
@@ -166,27 +166,27 @@
             },
             {
                 title: 'Ama',
-                body: '<p>Ama — Siya ay ang lalaking magulang. Mahal natin ang aming ama.</p><p class="mt-4"><img src="/image/father.jpg" alt="Ama" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Ama — Siya ay ang lalaking magulang. Mahal natin ang aming ama.</p><p class="mt-4"><img src="{{ asset('image/father.jpg') }}" alt="Ama" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Ina',
-                body: '<p>Ina — Siya ay ang babaying magulang. Mahal natin ang aming ina.</p><p class="mt-4"><img src="/image/mother.jpg" alt="Ina" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Ina — Siya ay ang babaying magulang. Mahal natin ang aming ina.</p><p class="mt-4"><img src="{{ asset('image/mother.jpg') }}" alt="Ina" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Kuya',
-                body: '<p>Kuya — Siya ay ang mas matandang kapatid na lalaki.</p><p class="mt-4"><img src="/image/brother.jpg" alt="Kuya" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Kuya — Siya ay ang mas matandang kapatid na lalaki.</p><p class="mt-4"><img src="{{ asset('image/brother.jpg') }}" alt="Kuya" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Ate',
-                body: '<p>Ate — Siya ay ang mas matandang kapatid na babae.</p><p class="mt-4"><img src="/image/sister.jpg" alt="Ate" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Ate — Siya ay ang mas matandang kapatid na babae.</p><p class="mt-4"><img src="{{ asset('image/sister.jpg') }}" alt="Ate" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Lolo',
-                body: '<p>Lolo — Siya ay ang tatay ng ating ama o ina.</p><p class="mt-4"><img src="/image/grandfather.jpg" alt="Lolo" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Lolo — Siya ay ang tatay ng ating ama o ina.</p><p class="mt-4"><img src="{{ asset('image/grandfather.jpg') }}" alt="Lolo" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Lola',
-                body: '<p>Lola — Siya ay ang nanay ng ating ama o ina.</p><p class="mt-4"><img src="/image/grandmother.jpg" alt="Lola" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Lola — Siya ay ang nanay ng ating ama o ina.</p><p class="mt-4"><img src="{{ asset('image/grandmother.jpg') }}" alt="Lola" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             }
         ];
 
