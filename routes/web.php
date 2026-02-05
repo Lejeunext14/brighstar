@@ -154,15 +154,21 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->back()->with('error', '🔒 This lesson is locked.');
         }
 
-        // Get the previous lesson
-        $previousLesson = $lessonSequence[$lessonIndex - 1];
+        // Determine prerequisites for this lesson (previous by default)
+        $prerequisites = [$lessonSequence[$lessonIndex - 1]];
 
-        // Check if the previous lesson is completed
-        $previousLessonProgress = \App\Models\LessonProgress::where('user_id', auth()->id())
-            ->where('lesson_slug', $previousLesson)
-            ->first();
+        // Special case: allow 'ang-aking-pamilya' to unlock when 'mga-hugis' is completed
+        if ($lesson === 'ang-aking-pamilya') {
+            $prerequisites[] = 'mga-hugis';
+        }
 
-        if (!$previousLessonProgress || !$previousLessonProgress->completed) {
+        // Check if any prerequisite is completed
+        $hasPrereqCompleted = \App\Models\LessonProgress::where('user_id', auth()->id())
+            ->whereIn('lesson_slug', $prerequisites)
+            ->where('completed', true)
+            ->exists();
+
+        if (!$hasPrereqCompleted) {
             return redirect()->back()->with('error', '🔒 This lesson is locked. Complete the previous lesson first.');
         }
 

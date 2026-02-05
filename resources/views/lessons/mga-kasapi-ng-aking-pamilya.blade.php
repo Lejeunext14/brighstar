@@ -69,7 +69,6 @@
             transform: translateY(28px);
         }
     </style>
-
     <div class="page-content">
         <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-4 lg:gap-8 p-4 lg:p-8 items-center">
         <!-- Left Side - Teacher Character -->
@@ -81,7 +80,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Right Side - Content -->
         <div class="w-full lg:w-2/3">
             <!-- Blackboard Container -->
@@ -101,7 +99,6 @@
         </div>
         </div>
     </div>
-
     <script>
         // Teacher speech synthesis
         (function(){
