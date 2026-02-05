@@ -64,17 +64,20 @@
             border-top: 10px solid rgba(255,255,255,0.98);
         }
 
-        /* small helper to nudge the teacher image downward */
+        /* small helper to nudge the teacher image downward and limit size */
         .teacher-img {
             transform: translateY(28px);
+            max-width: 160px !important;
+            width: auto !important;
+            height: auto;
         }
     </style>
 
     <div class="page-content">
         <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-4 lg:gap-8 p-4 lg:p-8 items-center">
         <!-- Left Side - Teacher Character -->
-        <div class="w-full lg:w-1/3 flex justify-center">
-            <div class="teacher-wrap flex items-end justify-center">
+        <div class="w-full lg:w-1/4 flex justify-start lg:pl-6">
+            <div class="teacher-wrap flex items-end justify-start">
                 <img src="{{ asset('image/teacher3.png') }}" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga hugis.
@@ -83,9 +86,9 @@
         </div>
 
         <!-- Right Side - Content -->
-        <div class="w-full lg:w-2/3">
-            <!-- Blackboard Container -->
-            <div id="blackboard" class="bg-gradient-to-b from-green-700 to-green-800 rounded-lg shadow-2xl p-4 sm:p-6 lg:p-8 border-4 sm:border-8 border-amber-900 min-h-96">
+        <div class="w-full lg:w-3/4">
+            <!-- Blackboard Container (narrower) -->
+            <div id="blackboard" class="bg-gradient-to-b from-green-700 to-green-800 rounded-lg shadow-2xl p-4 sm:p-6 lg:p-8 border-4 sm:border-8 border-amber-900 min-h-80 mx-auto w-full max-w-3xl">
                 <div class="text-white">
                     <h2 id="blackboardTitle" class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 text-center drop-shadow-lg">Mga Hugis</h2>
                     <div id="blackboardBody" class="text-base sm:text-lg space-y-3 sm:space-y-4">

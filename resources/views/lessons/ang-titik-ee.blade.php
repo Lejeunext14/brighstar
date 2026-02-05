@@ -64,9 +64,12 @@
             border-top: 10px solid rgba(255,255,255,0.98);
         }
 
-        /* small helper to nudge the teacher image downward */
+        /* small helper to nudge the teacher image downward and limit size */
         .teacher-img {
             transform: translateY(28px);
+            max-width: 160px !important;
+            width: auto !important;
+            height: auto;
         }
     </style>
 
@@ -74,7 +77,7 @@
         <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-4 lg:gap-8 p-4 lg:p-8 items-center">
         <!-- Left Side - Teacher Character -->
         <div class="w-full lg:w-1/3 flex justify-center">
-            <div class="teacher-wrap flex items-end justify-center">
+            <div class="teacher-wrap flex items-end justify-start">
                 <img src="{{ asset('image/teacher3.png') }}" alt="Teacher Character" class="w-32 sm:w-40 lg:w-full lg:max-w-xs drop-shadow-lg teacher-img">
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng Titik E.
