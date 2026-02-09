@@ -10,20 +10,12 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+   {
+    if (!Schema::hasColumn('assignments', 'submitted_at')) {
         Schema::table('assignments', function (Blueprint $table) {
             $table->timestamp('submitted_at')->nullable();
-            $table->text('submission_notes')->nullable();
+            // Add other columns here using the same check or inside this block
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::table('assignments', function (Blueprint $table) {
-            $table->dropColumn(['submitted_at', 'submission_notes']);
-        });
     }
 };
