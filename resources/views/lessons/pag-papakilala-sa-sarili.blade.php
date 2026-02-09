@@ -71,6 +71,34 @@
             width: auto !important;
             height: auto;
         }
+
+        /* Speaker button styling */
+        .speaker-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .speaker-btn:hover {
+            background: #2563eb;
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Audio controls styling */
+        audio {
+            width: 100%;
+            margin-top: 12px;
+        }
     </style>
 
     <div class="page-content">
@@ -105,82 +133,49 @@
         </div>
     </div>
 
-    <script>
-        // Teacher speech synthesis
-        (function(){
-            let selectedVoice = null;
 
-            function pickVoice() {
-                const voices = window.speechSynthesis.getVoices();
-                if (!voices || voices.length === 0) return null;
-
-                // Prefer Filipino / Tagalog voices (lang startsWith fil or tl or contains -PH),
-                // then names that mention Tagalog/Filipino, then any Philippine locale, then Google voices.
-                const byLang = v => (v.lang || '').toLowerCase();
-
-                let v = voices.find(v => {
-                    const lang = byLang(v);
-                    return lang.startsWith('fil') || lang.startsWith('tl') || /-ph$/.test(lang) || lang.includes('ph');
-                });
-
-                if (!v) v = voices.find(v => /tagalog|filipino/i.test(v.name));
-                if (!v) v = voices.find(v => /-ph/i.test(v.lang || ''));
-                if (!v) v = voices.find(v => /google/i.test(v.name));
-                return v || voices[0];
-            }
-
-            function speakTeacher(text, opts = {}){
-                if (!('speechSynthesis' in window)) return;
-                const utter = new SpeechSynthesisUtterance(text);
-                // ensure voices list loaded
-                if (!selectedVoice) selectedVoice = pickVoice();
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = selectedVoice?.lang || 'fil-PH';
-                utter.rate = opts.rate ?? 0.95;
-                utter.pitch = opts.pitch ?? 1.05;
-                utter.volume = opts.volume ?? 1;
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utter);
-            }
-
-            // when voices are loaded, cache selection
-            window.speechSynthesis.onvoiceschanged = function(){
-                selectedVoice = pickVoice();
-            };
-
-            document.addEventListener('DOMContentLoaded', ()=>{
-                const bubble = document.querySelector('.teacher-bubble');
-                if (!bubble) return;
-                // click to speak
-                bubble.style.cursor = 'pointer';
-                bubble.addEventListener('click', ()=> speakTeacher(bubble.textContent.trim()));
-
-                // try to auto-speak greeting once (some browsers require user gesture)
-                setTimeout(()=>{
-                    try { speakTeacher(bubble.textContent.trim()); } catch(e){}
-                }, 500);
-            });
-        })();
-    </script>
 
     <script>
+        // Audio files mapping
+        const audioFiles = {
+            greeting: '{{ asset("music/pagpapakilala/kamusta1.aac") }}',
+            name: '{{ asset("music/pagpapakilala/Ano ang yong pangalan.aac") }}',
+            age: '{{ asset("music/pagpapakilala/ilan taon kana.aac") }}',
+            location: '{{ asset("music/pagpapakilala/saan ka nakatira.aac") }}',
+            welcome: '{{ asset("music/pagpapakilala/Maligayang pagadating1.aac") }}'
+        };
+
+        // Play teacher greeting
+        function playTeacherGreeting() {
+            const audio = new Audio(audioFiles.greeting);
+            audio.play().catch(err => console.log('Audio play error:', err));
+        }
+
+        // Play specific audio for slide
+        function playAudio(audioKey) {
+            if (audioFiles[audioKey]) {
+                const audio = new Audio(audioFiles[audioKey]);
+                audio.play().catch(err => console.log('Audio play error:', err));
+            }
+        }
+
         // Simple blackboard slide system
         const blackboardSlides = [
             {
                 title: 'Pag Papakilala sa Sarili',
-                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin kung paano magpakilala nang maayos.</p>'
+                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin kung paano magpakilala nang maayos.</p>\n<button onclick="playAudio(\'welcome\')" class="speaker-btn">🔊 Marinig ang grabacion</button>'
             },
             {
-                title: 'Ang Iyong Pangalan',
-                body: '<p>Isulat ang iyong pangalan at pagkatapos ay i-click ang "Sabihin" upang marinig ang pagbigkas.</p>\n<p class="mt-4"><input id="studentName" placeholder="Isulat ang pangalan..." class="px-3 py-2 rounded-md text-black"/></p>\n<p class="mt-3"><button onclick="speakStudentAnswer(\'studentName\', \"Ako si\")" class="px-4 py-2 bg-yellow-400 rounded-md font-bold">Sabihin</button></p>'
+                title: 'Ano ang Iyong Pangalan?',
+                body: '<p>Isulat ang iyong pangalan.</p>\n<p class="mt-4"><input id="studentName" placeholder="Isulat ang pangalan..." class="px-3 py-2 rounded-md text-black w-full"/></p>\n<button onclick="playAudio(\'name\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             },
             {
                 title: 'Ilang Taon Ka Na?',
-                body: '<p>Ilahad ang iyong edad. Halimbawa: "7 taong gulang" o simpleng numero.</p>\n<p class="mt-4"><input id="studentAge" placeholder="Halimbawa: 7" class="px-3 py-2 rounded-md text-black"/></p>\n<p class="mt-3"><button onclick="speakStudentAnswer(\'studentAge\', \"Ako ay\")" class="px-4 py-2 bg-yellow-400 rounded-md font-bold">Sabihin</button></p>'
+                body: '<p>Ilahad ang iyong edad. Halimbawa: "7 taong gulang" o simpleng numero.</p>\n<p class="mt-4"><input id="studentAge" placeholder="Halimbawa: 7" class="px-3 py-2 rounded-md text-black w-full"/></p>\n<button onclick="playAudio(\'age\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             },
             {
                 title: 'Saan Ka Nakatira?',
-                body: '<p>Sabihin kung saan ka nakatira — bayan o lungsod. Halimbawa: "Nakatira ako sa Quezon City".</p>\n<p class="mt-4"><input id="studentLocation" placeholder="Halimbawa: Quezon City" class="px-3 py-2 rounded-md text-black"/></p>\n<p class="mt-3"><button onclick="speakStudentAnswer(\'studentLocation\', \"Nakatira ako sa\")" class="px-4 py-2 bg-yellow-400 rounded-md font-bold">Sabihin</button></p>'
+                body: '<p>Sabihin kung saan ka nakatira — bayan o lungsod. Halimbawa: "Nakatira ako sa Quezon City".</p>\n<p class="mt-4"><input id="studentLocation" placeholder="Halimbawa: Quezon City" class="px-3 py-2 rounded-md text-black w-full"/></p>\n<button onclick="playAudio(\'location\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             },
             {
                 title: 'Aktibidad',
@@ -209,10 +204,6 @@
         }
 
         function blackboardNext() {
-            // hide teacher bubble when advancing slides
-            const tb = document.querySelector('.teacher-bubble');
-            if (tb) tb.style.display = 'none';
-
             if (blackboardIndex < blackboardSlides.length - 1) {
                 blackboardIndex++;
                 renderBlackboard();
@@ -225,21 +216,11 @@
         // render initial slide on load
         document.addEventListener('DOMContentLoaded', ()=>{
             renderBlackboard();
+            // Auto-play teacher greeting
+            setTimeout(() => {
+                playTeacherGreeting();
+            }, 800);
         });
-
-        // speak student-provided answers using teacher voice
-        function speakStudentAnswer(inputId, prefix) {
-            const el = document.getElementById(inputId);
-            if (!el) return;
-            const val = (el.value || '').trim();
-            if (!val) {
-                speakTeacher('Wala pang nilagay. Paki-type muna.');
-                return;
-            }
-            // construct phrase: prefix + value
-            const phrase = `${prefix} ${val}`;
-            speakTeacher(phrase, { rate: 0.95, pitch: 1.05 });
-        }
 
         // Finish lesson: POST to lesson.mark-complete then redirect
         function finishLesson() {

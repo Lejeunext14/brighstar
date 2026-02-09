@@ -71,6 +71,28 @@
             width: auto !important;
             height: auto;
         }
+
+        /* Speaker button styling */
+        .speaker-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .speaker-btn:hover {
+            background: #2563eb;
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 
     <div class="page-content">
@@ -106,61 +128,28 @@
     </div>
 
     <script>
-        // Teacher speech synthesis
-        (function(){
-            let selectedVoice = null;
+        // Audio files from mga_hugis folder
+        const audioFiles = {
+            greeting: '{{ asset("music/mga_hugis/maligayang pagdating4.aac") }}',
+            bilog: '{{ asset("music/mga_hugis/bilog (1).aac") }}',
+            tatsulok: '{{ asset("music/mga_hugis/tatsulok.aac") }}',
+            rektangulo: '{{ asset("music/mga_hugis/rektangulo.aac") }}',
+            pentagon: '{{ asset("music/mga_hugis/pentagon.aac") }}',
+            heksagono: '{{ asset("music/mga_hugis/hexaguno.aac") }}'
+        };
 
-            function pickVoice() {
-                const voices = window.speechSynthesis.getVoices();
-                if (!voices || voices.length === 0) return null;
+        function playAudio(key) {
+            if (!audioFiles[key]) return;
+            const audio = new Audio(audioFiles[key]);
+            audio.play().catch(err => console.debug('audio play failed', err));
+        }
 
-                // Prefer Filipino / Tagalog voices (lang startsWith fil or tl or contains -PH),
-                // then names that mention Tagalog/Filipino, then any Philippine locale, then Google voices.
-                const byLang = v => (v.lang || '').toLowerCase();
-
-                let v = voices.find(v => {
-                    const lang = byLang(v);
-                    return lang.startsWith('fil') || lang.startsWith('tl') || /-ph$/.test(lang) || lang.includes('ph');
-                });
-
-                if (!v) v = voices.find(v => /tagalog|filipino/i.test(v.name));
-                if (!v) v = voices.find(v => /-ph/i.test(v.lang || ''));
-                if (!v) v = voices.find(v => /google/i.test(v.name));
-                return v || voices[0];
-            }
-
-            function speakTeacher(text, opts = {}){
-                if (!('speechSynthesis' in window)) return;
-                const utter = new SpeechSynthesisUtterance(text);
-                // ensure voices list loaded
-                if (!selectedVoice) selectedVoice = pickVoice();
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = selectedVoice?.lang || 'fil-PH';
-                utter.rate = opts.rate ?? 0.95;
-                utter.pitch = opts.pitch ?? 1.05;
-                utter.volume = opts.volume ?? 1;
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utter);
-            }
-
-            // when voices are loaded, cache selection
-            window.speechSynthesis.onvoiceschanged = function(){
-                selectedVoice = pickVoice();
-            };
-
-            document.addEventListener('DOMContentLoaded', ()=>{
-                const bubble = document.querySelector('.teacher-bubble');
-                if (!bubble) return;
-                // click to speak
-                bubble.style.cursor = 'pointer';
-                bubble.addEventListener('click', ()=> speakTeacher(bubble.textContent.trim()));
-
-                // try to auto-speak greeting once (some browsers require user gesture)
-                setTimeout(()=>{
-                    try { speakTeacher(bubble.textContent.trim()); } catch(e){}
-                }, 500);
-            });
-        })();
+        document.addEventListener('DOMContentLoaded', ()=>{
+            // Auto-play greeting on load
+            setTimeout(()=>{
+                try { playAudio('greeting'); } catch(e){ console.debug('autoplay error', e); }
+            }, 500);
+        });
     </script>
 
     <script>
@@ -168,31 +157,31 @@
         const blackboardSlides = [
             {
                 title: 'Mga Hugis',
-                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang mga hugis.</p>'
+                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang mga hugis.</p><p class="mt-4"><button onclick="playAudio(\'greeting\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Bilog',
-                body: '<p>Bilog — Ito ay isang hugis na walang sulok.</p><p class="mt-4"><img src="/image/circle.jpg" alt="Bilog" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Bilog — Ito ay isang hugis na walang sulok.</p><p class="mt-4"><img src="/image/bilog.png" alt="Bilog" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-4"><button onclick="playAudio(\'bilog\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Tatsulok',
-                body: '<p>Tatsulok — Ito ay isang hugis na may tatlong sulok.</p><p class="mt-4"><img src="/image/triangle.jpg" alt="Tatsulok" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Tatsulok — Ito ay isang hugis na may tatlong sulok.</p><p class="mt-4"><img src="/image/tatsulok.png" alt="Tatsulok" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-4"><button onclick="playAudio(\'tatsulok\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Parisukat',
-                body: '<p>Parisukat — Ito ay isang hugis na may apat na pantay na panig.</p><p class="mt-4"><img src="/image/square.jpg" alt="Parisukat" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Parisukat — Ito ay isang hugis na may apat na pantay na panig.</p><p class="mt-4"><img src="/image/parisukat.png" alt="Parisukat" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Rektangulo',
-                body: '<p>Rektangulo — Ito ay isang hugis na may apat na panig at apat na sulok.</p><p class="mt-4"><img src="/image/rectangle.jpg" alt="Rektangulo" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Rektangulo — Ito ay isang hugis na may apat na panig at apat na sulok.</p><p class="mt-4"><img src="/image/rectangulo.jpg" alt="Rektangulo" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-4"><button onclick="playAudio(\'rektangulo\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Pentagon',
-                body: '<p>Pentagon — Ito ay isang hugis na may limang panig at limang sulok.</p><p class="mt-4"><img src="/image/pentagon.jpg" alt="Pentagon" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Pentagon — Ito ay isang hugis na may limang panig at limang sulok.</p><p class="mt-4"><img src="/image/pentagon.jpeg" alt="Pentagon" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-4"><button onclick="playAudio(\'pentagon\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Heksagono',
-                body: '<p>Heksagono — Ito ay isang hugis na may anim na panig at anim na sulok.</p><p class="mt-4"><img src="/image/hexagon.jpg" alt="Heksagono" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Heksagono — Ito ay isang hugis na may anim na panig at anim na sulok.</p><p class="mt-4"><img src="/image/heksaguno.png" alt="Heksagono" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-4"><button onclick="playAudio(\'heksagono\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             }
         ];
 
@@ -235,18 +224,10 @@
             renderBlackboard();
         });
 
-        // speak student-provided answers using teacher voice
+        // speak student-provided answers - audio disabled for this lesson
         function speakStudentAnswer(inputId, prefix) {
-            const el = document.getElementById(inputId);
-            if (!el) return;
-            const val = (el.value || '').trim();
-            if (!val) {
-                speakTeacher('Wala pang nilagay. Paki-type muna.');
-                return;
-            }
-            // construct phrase: prefix + value
-            const phrase = `${prefix} ${val}`;
-            speakTeacher(phrase, { rate: 0.95, pitch: 1.05 });
+            // no-op: this lesson uses prerecorded audio files instead of TTS
+            return;
         }
 
         // Finish lesson: POST to lesson.mark-complete then redirect

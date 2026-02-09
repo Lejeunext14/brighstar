@@ -106,61 +106,27 @@
     </div>
 
     <script>
-        // Teacher speech synthesis
-        (function(){
-            let selectedVoice = null;
+        // Audio mapping for various sound categories. Place your audio files in:
+        // public/music/tunog/
+        const audioFiles = {
+            greeting: '{{ asset("music/tunog/greeting.aac") }}',
+            nature: '{{ asset("music/tunog/nature.aac") }}',
+            bird: '{{ asset("music/tunog/bird.aac") }}',
+            human: '{{ asset("music/tunog/human.aac") }}',
+            vehicle: '{{ asset("music/tunog/vehicle.aac") }}',
+            music: '{{ asset("music/tunog/music.aac") }}',
+            animal: '{{ asset("music/tunog/animal.mp3") }}'
+        };
 
-            function pickVoice() {
-                const voices = window.speechSynthesis.getVoices();
-                if (!voices || voices.length === 0) return null;
+        function playAudio(key) {
+            if (!audioFiles[key]) return;
+            const a = new Audio(audioFiles[key]);
+            a.play().catch(err => console.debug('audio play failed', err));
+        }
 
-                // Prefer Filipino / Tagalog voices (lang startsWith fil or tl or contains -PH),
-                // then names that mention Tagalog/Filipino, then any Philippine locale, then Google voices.
-                const byLang = v => (v.lang || '').toLowerCase();
-
-                let v = voices.find(v => {
-                    const lang = byLang(v);
-                    return lang.startsWith('fil') || lang.startsWith('tl') || /-ph$/.test(lang) || lang.includes('ph');
-                });
-
-                if (!v) v = voices.find(v => /tagalog|filipino/i.test(v.name));
-                if (!v) v = voices.find(v => /-ph/i.test(v.lang || ''));
-                if (!v) v = voices.find(v => /google/i.test(v.name));
-                return v || voices[0];
-            }
-
-            function speakTeacher(text, opts = {}){
-                if (!('speechSynthesis' in window)) return;
-                const utter = new SpeechSynthesisUtterance(text);
-                // ensure voices list loaded
-                if (!selectedVoice) selectedVoice = pickVoice();
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = selectedVoice?.lang || 'fil-PH';
-                utter.rate = opts.rate ?? 0.95;
-                utter.pitch = opts.pitch ?? 1.05;
-                utter.volume = opts.volume ?? 1;
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utter);
-            }
-
-            // when voices are loaded, cache selection
-            window.speechSynthesis.onvoiceschanged = function(){
-                selectedVoice = pickVoice();
-            };
-
-            document.addEventListener('DOMContentLoaded', ()=>{
-                const bubble = document.querySelector('.teacher-bubble');
-                if (!bubble) return;
-                // click to speak
-                bubble.style.cursor = 'pointer';
-                bubble.addEventListener('click', ()=> speakTeacher(bubble.textContent.trim()));
-
-                // try to auto-speak greeting once (some browsers require user gesture)
-                setTimeout(()=>{
-                    try { speakTeacher(bubble.textContent.trim()); } catch(e){}
-                }, 500);
-            });
-        })();
+        function playTeacherGreeting() {
+            playAudio('greeting');
+        }
     </script>
 
     <script>
@@ -168,27 +134,31 @@
         const blackboardSlides = [
             {
                 title: 'Mga Tunog',
-                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang iba\'t ibang uri ng tunog.</p>'
+                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang iba\'t ibang uri ng tunog.</p><p class="mt-4"><button onclick="playTeacherGreeting()" class="speaker-btn">🔊 Pakinggan ang pagbati</button></p>'
             },
             {
                 title: 'Tunog ng Kalikasan',
-                body: '<p>Tunog ng Kalikasan — Ang mga tunog mula sa kalikasan tulad ng ulan at kidlat.</p>'
+                body: '<p>Tunog ng Kalikasan — Ang mga tunog mula sa kalikasan tulad ng ulan at hangin.</p><p class="mt-4"><button onclick="playAudio(\'nature\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Tunog ng Ibon',
-                body: '<p>Tunog ng Ibon — Ang mga ibon ay gumagawa ng magandang tunog sa umaga.</p>'
+                body: '<p>Tunog ng Ibon — Ang mga ibon ay gumagawa ng magandang tunog sa umaga.</p><p class="mt-4"><button onclick="playAudio(\'bird\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Tunog ng Tao',
-                body: '<p>Tunog ng Tao — Mga tunog na ginagawa ng tao tulad ng pagsasalita at pagtawa.</p>'
+                body: '<p>Tunog ng Tao — Mga tunog na ginagawa ng tao tulad ng pagsasalita at pagtawa.</p><p class="mt-4"><button onclick="playAudio(\'human\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Tunog ng Sasakyan',
-                body: '<p>Tunog ng Sasakyan — Mga sasakyan tulad ng kotse at bus ay may tunog.</p>'
+                body: '<p>Tunog ng Sasakyan — Mga sasakyan tulad ng kotse at bus ay may tunog.</p><p class="mt-4"><button onclick="playAudio(\'vehicle\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             },
             {
                 title: 'Tunog ng Musika',
-                body: '<p>Tunog ng Musika — Ang musika ay gawa ng mga natatanging tunog na maganda.</p>'
+                body: '<p>Tunog ng Musika — Ang musika ay gawa ng mga natatanging tunog na maganda.</p><p class="mt-4"><button onclick="playAudio(\'music\')" class="speaker-btn">🔊 Pakinggan</button></p>'
+            },
+            {
+                title: 'Tunog ng Hayop',
+                body: '<p>Tunog ng Hayop — Iba\'t ibang hayop ay may sariling tunog tulad ng iyak ng pusa at latay ng aso.</p><p class="mt-4"><button onclick="playAudio(\'animal\')" class="speaker-btn">🔊 Pakinggan</button></p>'
             }
         ];
 
@@ -229,20 +199,16 @@
         // render initial slide on load
         document.addEventListener('DOMContentLoaded', ()=>{
             renderBlackboard();
+            // Auto-play teacher greeting shortly after load (may be blocked by browser autoplay policies)
+            setTimeout(()=>{
+                try { playTeacherGreeting(); } catch(e){ console.debug('autoplay error', e); }
+            }, 800);
         });
 
-        // speak student-provided answers using teacher voice
+        // speak student-provided answers - voice disabled for this lesson
         function speakStudentAnswer(inputId, prefix) {
-            const el = document.getElementById(inputId);
-            if (!el) return;
-            const val = (el.value || '').trim();
-            if (!val) {
-                speakTeacher('Wala pang nilagay. Paki-type muna.');
-                return;
-            }
-            // construct phrase: prefix + value
-            const phrase = `${prefix} ${val}`;
-            speakTeacher(phrase, { rate: 0.95, pitch: 1.05 });
+            // no-op: this lesson uses prerecorded audio files instead of TTS
+            return;
         }
 
         // Finish lesson: POST to lesson.mark-complete then redirect

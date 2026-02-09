@@ -71,6 +71,28 @@
             width: auto !important;
             height: auto;
         }
+
+        /* Speaker button styling */
+        .speaker-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .speaker-btn:hover {
+            background: #2563eb;
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 
     <div class="page-content">
@@ -105,61 +127,27 @@
     </div>
     
     <script>
-        // Teacher speech synthesis
-        (function(){
-            let selectedVoice = null;
+        // Audio files mapping for Mga Kulay
+        const audioFiles = {
+            greeting: '{{ asset("music/kulay/maligayang pagdating3.aac") }}',
+            pula: '{{ asset("music/kulay/pula.aac") }}',
+            asul: '{{ asset("music/kulay/asul.aac") }}',
+            dilaw: '{{ asset("music/kulay/dilaw.aac") }}',
+            luntian: '{{ asset("music/kulay/luntian.aac") }}',
+            itim: '{{ asset("music/kulay/itim.aac") }}',
+            puti: '{{ asset("music/kulay/puti.aac") }}'
+        };
 
-            function pickVoice() {
-                const voices = window.speechSynthesis.getVoices();
-                if (!voices || voices.length === 0) return null;
+        function playTeacherGreeting() {
+            const audio = new Audio(audioFiles.greeting);
+            audio.play().catch(err => console.log('Audio play error:', err));
+        }
 
-                // Prefer Filipino / Tagalog voices (lang startsWith fil or tl or contains -PH),
-                // then names that mention Tagalog/Filipino, then any Philippine locale, then Google voices.
-                const byLang = v => (v.lang || '').toLowerCase();
-
-                let v = voices.find(v => {
-                    const lang = byLang(v);
-                    return lang.startsWith('fil') || lang.startsWith('tl') || /-ph$/.test(lang) || lang.includes('ph');
-                });
-
-                if (!v) v = voices.find(v => /tagalog|filipino/i.test(v.name));
-                if (!v) v = voices.find(v => /-ph/i.test(v.lang || ''));
-                if (!v) v = voices.find(v => /google/i.test(v.name));
-                return v || voices[0];
-            }
-
-            function speakTeacher(text, opts = {}){
-                if (!('speechSynthesis' in window)) return;
-                const utter = new SpeechSynthesisUtterance(text);
-                // ensure voices list loaded
-                if (!selectedVoice) selectedVoice = pickVoice();
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = selectedVoice?.lang || 'fil-PH';
-                utter.rate = opts.rate ?? 0.95;
-                utter.pitch = opts.pitch ?? 1.05;
-                utter.volume = opts.volume ?? 1;
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utter);
-            }
-
-            // when voices are loaded, cache selection
-            window.speechSynthesis.onvoiceschanged = function(){
-                selectedVoice = pickVoice();
-            };
-
-            document.addEventListener('DOMContentLoaded', ()=>{
-                const bubble = document.querySelector('.teacher-bubble');
-                if (!bubble) return;
-                // click to speak
-                bubble.style.cursor = 'pointer';
-                bubble.addEventListener('click', ()=> speakTeacher(bubble.textContent.trim()));
-
-                // try to auto-speak greeting once (some browsers require user gesture)
-                setTimeout(()=>{
-                    try { speakTeacher(bubble.textContent.trim()); } catch(e){}
-                }, 500);
-            });
-        })();
+        function playAudio(key) {
+            if (!audioFiles[key]) return;
+            const audio = new Audio(audioFiles[key]);
+            audio.play().catch(err => console.log('Audio play error:', err));
+        }
     </script>
 
     <script>
@@ -167,31 +155,31 @@
         const blackboardSlides = [
             {
                 title: 'Mga Kulay',
-                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang mga kulay.</p>'
+                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang mga kulay.</p><p class="mt-4"><button onclick="playTeacherGreeting()" class="speaker-btn">🔊 Marinig ang pagbati</button></p>'
             },
             {
                 title: 'Pula',
-                body: '<p>Pula — Ito ay kulay ng puso at rosas.</p><p class="mt-4"><img src="{{ asset('image/red2.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Pula — Ito ay kulay ng puso at rosas.</p><p class="mt-4"><img src="{{ asset("image/red2.jpg") }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-3"><button onclick="playAudio(\'pula\')" class="speaker-btn">🔊 Marinig ang kulay</button></p>'
             },
             {
                 title: 'Asul',
-                body: '<p>Asul — Ito ay kulay ng langit at dagat.</p><p class="mt-4"><img src="{{ asset('image/blue2.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Asul — Ito ay kulay ng langit at dagat.</p><p class="mt-4"><img src="{{ asset("image/blue2.jpg") }}" alt="Asul" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-3"><button onclick="playAudio(\'asul\')" class="speaker-btn">🔊 Marinig ang kulay</button></p>'
             },
             {
                 title: 'Dilaw',
-                body: '<p>Dilaw — Ito ay kulay ng araw.</p><p class="mt-4"><img src="{{ asset('image/dilaw.png') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Dilaw — Ito ay kulay ng araw.</p><p class="mt-4"><img src="{{ asset("image/dilaw.png") }}" alt="Dilaw" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-3"><button onclick="playAudio(\'dilaw\')" class="speaker-btn">🔊 Marinig ang kulay</button></p>'
             },
             {
                 title: 'Luntian',
-                body: '<p>Luntian — Ito ay kulay ng mga puno at halaman.</p><p class="mt-4"><img src="{{ asset('image/green.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Luntian — Ito ay kulay ng mga puno at halaman.</p><p class="mt-4"><img src="{{ asset("image/green.jpg") }}" alt="Luntian" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-3"><button onclick="playAudio(\'luntian\')" class="speaker-btn">🔊 Marinig ang kulay</button></p>'
             },
             {
                 title: 'Itim',
-                body: '<p>Itim — Ito ay ang pinakamadilim na kulay.</p><p class="mt-4"><img src="{{ asset('image/black.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Itim — Ito ay ang pinakamadilim na kulay.</p><p class="mt-4"><img src="{{ asset("image/black.jpg") }}" alt="Itim" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-3"><button onclick="playAudio(\'itim\')" class="speaker-btn">🔊 Marinig ang kulay</button></p>'
             },
             {
                 title: 'Puti',
-                body: '<p>Puti — Ito ay ang pinakamaliwanag na kulay.</p><p class="mt-4"><img src="{{ asset('image/white.jpg') }}" alt="Pula" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Puti — Ito ay ang pinakamaliwanag na kulay.</p><p class="mt-4"><img src="{{ asset("image/white.jpg") }}" alt="Puti" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><p class="mt-3"><button onclick="playAudio(\'puti\')" class="speaker-btn">🔊 Marinig ang kulay</button></p>'
             }
         ];
 
@@ -232,6 +220,10 @@
         // render initial slide on load
         document.addEventListener('DOMContentLoaded', ()=>{
             renderBlackboard();
+            // Auto-play teacher greeting shortly after load
+            setTimeout(()=>{
+                try { playTeacherGreeting(); } catch(e){ console.log('autoplay failed', e); }
+            }, 800);
         });
 
         // speak student-provided answers using teacher voice

@@ -71,6 +71,28 @@
             width: auto !important;
             height: auto;
         }
+
+        /* Speaker button styling */
+        .speaker-btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .speaker-btn:hover {
+            background: #2563eb;
+        }
+
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 
     <div class="page-content">
@@ -105,98 +127,69 @@
         </div>
     </div>
 
-    <script>
-        // Teacher speech synthesis
-        (function(){
-            let selectedVoice = null;
 
-            function pickVoice() {
-                const voices = window.speechSynthesis.getVoices();
-                if (!voices || voices.length === 0) return null;
-
-                // Prefer Filipino / Tagalog voices (lang startsWith fil or tl or contains -PH),
-                // then names that mention Tagalog/Filipino, then any Philippine locale, then Google voices.
-                const byLang = v => (v.lang || '').toLowerCase();
-
-                let v = voices.find(v => {
-                    const lang = byLang(v);
-                    return lang.startsWith('fil') || lang.startsWith('tl') || /-ph$/.test(lang) || lang.includes('ph');
-                });
-
-                if (!v) v = voices.find(v => /tagalog|filipino/i.test(v.name));
-                if (!v) v = voices.find(v => /-ph/i.test(v.lang || ''));
-                if (!v) v = voices.find(v => /google/i.test(v.name));
-                return v || voices[0];
-            }
-
-            function speakTeacher(text, opts = {}){
-                if (!('speechSynthesis' in window)) return;
-                const utter = new SpeechSynthesisUtterance(text);
-                // ensure voices list loaded
-                if (!selectedVoice) selectedVoice = pickVoice();
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = selectedVoice?.lang || 'fil-PH';
-                utter.rate = opts.rate ?? 0.95;
-                utter.pitch = opts.pitch ?? 1.05;
-                utter.volume = opts.volume ?? 1;
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utter);
-            }
-
-            // when voices are loaded, cache selection
-            window.speechSynthesis.onvoiceschanged = function(){
-                selectedVoice = pickVoice();
-            };
-
-            document.addEventListener('DOMContentLoaded', ()=>{
-                const bubble = document.querySelector('.teacher-bubble');
-                if (!bubble) return;
-                // click to speak
-                bubble.style.cursor = 'pointer';
-                bubble.addEventListener('click', ()=> speakTeacher(bubble.textContent.trim()));
-
-                // try to auto-speak greeting once (some browsers require user gesture)
-                setTimeout(()=>{
-                    try { speakTeacher(bubble.textContent.trim()); } catch(e){}
-                }, 500);
-            });
-        })();
-    </script>
 
     <script>
+        // Audio files mapping
+        const audioFiles = {
+            greeting: '{{ asset("music/bahagi_ng_katawan/kamusta1.aac") }}',
+            intro: '{{ asset("music/bahagi_ng_katawan/maligayang pagdating2.aac") }}',
+            ulo: '{{ asset("music/bahagi_ng_katawan/ulo.aac") }}',
+            mata: '{{ asset("music/bahagi_ng_katawan/mata.aac") }}',
+            ilong: '{{ asset("music/bahagi_ng_katawan/ilong.aac") }}',
+            bibig: '{{ asset("music/bahagi_ng_katawan/bibig.aac") }}',
+            kamay: '{{ asset("music/bahagi_ng_katawan/kamay.aac") }}',
+            binti: '{{ asset("music/bahagi_ng_katawan/binti.aac") }}',
+            paa: '{{ asset("music/bahagi_ng_katawan/paa.aac") }}'
+        };
+
+        // Play teacher greeting
+        function playTeacherGreeting() {
+            const audio = new Audio(audioFiles.greeting);
+            audio.play().catch(err => console.log('Audio play error:', err));
+        }
+
+        // Play specific audio for slide
+        function playAudio(audioKey) {
+            if (audioFiles[audioKey]) {
+                const audio = new Audio(audioFiles[audioKey]);
+                audio.play().catch(err => console.log('Audio play error:', err));
+            }
+        }
+
         // Simple blackboard slide system
         const blackboardSlides = [
             {
                 title: 'Bahagi ng Katawan',
-                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang mga bahagi ng katawan.</p><p class="mt-4"><img src="/image/bahagi ng katawan.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Maligayang pagdating! Sa araling ito, matututunan natin ang mga bahagi ng katawan.</p><p class="mt-4"><img src="/image/bahagi ng katawan.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'intro\')" class="speaker-btn">🔊 Marinig ang grabacion</button>'
             },
             {
                 title: 'Ulo',
-                body: '<p>Ang ulo ay nasa tuktok ng katawan. Dito nakalagay ang ating utak, mga mata, ilong, at bibig.</p><p class="mt-4"><img src="/image/head2.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'  
+                body: '<p>Ang ulo ay nasa tuktok ng katawan. Dito nakalagay ang ating utak, mga mata, ilong, at bibig.</p><p class="mt-4"><img src="/image/head2.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'ulo\')" class="speaker-btn">🔊 Marinig ang tanong</button>'  
             },
             {
                 title: 'Mga Mata',
-                body: '<p>Ginagamit natin ang mga mata upang makita. May dalawang mata tayo.</p><p class="mt-4"><img src="/image/mata.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'  
+                body: '<p>Ginagamit natin ang mga mata upang makita. May dalawang mata tayo.</p><p class="mt-4"><img src="/image/mata.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'mata\')" class="speaker-btn">🔊 Marinig ang tanong</button>'  
             },
             {
                 title: 'Ilong',
-                body: '<p>Ginagamit natin ang ilong upang huminga at amuin ang mga bagay.</p><p class="mt-4"><img src="/image/nose.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'  
+                body: '<p>Ginagamit natin ang ilong upang huminga at amuin ang mga bagay.</p><p class="mt-4"><img src="/image/nose.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'ilong\')" class="speaker-btn">🔊 Marinig ang tanong</button>'  
             },
             {
                 title: 'Bibig',
-                body: '<p>Ginagamit natin ang bibig upang kumain at magsalita.</p><p class="mt-4"><img src="/image/mouth.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Ginagamit natin ang bibig upang kumain at magsalita.</p><p class="mt-4"><img src="/image/mouth.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'bibig\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             },
             {
                 title: 'Kamay',
-                body: '<p>May dalawang kamay tayo. Ginagamit natin ito upang hawakan at gawin ang mga bagay.</p><p class="mt-4"><img src="/image/kamay.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>May dalawang kamay tayo. Ginagamit natin ito upang hawakan at gawin ang mga bagay.</p><p class="mt-4"><img src="/image/kamay.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'kamay\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             },
             {
                 title: 'Binti',
-                body: '<p>May dalawang binti tayo. Ginagamit natin ito upang maglakad at tumakbo.</p><p class="mt-4"><img src="/image/binti.png" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>May dalawang binti tayo. Ginagamit natin ito upang maglakad at tumakbo.</p><p class="mt-4"><img src="/image/binti.png" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'binti\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             },
             {
                 title: 'Paa',
-                body: '<p>Ang paa ay nasa ibaba ng binti. May limang daliri ang bawat paa.</p><p class="mt-4"><img src="/image/paa.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Ang paa ay nasa ibaba ng binti. May limang daliri ang bawat paa.</p><p class="mt-4"><img src="/image/paa.jpg" alt="Kid Face" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p><button onclick="playAudio(\'paa\')" class="speaker-btn">🔊 Marinig ang tanong</button>'
             }
         ];
 
@@ -237,21 +230,11 @@
         // render initial slide on load
         document.addEventListener('DOMContentLoaded', ()=>{
             renderBlackboard();
+            // Auto-play teacher greeting
+            setTimeout(() => {
+                playTeacherGreeting();
+            }, 800);
         });
-
-        // speak student-provided answers using teacher voice
-        function speakStudentAnswer(inputId, prefix) {
-            const el = document.getElementById(inputId);
-            if (!el) return;
-            const val = (el.value || '').trim();
-            if (!val) {
-                speakTeacher('Wala pang nilagay. Paki-type muna.');
-                return;
-            }
-            // construct phrase: prefix + value
-            const phrase = `${prefix} ${val}`;
-            speakTeacher(phrase, { rate: 0.95, pitch: 1.05 });
-        }
 
         // Finish lesson: POST to lesson.mark-complete then redirect
         function finishLesson() {
