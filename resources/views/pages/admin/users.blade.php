@@ -116,6 +116,20 @@
                                     @enderror
                                 </div>
 
+                                <!-- Section Selection (visible for student and teacher) -->
+                                <div id="sectionField" class="hidden">
+                                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Section</label>
+                                    <select name="section" value="{{ old('section') }}"
+                                        class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white">
+                                        <option value="">-- Select Section --</option>
+                                        <option value="kinder_1">Kinder 1</option>
+                                        <option value="kinder_2">Kinder 2</option>
+                                    </select>
+                                    @error('section')
+                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
                                 <!-- Parent Name (visible only for student role) -->
                                 <div id="parentNameField" class="hidden">
                                     <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Parent Name</label>
@@ -193,6 +207,14 @@
                 idInput.placeholder = config.idPlaceholder;
                 submitBtn.textContent = config.buttonText;
                 submitBtn.className = 'rounded-lg px-6 py-2 font-medium text-white ' + config.buttonColor;
+                    // Show/hide section field for students and teachers
+                    const sectionField = document.getElementById('sectionField');
+                    if (role === 'student' || role === 'teacher') {
+                        sectionField.classList.remove('hidden');
+                    } else {
+                        sectionField.classList.add('hidden');
+                    }
+
                     // Show/hide parent name field for students
                     const parentNameField = document.getElementById('parentNameField');
                     if (role === 'student') {
@@ -213,7 +235,7 @@
                 document.body.style.overflow = 'hidden';
             }
 
-            function openEditModal(userId, name, email, studentId, parentName, role) {
+            function openEditModal(userId, name, email, studentId, parentName, role, section) {
                 const modal = document.getElementById('addUserModal');
                 const roleInput = document.getElementById('roleInput');
                 const form = document.querySelector('form');
@@ -226,6 +248,7 @@
                 document.querySelector('input[name="email"]').value = email;
                 document.querySelector('input[name="student_id"]').value = studentId;
                 document.querySelector('input[name="parent_name"]').value = parentName;
+                document.querySelector('select[name="section"]').value = section || '';
                 document.querySelector('input[name="password"]').value = '';
                 document.querySelector('input[name="password_confirmation"]').value = '';
                 
@@ -253,6 +276,14 @@
                 document.getElementById('roleInput').disabled = true;
                 const parentNameField = document.getElementById('parentNameField');
                 parentNameField.classList.add('hidden');
+
+                // Show/hide section field for students and teachers
+                const sectionField = document.getElementById('sectionField');
+                if (role === 'student' || role === 'teacher') {
+                    sectionField.classList.remove('hidden');
+                } else {
+                    sectionField.classList.add('hidden');
+                }
 
                 // Hide ID field when editing a parent
                 const idField = document.getElementById('idField');
@@ -316,6 +347,7 @@
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Student ID</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Parents Name</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Section</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Joined</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Actions</th>
                             </tr>
@@ -327,11 +359,12 @@
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->student_id ?? '—' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->parent_name ?? '—' }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400"><span class="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-medium capitalize">{{ $user->section ? str_replace('_', ' ', $user->section) : '—' }}</span></td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
                                     <td class="px-6 py-4 text-sm">
                                         @if ($user->id !== auth()->id())
                                             <div class="flex gap-2">
-                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '{{ addslashes($user->parent_name ?? '') }}', '{{ $user->role }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '{{ addslashes($user->parent_name ?? '') }}', '{{ $user->role }}', '{{ $user->section ?? '' }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     Edit
                                                 </button>
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?')">
@@ -349,7 +382,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-8 text-center text-gray-600 dark:text-gray-400">
+                                    <td colspan="7" class="px-6 py-8 text-center text-gray-600 dark:text-gray-400">
                                         No students found
                                     </td>
                                 </tr>
@@ -370,6 +403,7 @@
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Name</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Teacher ID</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Section</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Joined</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Actions</th>
                             </tr>
@@ -380,11 +414,12 @@
                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $user->name }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->student_id ?? '—' }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400"><span class="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-medium capitalize">{{ $user->section ? str_replace('_', ' ', $user->section) : '—' }}</span></td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
                                     <td class="px-6 py-4 text-sm">
                                         @if ($user->id !== auth()->id())
                                             <div class="flex gap-2">
-                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '', '{{ $user->role }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '', '{{ $user->role }}', '{{ $user->section ?? '' }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     Edit
                                                 </button>
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?')">
@@ -402,7 +437,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-gray-600 dark:text-gray-400">
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-600 dark:text-gray-400">
                                         No teachers found
                                     </td>
                                 </tr>
@@ -423,6 +458,7 @@
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Name</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Parent ID</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Section</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Joined</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Actions</th>
                             </tr>
@@ -433,11 +469,12 @@
                                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ $user->name }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->student_id ?? '—' }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400"><span class="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 px-3 py-1 rounded-full text-xs font-medium capitalize">{{ $user->section ? str_replace('_', ' ', $user->section) : '—' }}</span></td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
                                     <td class="px-6 py-4 text-sm">
                                         @if ($user->id !== auth()->id())
                                             <div class="flex gap-2">
-                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '', '{{ $user->role }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <button type="button" onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->student_id ?? '') }}', '', '{{ $user->role }}', '{{ $user->section ?? '' }}')" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     Edit
                                                 </button>
                                                 <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?')">
@@ -455,7 +492,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-gray-600 dark:text-gray-400">
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-600 dark:text-gray-400">
                                         No parents found
                                     </td>
                                 </tr>

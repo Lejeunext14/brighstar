@@ -29,6 +29,7 @@ class UserManagementController extends Controller
             'role' => 'required|in:admin,teacher,parent,student',
             'student_id' => 'nullable|string|max:255',
             'parent_name' => 'nullable|string|max:255',
+            'section' => 'nullable|in:kinder_1,kinder_2',
         ]);
 
         // Set relationship_type based on role
@@ -43,6 +44,7 @@ class UserManagementController extends Controller
             'email_verified_at' => now(),
             'student_id' => $validated['student_id'] ?? null,
             'parent_name' => $validated['parent_name'] ?? null,
+            'section' => $validated['section'] ?? null,
         ]);
 
         return redirect()->route('users.index')->with('success', 'User created successfully!');
@@ -81,6 +83,7 @@ class UserManagementController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
             'student_id' => 'nullable|string|max:255',
             'parent_name' => 'nullable|string|max:255',
+            'section' => 'nullable|in:kinder_1,kinder_2',
         ]);
 
         // Only update password if provided

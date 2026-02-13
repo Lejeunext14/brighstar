@@ -30,6 +30,8 @@ class User extends Authenticatable
         'student_id',
         'parent_name',
         'avatar',
+        'section',
+        'class_name',
     ];
 
     /**

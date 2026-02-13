@@ -7,7 +7,13 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h1 class="text-4xl font-bold text-gray-900 dark:text-white">All Students</h1>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">View and manage all students</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">
+                        @if($teacher->section)
+                            Managing students in <span class="font-semibold text-blue-600 dark:text-blue-400">{{ ucwords(str_replace('_', ' ', $teacher->section)) }}</span>
+                        @else
+                            View and manage all students
+                        @endif
+                    </p>
                 </div>
                 <a href="{{ route('teacher.dashboard') }}" class="px-4 py-2 bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600 text-gray-900 dark:text-white font-semibold rounded-lg transition-colors">
                     ← Back
@@ -47,6 +53,15 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-sm text-gray-600 dark:text-gray-400">Student ID</span>
                                 <span class="font-semibold text-gray-900 dark:text-white">{{ $student->student_id }}</span>
+                            </div>
+                        @endif
+
+                        @if ($student->section)
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Section</span>
+                                <span class="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 px-2 py-1 rounded-full text-xs font-semibold capitalize">
+                                    {{ str_replace('_', ' ', $student->section) }}
+                                </span>
                             </div>
                         @endif
 

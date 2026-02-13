@@ -15,6 +15,9 @@ new class extends Component {
     public string $name = '';
     public string $email = '';
     public string $avatar = '';
+    public string $student_id = '';
+    public string $parent_name = '';
+    public string $section = '';
     public array $availableAvatars = [
         '/kidprofile/pro1.jpg',
         '/kidprofile/pro2.jpg',
@@ -26,9 +29,13 @@ new class extends Component {
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
-        $this->avatar = Auth::user()->avatar ?? '/kidprofile/pro1.jpg';
+        $user = Auth::user();
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->avatar = $user->avatar ?? '/kidprofile/pro1.jpg';
+        $this->student_id = $user->student_id ?? '';
+        $this->parent_name = $user->parent_name ?? '';
+        $this->section = $user->section ?? '';
     }
 
     /**
@@ -41,6 +48,13 @@ new class extends Component {
         $validated = $this->validate($this->profileRules($user->id));
         
         $validated['avatar'] = $this->avatar;
+        
+        // Add student-specific fields if user is a student
+        if ($user->role === 'student') {
+            $validated['student_id'] = $this->student_id;
+            $validated['parent_name'] = $this->parent_name;
+            $validated['section'] = $this->section;
+        }
 
         $user->fill($validated);
 
@@ -90,7 +104,7 @@ new class extends Component {
 
     <flux:heading class="sr-only">{{ __('Profile Settings') }}</flux:heading>
 
-    <x-pages::settings.layout :heading="__('Profile')" :subheading="__('Update your name, email address, and avatar')">
+    <x-pages::settings.layout :heading="__('Profile')" :subheading="Auth::user()->role === 'student' ? __('Update your name, email, avatar, and student information') : __('Update your name, email address, and avatar')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
             <!-- Avatar Selection -->
             <div class="space-y-4">
@@ -141,6 +155,42 @@ new class extends Component {
                     </div>
                 @endif
             </div>
+
+            <!-- Student Information (visible only for students) -->
+            @if (Auth::user()->role === 'student')
+                <div class="rounded-lg border border-blue-200 dark:border-blue-900/30 bg-blue-50 dark:bg-blue-900/10 p-4">
+                    <flux:heading level="3" class="mb-4">{{ __('Student Information') }}</flux:heading>
+                    
+                    <div class="space-y-4">
+                        <flux:input 
+                            wire:model="student_id" 
+                            :label="__('Student ID')" 
+                            type="text" 
+                            placeholder="Enter your student ID"
+                            readonly
+                            disabled
+                        />
+
+                        <flux:input 
+                            wire:model="parent_name" 
+                            :label="__('Parent/Guardian Name')" 
+                            type="text" 
+                            placeholder="Enter parent or guardian name"
+                            readonly
+                            disabled
+                        />
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">{{ __('Section') }}</label>
+                            <select wire:model="section" disabled class="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-900 cursor-not-allowed dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-400">
+                                <option value="">-- Select Section --</option>
+                                <option value="kinder_1">Kinder 1</option>
+                                <option value="kinder_2">Kinder 2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">

@@ -18,8 +18,15 @@ class TeacherDashboardController extends Controller
     {
         $teacher = Auth::user();
         
-        // Get all students (users with role 'student')
-        $students = User::where('role', 'student')->get();
+        // Get students in the same section as the teacher
+        if ($teacher->section) {
+            $students = User::where('role', 'student')
+                ->where('section', $teacher->section)
+                ->get();
+        } else {
+            // If teacher has no section assigned, show all students
+            $students = User::where('role', 'student')->get();
+        }
         
         // Get teacher's classes
         $classes = ClassRoom::where('teacher_id', $teacher->id)->get();
@@ -63,7 +70,16 @@ class TeacherDashboardController extends Controller
     public function showAllStudents()
     {
         $teacher = Auth::user();
-        $students = User::where('role', 'student')->get();
+        
+        // Get only students in the same section as the teacher
+        if ($teacher->section) {
+            $students = User::where('role', 'student')
+                ->where('section', $teacher->section)
+                ->get();
+        } else {
+            // If teacher has no section assigned, show all students
+            $students = User::where('role', 'student')->get();
+        }
 
         return view('pages.teacher.students', [
             'teacher' => $teacher,

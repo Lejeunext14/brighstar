@@ -3,7 +3,14 @@
         <!-- Welcome Section -->
         <div class="rounded-xl border border-neutral-200 bg-gradient-to-r from-green-50 to-emerald-50 p-8 dark:border-neutral-700 dark:from-green-900/20 dark:to-emerald-900/20 mb-6">
             <h1 class="text-4xl font-black text-gray-900 dark:text-white mb-2">Welcome back, {{ Auth::user()->name }}! 👨‍🏫</h1>
-            <p class="text-lg text-gray-600 dark:text-gray-300">Manage your classroom and track student progress</p>
+            <p class="text-lg text-gray-600 dark:text-gray-300">
+                Manage your classroom and track student progress
+                @if(Auth::user()->section)
+                    <span class="inline-block ml-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold">
+                        {{ ucwords(str_replace('_', ' ', Auth::user()->section)) }}
+                    </span>
+                @endif
+            </p>
         </div>
 
         <!-- Quick Stats Section -->
