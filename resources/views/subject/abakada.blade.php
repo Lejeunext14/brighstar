@@ -353,8 +353,7 @@
         <!-- Music Control Button -->
         <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🔊</button>
 
-        <!-- Score Display -->
-        <div class="score-display">Score: <span id="scoreDisplay">0</span></div>
+        <!-- Score display removed -->
 
         <!-- Main Game Area -->
         <div class="game-main">
@@ -398,8 +397,7 @@
                 <div class="modal-emoji">🎉</div>
                 <div class="modal-title">Excellent Work!</div>
                 <div class="modal-text">You've learned all the Abakada letters!</div>
-                <div class="stars" id="starDisplay">⭐⭐⭐</div>
-                <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+                <!-- Score and stars removed for simplified game experience -->
                 <button onclick="exitGame()" class="modal-btn">Tapos na 🎮</button>
             </div>
         </div>
@@ -426,7 +424,6 @@
         ];
 
         let currentIndex = 0;
-        let score = 0;
         let musicPlaying = true;
 
         function toggleMusic() {
@@ -490,9 +487,7 @@
 
                     if (selectedLetter === correctLetter) {
                         this.classList.add('correct');
-                        score += 100;
-                        document.getElementById('scoreDisplay').textContent = score;
-                        
+
                         // Play correct sound
                         const correctSound = document.getElementById('correctSound');
                         correctSound.currentTime = 0;
@@ -510,8 +505,6 @@
                         }, 800);
                     } else {
                         this.classList.add('incorrect');
-                        score = Math.max(0, score - 10);
-                        document.getElementById('scoreDisplay').textContent = score;
                         setTimeout(() => {
                             this.classList.remove('incorrect');
                             // Re-enable clicking after animation
@@ -532,8 +525,6 @@
 
         function initGame() {
             currentIndex = 0;
-            score = 0;
-            document.getElementById('scoreDisplay').textContent = '0';
             updateDisplay();
             resetCardStyles();
             attachCardListeners();
@@ -561,9 +552,6 @@
 
         function showCompletion() {
             const modal = document.getElementById('completionModal');
-            const starCount = score >= 1400 ? 3 : score >= 900 ? 2 : 1;
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('starDisplay').textContent = '⭐'.repeat(starCount);
             modal.classList.remove('hidden');
         }
 

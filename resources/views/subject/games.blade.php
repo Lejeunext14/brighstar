@@ -146,28 +146,7 @@
                 @endif
             </div>
         </div>
-        <!-- Your Stats Section -->
-        <div class="rounded-xl border border-neutral-200 bg-white p-8 dark:border-neutral-700 dark:bg-neutral-900">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Your Gaming Stats</h2>
-            <div class="grid gap-6 md:grid-cols-4">
-                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Games Played</p>
-                    <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">24</p>
-                </div>
-                <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Points</p>
-                    <p class="text-3xl font-bold text-green-600 dark:text-green-400">1,850</p>
-                </div>
-                <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Win Streak</p>
-                    <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">7</p>
-                </div>
-                <div class="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Rank</p>
-                    <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">#12</p>
-                </div>
-            </div>
-        </div>
+        <!-- Gaming stats removed per request -->
 
         <!-- Floating Footer Button -->
         <div class="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-40 mt-20">
