@@ -18,10 +18,10 @@
                     style="background-image: url('{{ asset($currentAvatar) }}'); background-size: cover; background-position: center;">
                     <div class="absolute inset-0 bg-black/40 rounded-3xl"></div>
                     <div class="relative z-10 flex flex-col items-center justify-center h-full">
-                        <div class="w-32 h-32 mb-4 rounded-2xl overflow-hidden border-4 border-white shadow-lg" style="background-image: url('{{ asset($currentAvatar) }}'); background-size: cover; background-position: center;">
+                        <div class="w-32 h-32 mb-4 rounded-2xl overflow-hidden border-4 border-white shadow-lg animate-bounce" style="background-image: url('{{ asset($currentAvatar) }}'); background-size: cover; background-position: center; animation-duration: 3s;">
                         </div>
-                        <h3 class="text-2xl font-black text-center mb-2">{{ Auth::user()->name }}</h3>
-                        <p class="text-sm text-white/80 text-center">Level 5 • Expert Learner</p>
+                        <h3 class="text-2xl font-black text-center mb-2">{{ $currentAvatarMeta['name'] }}</h3>
+                        <p class="text-sm text-white/90 text-center">{{ $currentAvatarMeta['description'] }}</p>
                         <div class="mt-4 flex gap-2">
                             <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold">⭐⭐⭐⭐⭐</span>
                         </div>
@@ -36,14 +36,32 @@
                 <form action="{{ route('avatar.update') }}" method="POST" id="avatarForm">
                     @csrf
                     
-                    <div class="grid grid-cols-3 md:grid-cols-3 gap-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                         @foreach ($avatars as $avatar)
                             <label class="cursor-pointer group">
-                                <input type="radio" name="avatar" value="{{ $avatar }}" 
-                                    {{ $currentAvatar === $avatar ? 'checked' : '' }}
-                                    class="sr-only peer" onchange="updatePreview('{{ asset($avatar) }}')">
-                                <div class="w-full aspect-square rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 flex items-center justify-center transform transition-all group-hover:scale-110 peer-checked:ring-4 peer-checked:ring-purple-500 peer-checked:scale-110 peer-checked:shadow-lg">
-                                    <img src="{{ asset($avatar) }}" alt="Avatar {{ $loop->iteration }}" class="w-full h-full object-cover">
+                                <input type="radio" name="avatar" value="{{ $avatar['path'] }}" 
+                                    {{ $currentAvatar === $avatar['path'] ? 'checked' : '' }}
+                                    class="sr-only peer" onchange="updatePreview('{{ asset($avatar['path']) }}', '{{ $avatar['name'] }}', '{{ $avatar['description'] }}')">
+                                <div class="relative">
+                                    <!-- Avatar Image Container -->
+                                    <div class="w-full aspect-square rounded-3xl overflow-hidden bg-gradient-to-br {{ $avatar['color'] }} flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 peer-checked:ring-4 peer-checked:ring-purple-500 peer-checked:scale-105 peer-checked:shadow-2xl">
+                                        <img src="{{ asset($avatar['path']) }}" alt="Avatar: {{ $avatar['name'] }}" class="w-full h-full object-cover">
+                                    </div>
+                                    
+                                    <!-- Checkmark Badge -->
+                                    @if($currentAvatar === $avatar['path'])
+                                        <div class="absolute top-2 right-2 bg-purple-500 text-white rounded-full p-2 animate-pulse">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    @endif
+                                    
+                                    <!-- Character Info -->
+                                    <div class="mt-4 text-center">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $avatar['name'] }}</h3>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ $avatar['description'] }}</p>
+                                    </div>
                                 </div>
                             </label>
                         @endforeach
@@ -71,12 +89,23 @@
     </div>
 
     <script>
-        function updatePreview(imagePath) {
+        function updatePreview(imagePath, characterName, characterDesc) {
             const cardPreview = document.getElementById('cardPreview');
+            const nameElement = cardPreview?.querySelector('h3');
+            const descElement = cardPreview?.querySelector('p');
+            
             if (cardPreview) {
                 cardPreview.style.backgroundImage = `url('${imagePath}')`;
                 cardPreview.style.backgroundSize = 'cover';
                 cardPreview.style.backgroundPosition = 'center';
+            }
+            
+            if (nameElement) {
+                nameElement.textContent = characterName;
+            }
+            
+            if (descElement) {
+                descElement.textContent = characterDesc;
             }
         }
         
