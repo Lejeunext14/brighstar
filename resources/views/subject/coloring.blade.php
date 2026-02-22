@@ -1,5 +1,17 @@
 <x-layouts::app :title="__('Coloring Game')">
     <style>
+        body {
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        canvas {
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+
         .design-card {
             transition: all 0.3s ease;
             position: relative;
@@ -17,13 +29,19 @@
             transition: left 0.5s ease;
         }
 
-        .design-card:hover::before {
-            left: 100%;
+        .design-card:active {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .design-card:hover {
-            transform: translateY(-12px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        @media (hover: hover) {
+            .design-card:hover::before {
+                left: 100%;
+            }
+            .design-card:hover {
+                transform: translateY(-12px) scale(1.05);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            }
         }
 
         .design-card.selected {
@@ -200,28 +218,28 @@
                 </div>
 
                 <!-- Tools and Canvas Container -->
-                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                    <!-- Tools Panel -->
-                    <div class="lg:col-span-1 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-8" id="mainContainer">
+                    <!-- Tools Panel - Mobile: Bottom, Desktop: Side -->
+                    <div class="md:col-span-1 space-y-4 md:space-y-6 order-2 md:order-1">
                         <!-- Color Palette Card -->
-                        <div class="rounded-3xl bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 p-6 shadow-xl">
-                            <h3 class="text-lg font-black mb-4 text-gray-900 dark:text-white flex items-center gap-2">
+                        <div class="rounded-2xl md:rounded-3xl bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 p-4 md:p-6 shadow-xl">
+                            <h3 class="text-base md:text-lg font-black mb-3 md:mb-4 text-gray-900 dark:text-white flex items-center gap-2">
                                 🎨 Colors
                             </h3>
-                            <div class="space-y-3">
-                                <div class="grid grid-cols-5 gap-2">
-                                    <button onclick="setColor('#FF0000')" class="w-full aspect-square rounded-xl bg-red-500 hover:scale-110 transition-transform border-2 border-red-600 shadow-md hover:shadow-lg" title="Red"></button>
-                                    <button onclick="setColor('#00FF00')" class="w-full aspect-square rounded-xl bg-green-500 hover:scale-110 transition-transform border-2 border-green-600 shadow-md hover:shadow-lg" title="Green"></button>
-                                    <button onclick="setColor('#0000FF')" class="w-full aspect-square rounded-xl bg-blue-500 hover:scale-110 transition-transform border-2 border-blue-600 shadow-md hover:shadow-lg" title="Blue"></button>
-                                    <button onclick="setColor('#FFFF00')" class="w-full aspect-square rounded-xl bg-yellow-400 hover:scale-110 transition-transform border-2 border-yellow-500 shadow-md hover:shadow-lg" title="Yellow"></button>
-                                    <button onclick="setColor('#FFA500')" class="w-full aspect-square rounded-xl bg-orange-500 hover:scale-110 transition-transform border-2 border-orange-600 shadow-md hover:shadow-lg" title="Orange"></button>
+                            <div class="space-y-2 md:space-y-3">
+                                <div class="grid grid-cols-5 gap-1 md:gap-2">
+                                    <button onclick="setColor('#FF0000')" class="w-full aspect-square rounded-lg md:rounded-xl bg-red-500 active:scale-95 transition-transform border-2 border-red-600 shadow-md" title="Red"></button>
+                                    <button onclick="setColor('#00FF00')" class="w-full aspect-square rounded-lg md:rounded-xl bg-green-500 active:scale-95 transition-transform border-2 border-green-600 shadow-md" title="Green"></button>
+                                    <button onclick="setColor('#0000FF')" class="w-full aspect-square rounded-lg md:rounded-xl bg-blue-500 active:scale-95 transition-transform border-2 border-blue-600 shadow-md" title="Blue"></button>
+                                    <button onclick="setColor('#FFFF00')" class="w-full aspect-square rounded-lg md:rounded-xl bg-yellow-400 active:scale-95 transition-transform border-2 border-yellow-500 shadow-md" title="Yellow"></button>
+                                    <button onclick="setColor('#FFA500')" class="w-full aspect-square rounded-lg md:rounded-xl bg-orange-500 active:scale-95 transition-transform border-2 border-orange-600 shadow-md" title="Orange"></button>
                                 </div>
-                                <div class="grid grid-cols-5 gap-2">
-                                    <button onclick="setColor('#800080')" class="w-full aspect-square rounded-xl bg-purple-500 hover:scale-110 transition-transform border-2 border-purple-600 shadow-md hover:shadow-lg" title="Purple"></button>
-                                    <button onclick="setColor('#FFC0CB')" class="w-full aspect-square rounded-xl bg-pink-400 hover:scale-110 transition-transform border-2 border-pink-500 shadow-md hover:shadow-lg" title="Pink"></button>
-                                    <button onclick="setColor('#000000')" class="w-full aspect-square rounded-xl bg-black hover:scale-110 transition-transform border-2 border-gray-700 shadow-md hover:shadow-lg" title="Black"></button>
-                                    <button onclick="setColor('#FFFFFF')" class="w-full aspect-square rounded-xl bg-white hover:scale-110 transition-transform border-2 border-gray-300 shadow-md hover:shadow-lg" title="White"></button>
-                                    <input type="color" id="colorPicker" onchange="setColor(this.value)" class="w-full aspect-square rounded-xl cursor-pointer border-2 border-gray-300 shadow-md hover:shadow-lg" title="Custom Color">
+                                <div class="grid grid-cols-5 gap-1 md:gap-2">
+                                    <button onclick="setColor('#800080')" class="w-full aspect-square rounded-lg md:rounded-xl bg-purple-500 active:scale-95 transition-transform border-2 border-purple-600 shadow-md" title="Purple"></button>
+                                    <button onclick="setColor('#FFC0CB')" class="w-full aspect-square rounded-lg md:rounded-xl bg-pink-400 active:scale-95 transition-transform border-2 border-pink-500 shadow-md" title="Pink"></button>
+                                    <button onclick="setColor('#000000')" class="w-full aspect-square rounded-lg md:rounded-xl bg-black active:scale-95 transition-transform border-2 border-gray-700 shadow-md" title="Black"></button>
+                                    <button onclick="setColor('#FFFFFF')" class="w-full aspect-square rounded-lg md:rounded-xl bg-white active:scale-95 transition-transform border-2 border-gray-300 shadow-md" title="White"></button>
+                                    <input type="color" id="colorPicker" onchange="setColor(this.value)" class="w-full aspect-square rounded-lg md:rounded-xl cursor-pointer border-2 border-gray-300 shadow-md" title="Custom Color">
                                 </div>
                             </div>
                         </div>
@@ -270,11 +288,11 @@
                         </div>
                     </div>
 
-                    <!-- Canvas Area -->
-                    <div class="lg:col-span-4">
-                        <div id="canvasWrapper" class="relative rounded-3xl border-4 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden bg-white dark:bg-neutral-800 shadow-2xl" style="min-height: 600px;">
+                    <!-- Canvas Area - Mobile: Top, Desktop: Right -->
+                    <div class="md:col-span-4 order-1 md:order-2">
+                        <div id="canvasWrapper" class="relative rounded-2xl md:rounded-3xl border-4 border-dashed border-gray-300 dark:border-gray-600 overflow-hidden bg-white dark:bg-neutral-800 shadow-2xl" style="min-height: 400px; max-width: 100%;">
                             <div id="canvasGrid" class="pointer-events-none absolute inset-0 hidden" style="background-image: linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.6;"></div>
-                            <canvas id="coloringCanvas" class="block mx-auto w-full max-w-full" width="800" height="600" style="cursor: crosshair; display: block; background: white;"></canvas>
+                            <canvas id="coloringCanvas" class="block mx-auto w-full touch-none" width="800" height="600" style="cursor: crosshair; display: block; background: white; max-width: 100%;" ontouchstart="preventZoom(event)"></canvas>
                         </div>
                     </div>
                 </div>
@@ -530,7 +548,15 @@
             try {
                 const data = canvas.toDataURL();
                 const rect = wrapper.getBoundingClientRect();
-                const targetWidth = Math.max(400, Math.min(1200, Math.round(rect.width || 800)));
+                
+                // Mobile: 80vw responsive, Desktop: based on grid
+                let targetWidth;
+                if (window.innerWidth < 768) {
+                    targetWidth = Math.max(280, Math.min(800, Math.round(window.innerWidth * 0.95)));
+                } else {
+                    targetWidth = Math.max(400, Math.min(1200, Math.round(rect.width || 800)));
+                }
+                
                 const targetHeight = Math.round(targetWidth * 3 / 4);
 
                 if (targetWidth > 0 && targetHeight > 0) {
@@ -549,9 +575,13 @@
                     img.src = data;
                 } else {
                     console.warn('Invalid canvas dimensions:', targetWidth, targetHeight);
+                    canvas.width = 400;
+                    canvas.height = 300;
                 }
             } catch (err) {
                 console.error('Error in resizeCanvas:', err);
+                canvas.width = 400;
+                canvas.height = 300;
             }
         }
 
@@ -736,11 +766,37 @@
             ctx.stroke();
         }
 
+        // Helper function to prevent zoom on double tap
+        function preventZoom(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }
+
+        // Get position from mouse or touch event
         function getPosFromEvent(e) {
             const rect = canvas.getBoundingClientRect();
-            const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-            const clientY = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
+            let clientX, clientY;
+            
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+                e.preventDefault();
+            } else if (e.clientX !== undefined) {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            } else {
+                return { x: 0, y: 0 };
+            }
+            
+            // Account for canvas scaling
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            return { 
+                x: (clientX - rect.left) * scaleX, 
+                y: (clientY - rect.top) * scaleY
+            };
         }
 
         function startDrawing(e) {
@@ -748,26 +804,36 @@
             pushState();
             isDrawing = true;
             const p = getPosFromEvent(e);
-            ctx.beginPath(); ctx.moveTo(p.x, p.y);
+            ctx.beginPath(); 
+            ctx.moveTo(p.x, p.y);
         }
 
         function draw(e) {
             if (!isDrawing) return;
+            e.preventDefault();
             const p = getPosFromEvent(e);
             brushSize = document.getElementById('brushSize').value;
-            ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.lineWidth = brushSize; 
+            ctx.lineCap = 'round'; 
+            ctx.lineJoin = 'round';
+            
             if (currentTool === 'pen') {
-                ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = currentColor;
-                ctx.lineTo(p.x, p.y); ctx.stroke();
+                ctx.globalCompositeOperation = 'source-over'; 
+                ctx.strokeStyle = currentColor;
+                ctx.lineTo(p.x, p.y); 
+                ctx.stroke();
             } else if (currentTool === 'eraser') {
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.clearRect(p.x - brushSize / 2, p.y - brushSize / 2, brushSize, brushSize);
             }
         }
 
-        function stopDrawing() {
+        function stopDrawing(e) {
             if (!isDrawing) return;
-            isDrawing = false; ctx.closePath(); updateHistoryButtons();
+            e.preventDefault();
+            isDrawing = false; 
+            ctx.closePath(); 
+            updateHistoryButtons();
         }
 
         // Touch support mapping to mouse-like events

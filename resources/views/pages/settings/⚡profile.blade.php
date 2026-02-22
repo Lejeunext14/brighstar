@@ -116,35 +116,35 @@ new class extends Component {
 
     <flux:heading class="sr-only">{{ __('Profile Settings') }}</flux:heading>
 
-    <div class="w-full bg-gray-50 dark:bg-gray-900/50 px-6 py-8">
+    <div class="w-full bg-gray-50 dark:bg-gray-900/50 px-4 md:px-6 py-6 md:py-8">
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <!-- Main Form - Takes up 3 columns -->
-                <div class="lg:col-span-3">
-                    <form wire:submit="updateProfileInformation" class="space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+                <!-- Main Form - Mobile: Full width, Desktop: 3 columns -->
+                <div class="lg:col-span-3 w-full">
+                    <form wire:submit="updateProfileInformation" class="space-y-6 md:space-y-8">
             
             <!-- Hero Section with Avatar -->
-            <div class="rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-8 shadow-2xl text-white overflow-hidden relative">
-                <div class="absolute top-0 right-0 opacity-10 text-9xl">🎨</div>
+            <div class="rounded-2xl md:rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-6 md:p-8 shadow-2xl text-white overflow-hidden relative">
+                <div class="absolute top-0 right-0 opacity-10 text-6xl md:text-9xl">🎨</div>
                 <div class="relative z-10">
-                    <h2 class="text-3xl font-black mb-6">{{ __('Your Profile') }}</h2>
+                    <h2 class="text-2xl md:text-3xl font-black mb-4 md:mb-6">{{ __('Your Profile') }}</h2>
                     
-                    <!-- Avatar With Badge -->
-                    <div class="flex items-end gap-6">
-                        <div class="relative">
-                            <div class="w-32 h-32 rounded-3xl overflow-hidden border-4 border-white shadow-2xl" style="background-image: url('{{ asset($avatar) }}'); background-size: cover; background-position: center;"></div>
-                            <div class="absolute -bottom-2 -right-2 bg-white rounded-full p-3 shadow-lg">
-                                <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <!-- Avatar With Badge - Mobile friendly -->
+                    <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 md:gap-6">
+                        <div class="relative flex-shrink-0">
+                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-3xl overflow-hidden border-4 border-white shadow-2xl" style="background-image: url('{{ asset($avatar) }}'); background-size: cover; background-position: center;"></div>
+                            <div class="absolute -bottom-2 -right-2 bg-white rounded-full p-2 md:p-3 shadow-lg">
+                                <svg class="w-4 h-4 md:w-6 md:h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </div>
-                        <div>
-                            <p class="text-white/90 text-sm font-semibold mb-2">Welcome back!</p>
-                            <h3 class="text-2xl font-black">{{ Auth::user()->name }}</h3>
-                            <p class="text-white/80 text-sm mt-1">{{ Auth::user()->email }}</p>
+                        <div class="text-center sm:text-left">
+                            <p class="text-white/90 text-xs md:text-sm font-semibold mb-1 md:mb-2">Welcome back!</p>
+                            <h3 class="text-xl md:text-2xl font-black line-clamp-2">{{ Auth::user()->name }}</h3>
+                            <p class="text-white/80 text-xs md:text-sm mt-1 line-clamp-1">{{ Auth::user()->email }}</p>
                             @if(Auth::user()->role === 'student' && Auth::user()->section)
-                                <div class="mt-3 inline-block bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold">
+                                <div class="mt-2 md:mt-3 inline-block bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold">
                                     {{ str_replace('_', ' ', Auth::user()->section) }}
                                 </div>
                             @endif
@@ -154,36 +154,36 @@ new class extends Component {
             </div>
 
             <!-- Avatar Selection Section -->
-            <div class="rounded-3xl bg-white dark:bg-gray-800 shadow-xl overflow-hidden">
-                <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-700 px-8 py-6 border-b border-gray-200 dark:border-gray-700">
-                    <flux:heading level="2" class="text-2xl">
+            <div class="rounded-2xl md:rounded-3xl bg-white dark:bg-gray-800 shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-700 dark:to-gray-700 px-6 md:px-8 py-4 md:py-6 border-b border-gray-200 dark:border-gray-700">
+                    <flux:heading level="2" class="text-xl md:text-2xl">
                         <span class="mr-2">🎨</span>{{ __('Choose Your Avatar') }}
                     </flux:heading>
-                    <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">Pick your favorite character to represent you in the classroom</p>
+                    <p class="text-gray-600 dark:text-gray-400 mt-1 md:mt-2 text-xs md:text-sm">Pick your favorite character to represent you in the classroom</p>
                 </div>
                 
-                <div class="p-8">
-                    <!-- Avatar Grid -->
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+                <div class="p-6 md:p-8">
+                    <!-- Avatar Grid - More responsive -->
+                    <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8 auto-rows-max">
                         @foreach ($availableAvatars as $avatarOption)
                             <label class="cursor-pointer group">
                                 <input type="radio" wire:model.live="avatar" value="{{ $avatarOption['path'] }}" class="sr-only">
-                                <div class="relative rounded-2xl aspect-square overflow-hidden border-3 transition-all duration-300"
-                                     :class="$wire.avatar === '{{ $avatarOption['path'] }}' ? 'border-purple-500 ring-4 ring-purple-300 scale-110 shadow-2xl' : 'border-gray-300 hover:border-purple-400 group-hover:scale-105'"
+                                <div class="relative rounded-lg md:rounded-2xl aspect-square overflow-hidden border-3 transition-all duration-300 w-full"
+                                     :class="$wire.avatar === '{{ $avatarOption['path'] }}' ? 'border-purple-500 ring-2 md:ring-4 ring-purple-300 scale-110 shadow-lg md:shadow-2xl' : 'border-gray-300 hover:border-purple-400 group-hover:scale-105'"
                                      style="background-image: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(236, 72, 153, 0.1)), url('{{ asset($avatarOption['path']) }}'); background-size: cover; background-position: center;">
                                     @if($avatar === $avatarOption['path'])
                                         <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                                            <div class="bg-purple-500 text-white rounded-full p-3 animate-bounce">
-                                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                            <div class="bg-purple-500 text-white rounded-full p-2 md:p-3 animate-bounce">
+                                                <svg class="w-4 h-4 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
                                     @endif
                                 </div>
-                                <div class="mt-3 text-center">
-                                    <p class="font-bold text-gray-900 dark:text-white text-sm">{{ $avatarOption['name'] }}</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ $avatarOption['description'] }}</p>
+                                <div class="mt-2 text-center hidden sm:block">
+                                    <p class="font-bold text-gray-900 dark:text-white text-xs md:text-sm">{{ $avatarOption['name'] }}</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 hidden md:block">{{ $avatarOption['description'] }}</p>
                                 </div>
                             </label>
                         @endforeach
@@ -192,52 +192,53 @@ new class extends Component {
             </div>
 
             <!-- Account Information Section -->
-            <div class="rounded-3xl bg-white dark:bg-gray-800 shadow-xl overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700 px-8 py-6 border-b border-gray-200 dark:border-gray-700">
-                    <flux:heading level="2" class="text-2xl">
+            <div class="rounded-2xl md:rounded-3xl bg-white dark:bg-gray-800 shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-700 px-6 md:px-8 py-4 md:py-6 border-b border-gray-200 dark:border-gray-700">
+                    <flux:heading level="2" class="text-xl md:text-2xl">
                         <span class="mr-2">📋</span>{{ __('Account Information') }}
                     </flux:heading>
                 </div>
                 
-                <div class="p-8 space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-6 md:p-8 space-y-4 md:space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                         <div>
-                            <label class="block text-sm font-bold text-gray-900 dark:text-white mb-3">{{ __('Full Name') }} <span class="text-red-500">*</span></label>
+                            <label class="block text-xs md:text-sm font-bold text-gray-900 dark:text-white mb-2 md:mb-3">{{ __('Full Name') }} <span class="text-red-500">*</span></label>
                             <flux:input 
                                 wire:model="name" 
                                 type="text" 
                                 required 
                                 autofocus 
                                 autocomplete="name"
-                                class="border-2 border-gray-200 dark:border-gray-600 focus:border-purple-500"
+                                class="border-2 border-gray-200 dark:border-gray-600 focus:border-purple-500 text-sm md:text-base"
                                 placeholder="Enter your full name"
                             />
                         </div>
 
                         <div>
-                            <label class="block text-sm font-bold text-gray-900 dark:text-white mb-3">{{ __('Email Address') }} <span class="text-red-500">*</span></label>
+                            <label class="block text-xs md:text-sm font-bold text-gray-900 dark:text-white mb-2 md:mb-3">{{ __('Email Address') }} <span class="text-red-500">*</span></label>
                             <flux:input 
                                 wire:model="email" 
                                 type="email" 
                                 required 
                                 autocomplete="email"
+                                class="text-sm md:text-base"
                                 placeholder="your@email.com"
                             />
                         </div>
                     </div>
 
                     @if ($this->hasUnverifiedEmail)
-                        <div class="rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-200 dark:border-yellow-700 p-4">
-                            <div class="flex gap-4">
-                                <div class="text-2xl">⚠️</div>
-                                <div>
-                                    <p class="font-semibold text-yellow-900 dark:text-yellow-200">{{ __('Email Not Verified') }}</p>
-                                    <p class="text-sm text-yellow-800 dark:text-yellow-300 mt-1">{{ __('Your email address is unverified.') }}</p>
-                                    <flux:link class="text-sm font-semibold text-yellow-900 dark:text-yellow-200 cursor-pointer hover:underline" wire:click.prevent="resendVerificationNotification">
+                        <div class="rounded-lg md:rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-200 dark:border-yellow-700 p-3 md:p-4">
+                            <div class="flex gap-3 md:gap-4">
+                                <div class="text-xl md:text-2xl flex-shrink-0">⚠️</div>
+                                <div class="min-w-0">
+                                    <p class="font-semibold text-yellow-900 dark:text-yellow-200 text-sm">{{ __('Email Not Verified') }}</p>
+                                    <p class="text-xs md:text-sm text-yellow-800 dark:text-yellow-300 mt-1">{{ __('Your email address is unverified.') }}</p>
+                                    <flux:link class="text-xs md:text-sm font-semibold text-yellow-900 dark:text-yellow-200 cursor-pointer hover:underline block mt-2" wire:click.prevent="resendVerificationNotification">
                                         {{ __('Click here to re-send the verification email.') }}
                                     </flux:link>
                                     @if (session('status') === 'verification-link-sent')
-                                        <p class="text-sm font-medium text-green-600 dark:text-green-400 mt-2">✅ {{ __('A new verification link has been sent to your email address.') }}</p>
+                                        <p class="text-xs md:text-sm font-medium text-green-600 dark:text-green-400 mt-2">✅ {{ __('A new verification link has been sent to your email address.') }}</p>
                                     @endif
                                 </div>
                             </div>
@@ -248,57 +249,57 @@ new class extends Component {
 
             <!-- Student Information (visible only for students) -->
             @if (Auth::user()->role === 'student')
-                <div class="rounded-3xl bg-white dark:bg-gray-800 shadow-xl overflow-hidden border-2 border-green-200 dark:border-green-800">
-                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-700 px-8 py-6 border-b border-green-200 dark:border-gray-700">
-                        <flux:heading level="2" class="text-2xl">
+                <div class="rounded-2xl md:rounded-3xl bg-white dark:bg-gray-800 shadow-xl overflow-hidden border-2 border-green-200 dark:border-green-800">
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-700 px-6 md:px-8 py-4 md:py-6 border-b border-green-200 dark:border-gray-700">
+                        <flux:heading level="2" class="text-xl md:text-2xl">
                             <span class="mr-2">🎓</span>{{ __('Student Information') }}
                         </flux:heading>
-                        <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">Your enrollment details and class information</p>
+                        <p class="text-gray-600 dark:text-gray-400 mt-1 md:mt-2 text-xs md:text-sm">Your enrollment details and class information</p>
                     </div>
                     
-                    <div class="p-8 space-y-6">
-                        <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-6 md:p-8 space-y-4 md:space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                             <!-- Student ID Card -->
-                            <div class="rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 border-2 border-blue-200 dark:border-blue-700">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-2xl">🆔</span>
-                                    <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __('Student ID') }}</p>
+                            <div class="rounded-lg md:rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-4 md:p-6 border-2 border-blue-200 dark:border-blue-700">
+                                <div class="flex items-center gap-2 mb-2 md:mb-3">
+                                    <span class="text-xl md:text-2xl">🆔</span>
+                                    <p class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __('Student ID') }}</p>
                                 </div>
-                                <p class="text-2xl font-black text-blue-600 dark:text-blue-400">
+                                <p class="text-lg md:text-2xl font-black text-blue-600 dark:text-blue-400 break-all">
                                     {{ Auth::user()->student_id ?? '—' }}
                                 </p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Assigned by school</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 md:mt-2">Assigned by school</p>
                             </div>
 
                             <!-- Section Card -->
-                            <div class="rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 border-2 border-purple-200 dark:border-purple-700">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-2xl">📚</span>
-                                    <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __('Section') }}</p>
+                            <div class="rounded-lg md:rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 md:p-6 border-2 border-purple-200 dark:border-purple-700">
+                                <div class="flex items-center gap-2 mb-2 md:mb-3">
+                                    <span class="text-xl md:text-2xl">📚</span>
+                                    <p class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __('Section') }}</p>
                                 </div>
-                                <p class="text-2xl font-black text-purple-600 dark:text-purple-400">
+                                <p class="text-lg md:text-2xl font-black text-purple-600 dark:text-purple-400 line-clamp-2">
                                     {{ Auth::user()->section ? str_replace('_', ' ', Auth::user()->section) : '—' }}
                                 </p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Your class group</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 md:mt-2">Your class group</p>
                             </div>
 
                             <!-- Parent Card -->
-                            <div class="rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-6 border-2 border-orange-200 dark:border-orange-700">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-2xl">👨‍👩‍👧</span>
-                                    <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __('Parent/Guardian') }}</p>
+                            <div class="rounded-lg md:rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 p-4 md:p-6 border-2 border-orange-200 dark:border-orange-700">
+                                <div class="flex items-center gap-2 mb-2 md:mb-3">
+                                    <span class="text-xl md:text-2xl">👨‍👩‍👧</span>
+                                    <p class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400">{{ __('Parent/Guardian') }}</p>
                                 </div>
-                                <p class="text-lg font-black text-orange-600 dark:text-orange-400 line-clamp-2">
+                                <p class="text-base md:text-lg font-black text-orange-600 dark:text-orange-400 line-clamp-2">
                                     {{ Auth::user()->parent_name ?? '—' }}
                                 </p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Contact person</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 md:mt-2">Contact person</p>
                             </div>
                         </div>
 
                         <!-- Read-only Details -->
-                        <div class="rounded-2xl bg-gray-50 dark:bg-gray-700/50 p-6 space-y-4">
-                            <p class="text-sm font-semibold text-gray-600 dark:text-gray-400">📝 {{ __('Account Details') }}</p>
-                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="rounded-lg md:rounded-2xl bg-gray-50 dark:bg-gray-700/50 p-4 md:p-6 space-y-4">
+                            <p class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400">📝 {{ __('Account Details') }}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 text-xs md:text-sm">
                                 <div>
                                     <p class="text-gray-600 dark:text-gray-400 font-medium">Member Since</p>
                                     <p class="text-gray-900 dark:text-white font-bold mt-1">{{ Auth::user()->created_at->format('M d, Y') }}</p>
@@ -318,63 +319,63 @@ new class extends Component {
             @endif
 
             <!-- Save Button Section -->
-            <div class="flex items-center justify-between gap-4 pt-6">
-                <x-action-message class="me-3" on="profile-updated">
-                    <div class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-4 py-3 rounded-xl font-semibold">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 pt-4 md:pt-6">
+                <x-action-message class="me-0 sm:me-3 w-full sm:w-auto" on="profile-updated">
+                    <div class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-3 md:px-4 py-2 md:py-3 rounded-lg md:rounded-xl font-semibold text-xs md:text-base whitespace-nowrap">
+                        <svg class="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         {{ __('Profile saved successfully!') }}
                     </div>
                 </x-action-message>
-                <flux:button variant="primary" type="submit" class="px-8 py-3 text-base font-semibold">
+                <flux:button variant="primary" type="submit" class="w-full sm:w-auto px-6 md:px-8 py-2 md:py-3 text-sm md:text-base font-semibold">
                     <span class="mr-2">💾</span>{{ __('Save Changes') }}
                 </flux:button>
             </div>
                     </form>
                 </div>
 
-                <!-- Right Sidebar - Tips & Stats -->
-                <div class="lg:col-span-1 space-y-6">
+                <!-- Right Sidebar - Tips & Stats - Mobile: Below, Desktop: Side -->
+                <div class="lg:col-span-1 space-y-4 md:space-y-6 w-full">
                     <!-- Profile Stats Card -->
-                    <div class="rounded-3xl bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 p-6 shadow-lg sticky top-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-2xl">📊</span>
-                            <h3 class="font-bold text-gray-900 dark:text-white">Profile Status</h3>
+                    <div class="rounded-2xl md:rounded-3xl bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 p-4 md:p-6 shadow-lg md:sticky md:top-8">
+                        <div class="flex items-center gap-2 mb-3 md:mb-4">
+                            <span class="text-xl md:text-2xl">📊</span>
+                            <h3 class="font-bold text-gray-900 dark:text-white text-sm md:text-base">Profile Status</h3>
                         </div>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
-                                <span class="text-sm font-semibold text-green-700 dark:text-green-400">Account Active</span>
-                                <span class="text-2xl">✅</span>
+                        <div class="space-y-2 md:space-y-4">
+                            <div class="flex items-center justify-between p-2 md:p-3 bg-green-50 dark:bg-green-900/20 rounded-lg md:rounded-xl">
+                                <span class="text-xs md:text-sm font-semibold text-green-700 dark:text-green-400">Account Active</span>
+                                <span class="text-lg md:text-2xl">✅</span>
                             </div>
                             @if($this->hasUnverifiedEmail)
-                                <div class="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl">
-                                    <span class="text-sm font-semibold text-yellow-700 dark:text-yellow-400">Email Verification</span>
-                                    <span class="text-2xl">⏳</span>
+                                <div class="flex items-center justify-between p-2 md:p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg md:rounded-xl">
+                                    <span class="text-xs md:text-sm font-semibold text-yellow-700 dark:text-yellow-400">Email Verification</span>
+                                    <span class="text-lg md:text-2xl">⏳</span>
                                 </div>
                             @else
-                                <div class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
-                                    <span class="text-sm font-semibold text-green-700 dark:text-green-400">Email Verified</span>
-                                    <span class="text-2xl">✅</span>
+                                <div class="flex items-center justify-between p-2 md:p-3 bg-green-50 dark:bg-green-900/20 rounded-lg md:rounded-xl">
+                                    <span class="text-xs md:text-sm font-semibold text-green-700 dark:text-green-400">Email Verified</span>
+                                    <span class="text-lg md:text-2xl">✅</span>
                                 </div>
                             @endif
-                            <div class="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                                <span class="text-sm font-semibold text-blue-700 dark:text-blue-400">Avatar Selected</span>
-                                <span class="text-2xl">🎨</span>
+                            <div class="flex items-center justify-between p-2 md:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg md:rounded-xl">
+                                <span class="text-xs md:text-sm font-semibold text-blue-700 dark:text-blue-400">Avatar Selected</span>
+                                <span class="text-lg md:text-2xl">🎨</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Need Help Card -->
-                    <div class="rounded-3xl bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border-2 border-orange-200 dark:border-orange-700 p-6 shadow-lg">
-                        <div class="flex items-start gap-3 mb-4">
-                            <span class="text-3xl">🆘</span>
-                            <h3 class="font-bold text-orange-900 dark:text-orange-200 text-lg">Need Help?</h3>
+                    <div class="rounded-2xl md:rounded-3xl bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border-2 border-orange-200 dark:border-orange-700 p-4 md:p-6 shadow-lg">
+                        <div class="flex items-start gap-2 md:gap-3 mb-3 md:mb-4">
+                            <span class="text-2xl md:text-3xl flex-shrink-0">🆘</span>
+                            <h3 class="font-bold text-orange-900 dark:text-orange-200 text-base md:text-lg">Need Help?</h3>
                         </div>
-                        <p class="text-sm text-orange-800 dark:text-orange-300 mb-4">
+                        <p class="text-xs md:text-sm text-orange-800 dark:text-orange-300 mb-3 md:mb-4">
                             Having trouble updating your profile?
                         </p>
-                        <a href="#" class="inline-block w-full text-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold transition-colors">
+                        <a href="#" class="inline-block w-full text-center px-3 md:px-4 py-2 md:py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg md:rounded-xl font-semibold transition-colors text-xs md:text-sm">
                             Contact Support
                         </a>
                     </div>
