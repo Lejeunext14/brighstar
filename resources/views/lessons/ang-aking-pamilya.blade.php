@@ -172,15 +172,15 @@
             },
             {
                 title: 'Ang Pamilya',
-                body: '<p>Ang pamilya ay ang mga taong pinakamalapit sa atin. Mahalaga ang pamilya sa buhay ng bawat tao.</p><p class="mt-4"><img src="/image/pamilya.jpg" alt="Ang Pamilya" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Ang pamilya ay ang mga taong pinakamalapit sa atin. Mahalaga ang pamilya sa buhay ng bawat tao.</p><p class="mt-4"><img src="/image/family.jpg" alt="Ang Pamilya" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Pagmamahal sa Pamilya',
-                body: '<p>Dapat tayong magmahal at magmalasakit sa ating mga pamilya miyembro.</p><p class="mt-4"><img src="/image/pagmamahal.jpg" alt="Pagmamahal" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Dapat tayong magmahal at magmalasakit sa ating mga pamilya miyembro.</p><p class="mt-4"><img src="/image/pagmamahal.png" alt="Pagmamahal" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Tulong sa Pamilya',
-                body: '<p>Dapat tayong tumulong at maglingkod sa ating pamilya araw-araw.</p><p class="mt-4"><img src="/image/tulong.jpg" alt="Tulong" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
+                body: '<p>Dapat tayong tumulong at maglingkod sa ating pamilya araw-araw.</p><p class="mt-4"><img src="/image/tulong.png" alt="Tulong" style="width:200px; height:auto; margin:0 auto; display:block; border-radius:8px;"/></p>'
             },
             {
                 title: 'Kasama ng Pamilya',
