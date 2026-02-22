@@ -84,7 +84,19 @@
                     ✨ Choose Your Design ✨
                 </h2>
                 
-                <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
+                <!-- Design Tabs -->
+                <div class="flex justify-center gap-4 mb-8">
+                    <button onclick="switchTab('builtin')" id="tab-builtin" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all tab-btn active">
+                        🎨 Built-in Designs
+                    </button>
+                    <button onclick="switchTab('openclipart')" id="tab-openclipart" class="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-2xl font-bold transition-all tab-btn">
+                        📚 OpenClipart Library
+                    </button>
+                </div>
+
+                <!-- Built-in Designs Tab -->
+                <div id="builtin-tab" class="tab-content">
+                    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
                     <!-- Design A - Flower -->
                     <div data-design="A" class="design-card rounded-3xl p-6 cursor-pointer group bg-white dark:bg-gray-800 border-2 border-pink-200 dark:border-pink-700 shadow-lg" onclick="selectDesign('A')" role="button" aria-pressed="false" tabindex="0">
                         <div class="relative mb-4">
@@ -136,7 +148,6 @@
                         <p class="text-sm text-center text-gray-600 dark:text-gray-400 mb-4">Shining star collection</p>
                         <div class="w-full h-1 bg-gradient-to-r from-yellow-300 to-amber-300 rounded-full"></div>
                     </div>
-
                     <!-- Design E - Lion -->
                     <div data-design="E" class="design-card rounded-3xl p-6 cursor-pointer group bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-lg" onclick="selectDesign('E')" role="button" aria-pressed="false" tabindex="0">
                         <div class="relative mb-4">
@@ -148,6 +159,23 @@
                         <h3 class="text-2xl font-black text-center text-gray-900 dark:text-white mb-2">Lion</h3>
                         <p class="text-sm text-center text-gray-600 dark:text-gray-400 mb-4">Majestic lion king</p>
                         <div class="w-full h-1 bg-gradient-to-r from-orange-300 to-red-300 rounded-full"></div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- OpenClipart Library Tab -->
+                <div id="openclipart-tab" class="tab-content hidden">
+                    <div class="bg-white dark:bg-gray-800 rounded-3xl border-2 border-blue-200 dark:border-blue-700 p-8 shadow-xl">
+                        <div class="mb-6">
+                            <label class="block text-lg font-bold text-gray-900 dark:text-white mb-3">Search Designs</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="openclipart-search" placeholder="Search (e.g., animal, flower, mandala)..." class="flex-1 px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-blue-500">
+                                <button onclick="searchOpenClipart()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl">🔍 Search</button>
+                            </div>
+                        </div>
+                        <div id="openclipart-results" class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 max-h-96 overflow-y-auto">
+                            <div class="col-span-full text-center text-gray-500 py-8">Type a search term and click Search to find designs</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,11 +293,189 @@
         let currentTool = 'pen';
         let brushSize = 5;
         let selectedDesign = 'A';
+        let isOpenClipartDesign = false;
 
         // History stacks for undo/redo (store dataURLs)
         const undoStack = [];
         const redoStack = [];
         const maxHistory = 30;
+
+        // Tab switching
+        function switchTab(tab) {
+            const builtinTab = document.getElementById('builtin-tab');
+            const openclipartTab = document.getElementById('openclipart-tab');
+            const builtinBtn = document.getElementById('tab-builtin');
+            const openclipartBtn = document.getElementById('tab-openclipart');
+            
+            if (tab === 'builtin') {
+                builtinTab.classList.remove('hidden');
+                openclipartTab.classList.add('hidden');
+                builtinBtn.classList.add('bg-blue-600', 'active');
+                builtinBtn.classList.remove('bg-gray-400');
+                openclipartBtn.classList.add('bg-gray-400');
+                openclipartBtn.classList.remove('bg-blue-600', 'active');
+            } else {
+                builtinTab.classList.add('hidden');
+                openclipartTab.classList.remove('hidden');
+                openclipartBtn.classList.add('bg-blue-600', 'active');
+                openclipartBtn.classList.remove('bg-gray-400');
+                builtinBtn.classList.add('bg-gray-400');
+                builtinBtn.classList.remove('bg-blue-600', 'active');
+                
+                // Load default search results if empty
+                const resultsDiv = document.getElementById('openclipart-results');
+                if (resultsDiv.textContent.includes('Type a search term')) {
+                    document.getElementById('openclipart-search').value = 'animal';
+                    setTimeout(() => searchOpenClipart(), 500);
+                }
+            }
+        }
+
+        // Store opened designs globally
+        let openClipartDesigns = {};
+
+        // Search OpenClipart
+        async function searchOpenClipart() {
+            const query = document.getElementById('openclipart-search').value.trim();
+            if (!query) {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('openclipart-results');
+            resultsDiv.innerHTML = '<div class="col-span-full text-center py-8"><span class="text-blue-600 font-bold">🔄 Searching OpenClipart...</span></div>';
+            
+            try {
+                const response = await fetch(`/api/coloring/search-openclipart?q=${encodeURIComponent(query)}&limit=20`);
+                const data = await response.json();
+                
+                console.log('Search response:', data);
+                
+                if (data.success && data.designs && data.designs.length > 0) {
+                    // Store designs globally
+                    openClipartDesigns = {};
+                    data.designs.forEach(design => {
+                        openClipartDesigns[design.id] = design;
+                    });
+                    
+                    resultsDiv.innerHTML = data.designs.map(design => `
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-4 cursor-pointer hover:shadow-lg transition-all transform hover:scale-105" onclick="selectOpenClipartDesign('${design.id}')">
+                            <div class="w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 rounded-xl flex items-center justify-center mb-3 overflow-hidden">
+                                ${design.preview_url ? `<img src="${design.preview_url}" alt="${design.title}" class="w-full h-full object-cover">` : '<span class="text-3xl">🎨</span>'}
+                            </div>
+                            <h4 class="font-bold text-gray-900 dark:text-white truncate text-sm">${design.title}</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">✏️ ${design.author}</p>
+                        </div>
+                    `).join('');
+                } else if (!data.success) {
+                    // Show error with suggestions
+                    let errorMsg = data.error || 'No designs found';
+                    let suggestions = data.suggestions ? data.suggestions.map(s => `<li class="text-sm">• ${s}</li>`).join('') : '';
+                    
+                    resultsDiv.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <div class="text-6xl mb-4">🔍</div>
+                            <p class="text-gray-700 dark:text-gray-300 font-bold mb-6">${errorMsg}</p>
+                            ${suggestions ? `<ul class="text-left inline-block text-gray-600 dark:text-gray-400 mb-6">${suggestions}</ul>` : ''}
+                            <div class="flex flex-wrap gap-3 justify-center">
+                                <button onclick="document.getElementById('openclipart-search').value = 'animal'; searchOpenClipart();" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">Try "animal"</button>
+                                <button onclick="document.getElementById('openclipart-search').value = 'flower'; searchOpenClipart();" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">Try "flower"</button>
+                                <button onclick="document.getElementById('openclipart-search').value = 'butterfly'; searchOpenClipart();" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">Try "butterfly"</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <div class="text-6xl mb-4">✨</div>
+                            <p class="text-gray-600 dark:text-gray-400 mb-6">No designs found for "<strong>${query}</strong>"</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-500 mb-6">Try searching with different terms like: animal, flower, butterfly, mandala, dragon, cat, bird</p>
+                            <div class="flex flex-wrap gap-3 justify-center">
+                                <button onclick="document.getElementById('openclipart-search').value = 'animal'; searchOpenClipart();" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">Try "animal"</button>
+                                <button onclick="document.getElementById('openclipart-search').value = 'flower'; searchOpenClipart();" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">Try "flower"</button>
+                                <button onclick="document.getElementById('openclipart-search').value = 'butterfly'; searchOpenClipart();" class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">Try "butterfly"</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error('Search failed:', err);
+                resultsDiv.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-6xl mb-4">⚠️</div>
+                        <p class="text-red-600 dark:text-red-400 font-bold mb-4">Search Error</p>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">${err.message || 'Connection error. Please try again.'}</p>
+                        <button onclick="searchOpenClipart()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Retry Search</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Load and render SVG from OpenClipart
+        async function selectOpenClipartDesign(id) {
+            const design = openClipartDesigns[id];
+            if (!design) {
+                alert('Design not found');
+                return;
+            }
+            
+            console.debug('Loading OpenClipart design:', id, design.title);
+            isOpenClipartDesign = true;
+            selectedDesign = design.title;
+            document.getElementById('selectedDesign').textContent = design.title;
+            highlightSelectedDesign(null);
+            document.getElementById('selectionScreen').classList.add('hidden');
+            document.getElementById('canvasScreen').classList.remove('hidden');
+            
+            try {
+                const response = await fetch(`/api/coloring/get-svg?url=${encodeURIComponent(design.svg_url)}`);
+                if (!response.ok) throw new Error('Failed to fetch SVG');
+                const svgText = await response.text();
+                
+                setTimeout(() => {
+                    renderSvgOnCanvas(svgText);
+                    pushState();
+                }, 100);
+            } catch (err) {
+                console.error('Failed to load OpenClipart design:', err);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 20px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Failed to load design', canvas.width / 2, canvas.height / 2);
+            }
+        }
+
+        // Render SVG on canvas
+        function renderSvgOnCanvas(svgText) {
+            try {
+                resizeCanvas();
+                const img = new Image();
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    // Draw SVG scaled to fit
+                    const scale = Math.min(canvas.width / img.width, canvas.height / img.height) * 0.9;
+                    const x = (canvas.width - img.width * scale) / 2;
+                    const y = (canvas.height - img.height * scale) / 2;
+                    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                    console.debug('SVG rendered on canvas');
+                };
+                img.onerror = () => {
+                    console.error('Failed to load SVG image');
+                    ctx.fillStyle = '#fff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#e74c3c';
+                    ctx.fillText('Failed to render SVG', canvas.width / 2, canvas.height / 2);
+                };
+                const blob = new Blob([svgText], { type: 'image/svg+xml' });
+                img.src = URL.createObjectURL(blob);
+            } catch (err) {
+                console.error('Error rendering SVG:', err);
+            }
+        }
 
         function updateHistoryButtons() {
             const undoBtn = document.getElementById('undoBtn');
@@ -355,6 +561,7 @@
 
         function selectDesign(design) {
             selectedDesign = design;
+            isOpenClipartDesign = false;
             console.debug('Selected design:', design);
             document.getElementById('selectedDesign').textContent = design;
             highlightSelectedDesign(design);

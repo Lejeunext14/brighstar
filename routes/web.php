@@ -14,6 +14,7 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StudentDashboardController;
 use App\Http\Controllers\TeacherDashboardController;
+use App\Http\Controllers\ColoringController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -114,6 +115,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subject/{subject}/coloring', function ($subject) {
         return view('subject.coloring', ['subject' => $subject]);
     })->name('subject.coloring');
+
+    // Coloring Game API Routes
+    Route::get('/api/coloring/search-openclipart', [ColoringController::class, 'searchOpenClipart'])->name('coloring.search-openclipart');
+    Route::get('/api/coloring/get-svg', [ColoringController::class, 'getSvg'])->name('coloring.get-svg');
 
     Route::get('/subject/{subject}/abakada', function ($subject) {
         return view('subject.abakada', ['subject' => $subject]);
