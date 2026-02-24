@@ -17,6 +17,7 @@ class LessonProgress extends Model
         'lesson_slug',
         'subject',
         'lesson_name',
+        'voice_over_path',
         'completed',
         'points',
         'streak',

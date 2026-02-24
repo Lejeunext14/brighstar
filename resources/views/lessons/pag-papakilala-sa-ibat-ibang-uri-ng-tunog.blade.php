@@ -109,17 +109,20 @@
         // Audio mapping for various sound categories. Place your audio files in:
         // public/music/tunog/
         const audioFiles = {
-            greeting: '{{ asset("music/tunog/greeting.aac") }}',
-            nature: '{{ asset("music/tunog/nature.aac") }}',
-            bird: '{{ asset("music/tunog/bird.aac") }}',
-            human: '{{ asset("music/tunog/human.aac") }}',
-            vehicle: '{{ asset("music/tunog/vehicle.aac") }}',
-            music: '{{ asset("music/tunog/music.aac") }}',
-            animal: '{{ asset("music/tunog/animal.mp3") }}'
+            greeting: '{{ asset("music/tunog/Girl maligayang pagdating4 1.wav") }}',
+            nature: '',  // No audio available yet
+            bird: '',    // No audio available yet
+            human: '',   // No audio available yet
+            vehicle: '', // No audio available yet
+            music: '',   // No audio available yet
+            animal: ''   // No audio available yet
         };
 
         function playAudio(key) {
-            if (!audioFiles[key]) return;
+            if (!audioFiles[key]) {
+                alert('Walang tunog file para dito.');
+                return;
+            }
             const a = new Audio(audioFiles[key]);
             a.play().catch(err => console.debug('audio play failed', err));
         }

@@ -104,6 +104,15 @@
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga hugis.
                 </div>
+                <!-- Voice Over Audio Player -->
+                @if($lessonData?->voice_over_path)
+                <div class="mt-4 w-full">
+                    <audio controls class="w-full h-10 bg-white rounded-lg">
+                        <source src="{{ asset($lessonData->voice_over_path) }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -130,12 +139,12 @@
     <script>
         // Audio files from mga_hugis folder
         const audioFiles = {
-            greeting: '{{ asset("music/mga_hugis/maligayang pagdating4.aac") }}',
-            bilog: '{{ asset("music/mga_hugis/bilog (1).aac") }}',
-            tatsulok: '{{ asset("music/mga_hugis/tatsulok.aac") }}',
-            rektangulo: '{{ asset("music/mga_hugis/rektangulo.aac") }}',
-            pentagon: '{{ asset("music/mga_hugis/pentagon.aac") }}',
-            heksagono: '{{ asset("music/mga_hugis/hexaguno.aac") }}'
+            greeting: '{{ asset("music/mga_hugis/Girl maligayang pagdating5 1.wav") }}',
+            bilog: '{{ asset("music/mga_hugis/Girl bilog 1.wav") }}',
+            tatsulok: '{{ asset("music/mga_hugis/Girl tatsulok 1.wav") }}',
+            rektangulo: '{{ asset("music/mga_hugis/Girl rektangulo 1.wav") }}',
+            pentagon: '{{ asset("music/mga_hugis/Girl pentagon 1.wav") }}',
+            heksagono: '{{ asset("music/mga_hugis/Girl hexaguno 1.wav") }}'
         };
 
         function playAudio(key) {

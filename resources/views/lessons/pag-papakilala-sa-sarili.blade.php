@@ -138,11 +138,11 @@
     <script>
         // Audio files mapping
         const audioFiles = {
-            greeting: '{{ asset("music/pagpapakilala/kamusta1.aac") }}',
-            name: '{{ asset("music/pagpapakilala/Ano ang yong pangalan.aac") }}',
-            age: '{{ asset("music/pagpapakilala/ilan taon kana.aac") }}',
-            location: '{{ asset("music/pagpapakilala/saan ka nakatira.aac") }}',
-            welcome: '{{ asset("music/pagpapakilala/Maligayang pagadating1.aac") }}'
+            greeting: '{{ asset("music/pagpapakilala/Girl Maligayang pagadating1 1.wav") }}',
+            welcome: '{{ asset("music/pagpapakilala/Girl Maligayang pagadating1 1.wav") }}',
+            name: '{{ asset("music/pagpapakilala/Girl Ano ang yong pangalan 1.wav") }}',
+            age: '{{ asset("music/pagpapakilala/Girl ilan taon kana 1.wav") }}',
+            location: '{{ asset("music/pagpapakilala/Girl saan ka nakatira 1.wav") }}'
         };
 
         // Play teacher greeting

@@ -20,4 +20,8 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin',
             ]
         );
-}}
+
+        // Run voice over seeder
+        $this->call(VoiceOverSeeder::class);
+    }
+}

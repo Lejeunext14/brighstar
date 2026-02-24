@@ -104,6 +104,15 @@
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga bahagi ng katawan.
                 </div>
+                <!-- Voice Over Audio Player -->
+                @if($lessonData?->voice_over_path)
+                <div class="mt-4 w-full">
+                    <audio controls class="w-full h-10 bg-white rounded-lg">
+                        <source src="{{ asset($lessonData->voice_over_path) }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -132,15 +141,15 @@
     <script>
         // Audio files mapping
         const audioFiles = {
-            greeting: '{{ asset("music/bahagi_ng_katawan/kamusta1.aac") }}',
-            intro: '{{ asset("music/bahagi_ng_katawan/maligayang pagdating2.aac") }}',
-            ulo: '{{ asset("music/bahagi_ng_katawan/ulo.aac") }}',
-            mata: '{{ asset("music/bahagi_ng_katawan/mata.aac") }}',
-            ilong: '{{ asset("music/bahagi_ng_katawan/ilong.aac") }}',
-            bibig: '{{ asset("music/bahagi_ng_katawan/bibig.aac") }}',
-            kamay: '{{ asset("music/bahagi_ng_katawan/kamay.aac") }}',
-            binti: '{{ asset("music/bahagi_ng_katawan/binti.aac") }}',
-            paa: '{{ asset("music/bahagi_ng_katawan/paa.aac") }}'
+            greeting: '{{ asset("music/bahagi_ng_katawan/Girl maligayang pagdating2 1.wav") }}',
+            intro: '{{ asset("music/bahagi_ng_katawan/Girl maligayang pagdating2 1.wav") }}',
+            ulo: '{{ asset("music/bahagi_ng_katawan/Girl ulo 1.wav") }}',
+            mata: '{{ asset("music/bahagi_ng_katawan/Girl mata 1.wav") }}',
+            ilong: '{{ asset("music/bahagi_ng_katawan/Girl ilong 1.wav") }}',
+            bibig: '{{ asset("music/bahagi_ng_katawan/Girl bibig 1.wav") }}',
+            kamay: '{{ asset("music/bahagi_ng_katawan/Girl kamay 1.wav") }}',
+            binti: '{{ asset("music/bahagi_ng_katawan/Girl binti 1.wav") }}',
+            paa: '{{ asset("music/bahagi_ng_katawan/Girl paa 1.wav") }}'
         };
 
         // Play teacher greeting

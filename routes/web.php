@@ -151,7 +151,10 @@ Route::middleware(['auth'])->group(function () {
 
         // First lesson is always unlocked for starting
         if ($lesson === $firstLesson) {
-            return view('lessons.' . $lesson, ['lesson' => $lesson]);
+            $lessonData = \App\Models\LessonProgress::where('user_id', auth()->id())
+                ->where('lesson_slug', $lesson)
+                ->first();
+            return view('lessons.' . $lesson, ['lesson' => $lesson, 'lessonData' => $lessonData]);
         }
 
         // If lesson is not in sequence, deny access
@@ -172,7 +175,12 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->back()->with('error', '🔒 This lesson is locked. Complete the previous lesson first.');
         }
 
-        return view('lessons.' . $lesson, ['lesson' => $lesson]);
+        // Fetch lesson data including voice over
+        $lessonData = \App\Models\LessonProgress::where('user_id', auth()->id())
+            ->where('lesson_slug', $lesson)
+            ->first();
+
+        return view('lessons.' . $lesson, ['lesson' => $lesson, 'lessonData' => $lessonData]);
     })->name('lesson.view');
 });
 

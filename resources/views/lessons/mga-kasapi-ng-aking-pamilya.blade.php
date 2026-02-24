@@ -81,6 +81,15 @@
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga kasapi ng pamilya.
                 </div>
+                <!-- Voice Over Audio Player -->
+                @if($lessonData?->voice_over_path)
+                <div class="mt-4 w-full">
+                    <audio controls class="w-full h-10 bg-white rounded-lg">
+                        <source src="{{ asset($lessonData->voice_over_path) }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                @endif
             </div>
         </div>
         <!-- Right Side - Content -->
@@ -103,58 +112,31 @@
         </div>
     </div>
     <script>
-        // Teacher speech synthesis
+        // Voice over playback (recorded audio only)
         (function(){
-            let selectedVoice = null;
+            const voiceOverPath = '{{ $lessonData?->voice_over_path ? asset($lessonData->voice_over_path) : null }}';
 
-            function pickVoice() {
-                const voices = window.speechSynthesis.getVoices();
-                if (!voices || voices.length === 0) return null;
-
-                // Prefer Filipino / Tagalog voices (lang startsWith fil or tl or contains -PH),
-                // then names that mention Tagalog/Filipino, then any Philippine locale, then Google voices.
-                const byLang = v => (v.lang || '').toLowerCase();
-
-                let v = voices.find(v => {
-                    const lang = byLang(v);
-                    return lang.startsWith('fil') || lang.startsWith('tl') || /-ph$/.test(lang) || lang.includes('ph');
-                });
-
-                if (!v) v = voices.find(v => /tagalog|filipino/i.test(v.name));
-                if (!v) v = voices.find(v => /-ph/i.test(v.lang || ''));
-                if (!v) v = voices.find(v => /google/i.test(v.name));
-                return v || voices[0];
+            function playVoiceOver() {
+                if (voiceOverPath && voiceOverPath !== 'null') {
+                    const audio = new Audio(voiceOverPath);
+                    audio.play().catch(err => {
+                        console.log('Voice over audio play error:', err);
+                    });
+                } else {
+                    console.log('No voice over available for this lesson');
+                }
             }
-
-            function speakTeacher(text, opts = {}){
-                if (!('speechSynthesis' in window)) return;
-                const utter = new SpeechSynthesisUtterance(text);
-                // ensure voices list loaded
-                if (!selectedVoice) selectedVoice = pickVoice();
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = selectedVoice?.lang || 'fil-PH';
-                utter.rate = opts.rate ?? 0.95;
-                utter.pitch = opts.pitch ?? 1.05;
-                utter.volume = opts.volume ?? 1;
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(utter);
-            }
-
-            // when voices are loaded, cache selection
-            window.speechSynthesis.onvoiceschanged = function(){
-                selectedVoice = pickVoice();
-            };
 
             document.addEventListener('DOMContentLoaded', ()=>{
                 const bubble = document.querySelector('.teacher-bubble');
                 if (!bubble) return;
                 // click to speak
                 bubble.style.cursor = 'pointer';
-                bubble.addEventListener('click', ()=> speakTeacher(bubble.textContent.trim()));
+                bubble.addEventListener('click', ()=> playVoiceOver());
 
-                // try to auto-speak greeting once (some browsers require user gesture)
+                // try to auto-play greeting once (some browsers require user gesture)
                 setTimeout(()=>{
-                    try { speakTeacher(bubble.textContent.trim()); } catch(e){}
+                    try { playVoiceOver(); } catch(e){}
                 }, 500);
             });
         })();

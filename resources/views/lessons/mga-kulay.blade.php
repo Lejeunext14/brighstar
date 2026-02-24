@@ -104,6 +104,15 @@
                 <div class="teacher-bubble text-sm sm:text-base">
                     Kumusta! Matuto tayo ng mga kulay.
                 </div>
+                <!-- Voice Over Audio Player -->
+                @if($lessonData?->voice_over_path)
+                <div class="mt-4 w-full">
+                    <audio controls class="w-full h-10 bg-white rounded-lg">
+                        <source src="{{ asset($lessonData->voice_over_path) }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -129,13 +138,13 @@
     <script>
         // Audio files mapping for Mga Kulay
         const audioFiles = {
-            greeting: '{{ asset("music/kulay/maligayang pagdating3.aac") }}',
-            pula: '{{ asset("music/kulay/pula.aac") }}',
-            asul: '{{ asset("music/kulay/asul.aac") }}',
-            dilaw: '{{ asset("music/kulay/dilaw.aac") }}',
-            luntian: '{{ asset("music/kulay/luntian.aac") }}',
-            itim: '{{ asset("music/kulay/itim.aac") }}',
-            puti: '{{ asset("music/kulay/puti.aac") }}'
+            greeting: '{{ asset("music/kulay/Girl maligayang pagdating3 1.wav") }}',
+            pula: '{{ asset("music/kulay/Girl pula 1.wav") }}',
+            asul: '{{ asset("music/kulay/Girl asul 1.wav") }}',
+            dilaw: '{{ asset("music/kulay/Girl dilaw 1.wav") }}',
+            luntian: '{{ asset("music/kulay/Girl luntian 1.wav") }}',
+            itim: '{{ asset("music/kulay/Girl itim 1.wav") }}',
+            puti: '{{ asset("music/kulay/Girl puti 1.wav") }}'
         };
 
         function playTeacherGreeting() {
